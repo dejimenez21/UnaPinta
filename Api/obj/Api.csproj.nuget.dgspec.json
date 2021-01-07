@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\dejim\\Google Drive\\Una Pinta\\UnaPinta\\Api\\Api.csproj": {}
+    "c:\\Users\\dejim\\OneDrive\\Desktop\\UnaPinta\\Api\\Api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\dejim\\Google Drive\\Una Pinta\\UnaPinta\\Api\\Api.csproj": {
+    "c:\\Users\\dejim\\OneDrive\\Desktop\\UnaPinta\\Api\\Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\dejim\\Google Drive\\Una Pinta\\UnaPinta\\Api\\Api.csproj",
+        "projectUniqueName": "c:\\Users\\dejim\\OneDrive\\Desktop\\UnaPinta\\Api\\Api.csproj",
         "projectName": "Api",
-        "projectPath": "C:\\Users\\dejim\\Google Drive\\Una Pinta\\UnaPinta\\Api\\Api.csproj",
+        "projectPath": "c:\\Users\\dejim\\OneDrive\\Desktop\\UnaPinta\\Api\\Api.csproj",
         "packagesPath": "C:\\Users\\dejim\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dejim\\Google Drive\\Una Pinta\\UnaPinta\\Api\\obj\\",
+        "outputPath": "c:\\Users\\dejim\\OneDrive\\Desktop\\UnaPinta\\Api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\dejim\\AppData\\Roaming\\NuGet\\NuGet.Config",

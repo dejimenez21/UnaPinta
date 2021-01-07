@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Api.Models;
 using Api.Entities;
+using Api.Services;
+using AutoMapper;
 
 namespace Api.Controllers
 {
@@ -12,8 +14,13 @@ namespace Api.Controllers
     [ApiController]
     public class RequestsController : ControllerBase
     {
-        public RequestsController()
+        private readonly IUnaPintaRepository _repo;
+        private readonly IMapper _mapper;
+
+        public RequestsController(IUnaPintaRepository repo, IMapper mapper)
         {
+            _repo = repo;
+            _mapper = mapper;
         }
 
         // [HttpGet("")]
@@ -37,10 +44,8 @@ namespace Api.Controllers
         [HttpPost("")]
         public async Task<ActionResult<Request>> CreateRequest(RequestCreate requestCreate)
         {
-            // TODO: Your code here
-            await Task.Yield();
-
-            return null;
+            var request = _mapper.Map<Request>(requestCreate);
+            return Created("api/requests", request);
         }
 
         // [HttpPut("{id}")]

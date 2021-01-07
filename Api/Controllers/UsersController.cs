@@ -49,7 +49,7 @@ namespace Api.Controllers
             _repo.AgregarDonante(user);
             await _repo.SaveChangesAsync();
 
-            return Created("api/donantes", user);
+            return Created("api/users", user);
         }
 
         // [HttpPut("{id}")]
