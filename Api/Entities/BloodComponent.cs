@@ -14,11 +14,21 @@ namespace Api.Entities
         }
 
         [Key]
-        public int Id { get; set; }
+        public BloodComponentEnum Id { get; set; }
 
         [MaxLength(50)]
         public string Description { get; set; }
 
         public virtual ICollection<Request> Requests { get; set; }
+    }
+
+    public enum BloodComponentEnum
+    {
+        Plasma = 1,
+        Plaquetas = 2,
+        [Display(Name="Globulos Blancos")]
+        GlobulosBlancos = 3,
+        [Display(Name="Globulos Rojos")]
+        GlobulosRojos = 4
     }
 }

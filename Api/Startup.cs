@@ -30,7 +30,7 @@ namespace Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<UnaPintaDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DanielsConnection")));
+            services.AddDbContext<UnaPintaDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AzureConnection")));
             services.AddScoped<IUnaPintaRepository, SqlUnaPintaRepo>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }

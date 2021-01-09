@@ -7,6 +7,7 @@ using Api.Models;
 using Api.Entities;
 using Api.Services;
 using AutoMapper;
+using Api.Helpers;
 
 namespace Api.Controllers
 {
@@ -26,7 +27,6 @@ namespace Api.Controllers
         // [HttpGet("")]
         // public async Task<ActionResult<IEnumerable<TModel>>> GetTModels()
         // {
-        //     // TODO: Your code here
         //     await Task.Yield();
 
         //     return new List<TModel> { };
@@ -35,7 +35,6 @@ namespace Api.Controllers
         // [HttpGet("{id}")]
         // public async Task<ActionResult<TModel>> GetTModelById(int id)
         // {
-        //     // TODO: Your code here
         //     await Task.Yield();
 
         //     return null;
@@ -45,13 +44,19 @@ namespace Api.Controllers
         public async Task<ActionResult<Request>> CreateRequest(RequestCreate requestCreate)
         {
             var request = _mapper.Map<Request>(requestCreate);
+            _repo.CreateRequest(request);
+            await _repo.SaveChangesAsync();
+
+            EmailSender sender =  new EmailSender();
+            await sender.SendNotification(request);
+            await sender.Disconnect();
+
             return Created("api/requests", request);
         }
 
         // [HttpPut("{id}")]
         // public async Task<IActionResult> PutTModel(int id, TModel model)
         // {
-        //     // TODO: Your code here
         //     await Task.Yield();
 
         //     return NoContent();
@@ -60,7 +65,6 @@ namespace Api.Controllers
         // [HttpDelete("{id}")]
         // public async Task<ActionResult<TModel>> DeleteTModelById(int id)
         // {
-        //     // TODO: Your code here
         //     await Task.Yield();
 
         //     return null;

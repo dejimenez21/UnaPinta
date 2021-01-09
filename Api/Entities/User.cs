@@ -21,14 +21,14 @@ namespace Api.Entities
         public string Location { get; set; }
         public bool Sex { get; set; }
         public DateTime BirthDate { get; set; }
-        public int? BloodTypeId { get; set; }
+        public BloodTypeEnum? BloodTypeId { get; set; }
         public string Email { get; set; }
         public double? Weight { get; set; }
         public string Phone { get; set; }
         public string Handle { get; set; }
         public string Password { get; set; }
         public bool? CanDonate { get; set; }
-        public int? UserTypeId { get; set; }
+        public UserTypeEnum? UserTypeId { get; set; }
         public bool? Confirmed { get; set; } = false;
 
         [ForeignKey("BloodTypeId")]

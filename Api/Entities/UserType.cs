@@ -14,10 +14,16 @@ namespace Api.Entities
         }
 
         [Key]
-        public int Id { get; set; }
+        public UserTypeEnum Id { get; set; }
         [MaxLength(20)]
         public string Description { get; set; }
 
         public virtual ICollection<User> Users { get; set; }
+    }
+
+    public enum UserTypeEnum{
+        Donante = 1,
+        Solicitante = 2,
+        Administrador = 3
     }
 }

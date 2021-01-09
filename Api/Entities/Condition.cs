@@ -14,10 +14,21 @@ namespace Api.Entities
         }
 
         [Key]
-        public int Id { get; set; }
+        public ConditionEnum Id { get; set; }
         [MaxLength(500)]
         public string Decription { get; set; }
+        public int MonthsToWait { get; set; }
 
         public virtual ICollection<WaitList> WaitLists { get; set; }
+    }
+
+    public enum ConditionEnum{
+        Tatuaje = 1,
+        Piercing = 2,
+        Dental = 3,
+        Transfusion = 4,
+        Donado = 5,
+        Embarazada = 6,
+        Lactando = 7
     }
 }

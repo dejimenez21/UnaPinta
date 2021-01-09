@@ -22,9 +22,7 @@ namespace Api.Migrations
             modelBuilder.Entity("Api.Entities.BloodComponent", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasMaxLength(50)
@@ -38,9 +36,7 @@ namespace Api.Migrations
             modelBuilder.Entity("Api.Entities.BloodType", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasMaxLength(3)
@@ -54,13 +50,14 @@ namespace Api.Migrations
             modelBuilder.Entity("Api.Entities.Condition", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("int");
 
                     b.Property<string>("Decription")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("MonthsToWait")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -160,9 +157,7 @@ namespace Api.Migrations
             modelBuilder.Entity("Api.Entities.UserType", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasMaxLength(20)

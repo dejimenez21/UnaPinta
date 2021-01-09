@@ -46,7 +46,7 @@ namespace Api.Controllers
         public async Task<ActionResult<User>> RegistrarUsuario(Register register)
         {
             User user = _mapper.Map<User>(register);
-            _repo.AgregarDonante(user);
+            _repo.AddDonor(user);
             await _repo.SaveChangesAsync();
 
             return Created("api/users", user);
