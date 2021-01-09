@@ -17,59 +17,40 @@ namespace Api.Controllers
     {
         private readonly IUnaPintaRepository _repo;
         private readonly IMapper _mapper;
+        private readonly IUsersServices _services;
 
-        public UsersController(IUnaPintaRepository repo, IMapper mapper)
+        public UsersController(IUnaPintaRepository repo, IMapper mapper, IUsersServices services)
         {
             _repo = repo;
             _mapper = mapper;
+            _services = services;
         }
 
-        // [HttpGet("")]
-        // public async Task<ActionResult<IEnumerable<TModel>>> GetTModels()
-        // {
-        //     // TODO: Your code here
-        //     await Task.Yield();
-
-        //     return new List<TModel> { };
-        // }
-
-        // [HttpGet("{id}")]
-        // public async Task<ActionResult<TModel>> GetTModelById(int id)
-        // {
-        //     // TODO: Your code here
-        //     await Task.Yield();
-
-        //     return null;
-        // }
 
         [HttpPost("")]
-        public async Task<ActionResult<User>> RegistrarUsuario(Register register)
+        public async Task<ActionResult<User>> RegisterUser(Register register)
         {
             System.Console.WriteLine("Hola!!");
             
             User user = _mapper.Map<User>(register);
-            _repo.AddDonor(user);
+            _repo.AddUser(user);
             await _repo.SaveChangesAsync();
+            _services.GenerateConfirmationCode(user.Id);
 
             return Created("api/users", user);
         }
 
-        // [HttpPut("{id}")]
-        // public async Task<IActionResult> PutTModel(int id, TModel model)
-        // {
-        //     // TODO: Your code here
-        //     await Task.Yield();
+        [HttpPost("confirm/{id}")]
+        public async Task<ActionResult<ConfirmationResponse>> ConfirmUser(int id, CodeSubmit code)
+        {
+            var userToConfirm = await _repo.GetUserById(id);
+            if(userToConfirm == null)
+                return NotFound("The user you are trying to confirm don't even exist");
 
-        //     return NoContent();
-        // }
+            var response = await _services.ConfirmEmail(userToConfirm, code.Code);
+            return Ok(response);
+        }
 
-        // [HttpDelete("{id}")]
-        // public async Task<ActionResult<TModel>> DeleteTModelById(int id)
-        // {
-        //     // TODO: Your code here
-        //     await Task.Yield();
 
-        //     return null;
-        // }
     }
 }

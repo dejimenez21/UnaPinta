@@ -15,7 +15,12 @@ namespace Api.Services
             _context = context;
         }
 
-        public void AddDonor(User donor)
+        public void AddConfirmationCode(ConfirmationCode code)
+        {
+            _context.ConfirmationCodes.Add(code);
+        }
+
+        public void AddUser(User donor)
         {
             _context.Users.Add(donor);
         }
@@ -45,6 +50,11 @@ namespace Api.Services
             return donors;
         }
 
+        public async Task<ConfirmationCode> GetCodeByUser(string code, int id)
+        {
+            return await _context.ConfirmationCodes.SingleAsync(x=>x.Code==code&&x.UserId==id);
+        }
+
         public async Task<IEnumerable<User>> GetDonorsByBloodType(BloodTypeEnum bloodTypeId)
         {
             var donors = await _context.Users
@@ -54,10 +64,21 @@ namespace Api.Services
             return donors;
         }
 
+        public Task<User> GetUserById(int id)
+        {
+            var user = _context.Users.SingleAsync(x=>x.Id==id);
+            return user;
+        }
+
         public async Task<bool> SaveChangesAsync()
         {
             bool saved = await _context.SaveChangesAsync() > -1;
             return saved;
+        }
+
+        public void UpdateUser(User user)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -8,10 +8,12 @@ namespace Api.Services
     {
         Task<bool> SaveChangesAsync();
 
-        //Donors table methods
-        void AddDonor(User donor);
+        //Users table methods
+        void AddUser(User user);
+        void UpdateUser(User user);
         Task<IEnumerable<User>> GetAllDonors();
         Task<IEnumerable<User>> GetDonorsByBloodType(BloodTypeEnum bloodTypeId);
+        Task<User> GetUserById(int id);
 
         //Request table methods
         void CreateRequest(Request request);
@@ -21,5 +23,9 @@ namespace Api.Services
 
         //BloodComponents table methods
         Task<IEnumerable<BloodComponent>> GetAllBloodComponents();
+
+        //ConfirmationCodes table methods
+        void AddConfirmationCode(ConfirmationCode code);
+        Task<ConfirmationCode> GetCodeByUser(string code, int id);
     }
 }

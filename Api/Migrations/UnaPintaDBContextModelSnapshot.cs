@@ -64,6 +64,30 @@ namespace Api.Migrations
                     b.ToTable("Conditions");
                 });
 
+            modelBuilder.Entity("Api.Entities.ConfirmationCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ConfirmationCodes");
+                });
+
             modelBuilder.Entity("Api.Entities.Request", b =>
                 {
                     b.Property<int>("Id")
@@ -193,6 +217,15 @@ namespace Api.Migrations
                     b.ToTable("WaitLists");
                 });
 
+            modelBuilder.Entity("Api.Entities.ConfirmationCode", b =>
+                {
+                    b.HasOne("Api.Entities.User", null)
+                        .WithMany("ConfirmationCodes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Api.Entities.Request", b =>
                 {
                     b.HasOne("Api.Entities.BloodComponent", "BloodComponentNav")
@@ -255,6 +288,8 @@ namespace Api.Migrations
 
             modelBuilder.Entity("Api.Entities.User", b =>
                 {
+                    b.Navigation("ConfirmationCodes");
+
                     b.Navigation("Requests");
 
                     b.Navigation("WaitLists");

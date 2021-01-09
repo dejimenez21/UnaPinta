@@ -37,5 +37,6 @@ namespace Api.Entities
         public virtual UserType UserTypeNav { get; set; }
         public virtual ICollection<WaitList> WaitLists { get; set; }
         public virtual ICollection<Request> Requests { get; set; }
+        public virtual ICollection<ConfirmationCode> ConfirmationCodes { get; set; }
     }
 }

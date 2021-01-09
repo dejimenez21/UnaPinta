@@ -14,6 +14,7 @@ using Api.Entities;
 using Api.Services;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 namespace Api
 {
@@ -30,9 +31,18 @@ namespace Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<UnaPintaDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AzureConnection")));
+            services.AddDbContext<UnaPintaDBContext>(
+                options => options.UseSqlServer(Configuration.GetConnectionString("AzureConnection"))
+            );
             services.AddScoped<IUnaPintaRepository, SqlUnaPintaRepo>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddSwaggerGen(
+                opt => opt.SwaggerDoc("v1", new OpenApiInfo { Title = "Una Pinta Platform API", Version = "v1"})
+            );
+
+            services.AddScoped<IUsersServices, UsersServices>();
+            services.AddScoped<IRequestsService, RequestsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +55,12 @@ namespace Api
 
             //app.UseHttpsRedirection();
 
+            app.UseSwagger();
+
+            app.UseSwaggerUI(
+                opt => opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Una Pinta Platform API")
+            );
+
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -53,6 +69,10 @@ namespace Api
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGet("/", context => {
+                    context.Response.Redirect("/swagger/");
+                    return Task.CompletedTask;
+                });
                 endpoints.MapControllers();
             });
         }
