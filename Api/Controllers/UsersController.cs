@@ -45,6 +45,8 @@ namespace Api.Controllers
         [HttpPost("")]
         public async Task<ActionResult<User>> RegistrarUsuario(Register register)
         {
+            System.Console.WriteLine("Hola!!");
+            
             User user = _mapper.Map<User>(register);
             _repo.AddDonor(user);
             await _repo.SaveChangesAsync();
