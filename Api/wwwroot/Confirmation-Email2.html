@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Una Pinta </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="Styles/email.css">
+  </head>
+  <body>
+    <section>
+      <div class="form" id="createOpt">
+        <label>Favor digitar el código que has recibido a tu correo electrónico.</label>
+        <input type="number" placeholder="codigo OTP" id="codigoOTP">
+        <span class="show" style="display: none;color: red;">Codigo OTP</span>
+        <input type="submit" value="Verificar" onclick="submitConfirmationCode()">
+      </div>
+
+
+      <div class="form" id="verify" style="display: none">
+        
+      <div class="form" id="done" style="display: none;">
+        <h1>¡Tu correo electronico ha sido verificado!</h1>
+      </div>
+    </section>
+
+
+    <script>
+
+      function submitConfirmationCode(){
+
+        var xhr = new XMLHttpRequest();
+
+        var json = {};
+        json["code"] = document.getElementById("codigoOTP").value;
+
+        xhr.onload = () => {
+          if(JSON.parse(xhr.responseText).confirmed){
+            location.href='Registrardonante2.html';
+          }
+          
+        }
+
+        xhr.open("POST", "/api/users/confirm/"+localStorage.getItem("UserId"));
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.send(JSON.stringify(json));
+      }
+    </script>
+  </body>
+
+ 
+</html>

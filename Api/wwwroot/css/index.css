@@ -1,0 +1,23 @@
+
+.back {
+   height: 500px;
+   width: 500px;
+}
+
+.backi {
+   height: 400px;
+   width: 600px;
+   padding-left: 350px;
+
+}
+
+.links{
+	text-align: center;
+}
+
+a{
+
+	font-family: Poppins-Regular, sans-serif; 
+	font-size: 30px;
+}
+

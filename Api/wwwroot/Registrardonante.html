@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Registrar donante</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<!--	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/> -->
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/noui/nouislider.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+<!--===============================================================================================-->
+</head>
+<body>
+
+
+	<div class="container-contact100">
+		<div class="wrap-contact100">
+			<form onsubmit="return onSubmit();" class="contact100-form validate-form">
+				<span class="contact100-form-title">
+					Registrar donante
+				</span>
+
+				<div class="wrap-input100 validate-input bg1" data-validate="Favor escribir nombre">
+					<span class="label-input100">Nombre *</span>
+					<input class="input100" type="text" name="name" id="name" placeholder="Escribir nombre">
+				</div>
+
+				<div class="wrap-input100 validate-input bg1" data-validate="Favor escribir apellido">
+					<span class="label-input100">Apellido *</span>
+					<input class="input100" type="text" name="lastname" id="lastname" placeholder="Escribir apellido">
+
+				</div>
+
+				<div class="wrap-input100 validate-input bg0 rs1-alert-validate" data-validate = "Favor escribir direccion">
+					<span class="label-input100">Direccion</span>
+					<textarea class="input100" name="address" id="address" placeholder="Direccion"></textarea>
+				</div>
+
+				<div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate = "Favor escribir correo (e@a.x)">
+					<span class="label-input100">Correo *</span>
+					<input class="input100" type="text" name="email" id="email" placeholder="Escribir correo ">
+				</div>
+
+				<div class="wrap-input100 bg1 rs1-wrap-input100">
+					<span class="label-input100">Telefono</span>
+					<input class="input100" type="text" name="phone" id="phone" placeholder="Escribir telefono">
+				</div>
+
+				<div class="wrap-input100 bg1 rs1-wrap-input100">
+				<input type="date" id="birthdate" name="birthdate">
+				</div>
+
+				<div class="wrap-input100 bg1 rs1-wrap-input100">
+				<span class="label-input100">Peso(kg)</span>
+			    <textarea class="input100" name="weight" id="weight" placeholder="Peso"></textarea>
+				</div>
+
+
+				<div class="wrap-input100 bg1 rs1-wrap-input100">
+					<span class="label-input100">Sexo *</span>
+					<div>
+						<select class="js-select2" name="sex" id="sex">
+							<option>Seleccionar</option>
+							<option>Femenino</option>
+							<option>Masculino</option>
+							
+						</select>
+						<div class="dropDownSelect2"></div>
+
+					</div>
+				</div>
+
+
+				<div class="wrap-input100 bg1 rs1-wrap-input100">
+					<span class="label-input100">Grupo sanguineo *</span>
+					<div>
+						<select class="js-select2" name="bloodtype" id="bloodtype">
+							<option>Seleccionar</option>
+							<option value="8">O-</option>
+							<option value="7">O+</option>
+							<option value="2">A-</option>
+							<option value="1">A+</option>
+							<option value="4">B-</option>
+							<option value="3">B+</option>
+							<option value="6">AB-</option>
+							<option value="5">AB+</option>
+						</select>
+						<div class="dropDownSelect2"></div>
+
+					</div>
+				</div>
+
+
+
+
+				<div class="w-full dis-none js-show-service">
+					<div class="wrap-contact100-form-radio">
+					</div>
+
+				</div>
+
+				
+
+				<div class="container-contact100-form-btn">
+				<!--	<button  class="contact100-form-btn">
+						<span>
+							Enviar
+							<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+						</span>
+					</button> -->
+
+					<input type="button"; onclick="return onSubmit();" value="Enviar" class="contact100-form-btn" />
+				</div>
+			</form>
+		</div>
+	</div>
+
+
+
+<!--===============================================================================================-->
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+	<script>
+		$(".js-select2").each(function(){
+			$(this).select2({
+				minimumResultsForSearch: 20,
+				dropdownParent: $(this).next('.dropDownSelect2')
+			});
+
+
+			$(".js-select2").each(function(){
+				$(this).on('select2:close', function (e){
+					if($(this).val() == "Please chooses") {
+						$('.js-show-service').slideUp();
+					}
+					else {
+						$('.js-show-service').slideUp();
+						$('.js-show-service').slideDown();
+					}
+				});
+			});
+		})
+	</script>
+<!--===============================================================================================-->
+	<script src="vendor/daterangepicker/moment.min.js"></script>
+	<script src="vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/noui/nouislider.min.js"></script>
+	<script>
+	    var filterBar = document.getElementById('filter-bar');
+
+	    noUiSlider.create(filterBar, {
+	        start: [ 1500, 3900 ],
+	        connect: true,
+	        range: {
+	            'min': 1500,
+	            'max': 7500
+	        }
+	    });
+
+	    var skipValues = [
+	    document.getElementById('value-lower'),
+	    document.getElementById('value-upper')
+	    ];
+
+	    filterBar.noUiSlider.on('update', function( values, handle ) {
+	        skipValues[handle].innerHTML = Math.round(values[handle]);
+	        $('.contact100-form-range-value input[name="from-value"]').val($('#value-lower').html());
+	        $('.contact100-form-range-value input[name="to-value"]').val($('#value-upper').html());
+	    });
+	</script>
+<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-23581568-13');
+
+
+
+  function onSubmit(){
+
+	console.log('llegue');
+	var xhr = new XMLHttpRequest();
+
+	var json = {};
+	json["firstname"] = document.getElementById("name").value;
+	json["lastname"] = document.getElementById("lastname").value;
+	json["sex"] = document.getElementById("sex").value == "Masculino" ? true : false;
+	json["birthdate"] = document.getElementById("birthdate").value;
+	json["email"] = document.getElementById("email").value;
+	json["phone"] = document.getElementById("phone").value;
+	json["usertypeid"] = 1;
+	json["handle"] = "";
+	json["password"] = "";
+
+	// var bloodTypeDict;
+	// bloodTypeDict["A+"] = 1;
+	// bloodTypeDict["A-"] = 2;
+	// bloodTypeDict["B+"] = 3;
+	// bloodTypeDict["B-"] = 4;
+	// bloodTypeDict["AB+"] = 5;
+	// bloodTypeDict["AB-"] = 6;
+	// bloodTypeDict["O+"] = 7;
+	// bloodTypeDict["O-"] = 8;
+
+	json["address"] = document.getElementById("address").value;
+	json["weight"] = document.getElementById("weight").value;
+	json["bloodtypeid"] = document.getElementById("bloodtype").value;
+
+
+	xhr.onload = () => {
+		if(xhr.status == 404)
+		{
+			console.log(xhr.responseText);
+		}
+		else
+		{
+			var user = JSON.parse(xhr.responseText);
+			localStorage.setItem("UserId", user.id);
+			location.href='Confirmation-Email.html';
+		}		
+	};
+
+	xhr.open("POST", "/api/users");
+	xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	xhr.send(JSON.stringify(json));
+	return false;
+
+}
+</script>
+
+
+
+</body>
+</html>

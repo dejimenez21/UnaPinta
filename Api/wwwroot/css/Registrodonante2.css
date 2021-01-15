@@ -1,0 +1,14 @@
+.Container {
+    height: 100vh;
+}
+
+.Container2 {
+	background: yellow;
+	border-radius: 10px;
+	border-color: red;
+    width: 1000px;       
+    height: 1000px;
+    margin: 0 auto;
+    display: table;
+
+}
