@@ -17,11 +17,13 @@ namespace Api.Controllers
     {
         private readonly IUnaPintaRepository _repo;
         private readonly IMapper _mapper;
+        private readonly IRequestsService _service;
 
-        public RequestsController(IUnaPintaRepository repo, IMapper mapper)
+        public RequestsController(IUnaPintaRepository repo, IMapper mapper, IRequestsService service)
         {
             _repo = repo;
             _mapper = mapper;
+            _service = service;
         }
 
         // [HttpGet("")]
@@ -47,9 +49,9 @@ namespace Api.Controllers
             _repo.CreateRequest(request);
             await _repo.SaveChangesAsync();
 
-            EmailSender sender =  new EmailSender();
-            await sender.SendNotification(request);
-            await sender.Disconnect();
+            Response.OnCompleted(async () => 
+                await _service.SendRequestNotification(request)
+            );
 
             return Created("api/requests", request);
         }

@@ -20,9 +20,14 @@ namespace Api.Services
             _context.ConfirmationCodes.Add(code);
         }
 
-        public void AddUser(User donor)
+        public void AddUser(User user)
         {
-            _context.Users.Add(donor);
+            _context.Users.Add(user);
+        }
+
+        public void AddWaitListItem(WaitList item)
+        {
+            _context.WaitLists.Add(item);
         }
 
         public void CreateRequest(Request request)
@@ -50,23 +55,48 @@ namespace Api.Services
             return donors;
         }
 
-        public async Task<ConfirmationCode> GetCodeByUser(string code, int id)
+        public async Task<BloodComponent> GetBloodComponentById(BloodComponentEnum id)
         {
-            return await _context.ConfirmationCodes.SingleAsync(x=>x.Code==code&&x.UserId==id);
+            return await _context.BloodComponents.SingleOrDefaultAsync(x=>x.Id==id);
         }
 
-        public async Task<IEnumerable<User>> GetDonorsByBloodType(BloodTypeEnum bloodTypeId)
+        public async Task<BloodType> GetBloodTypeById(BloodTypeEnum id)
+        {
+            return await _context.BloodTypes.SingleOrDefaultAsync(x=>x.Id==id);
+        }
+
+        public async Task<ConfirmationCode> GetCodeByUser(string code, int id)
+        {
+            return await _context.ConfirmationCodes.SingleOrDefaultAsync(x=>x.Code==code&&x.UserId==id);
+        }
+
+        public async Task<Condition> GetConditionById(ConditionEnum id)
+        {
+            return await _context.Conditions.SingleOrDefaultAsync(x=>x.Id==id);
+        }
+
+        public async Task<IEnumerable<User>> GetDonorsByBloodType(List<BloodTypeEnum> bloodTypes)
         {
             var donors = await _context.Users
-                .Where(x=>x.UserTypeId == UserTypeEnum.Donante && x.BloodTypeId == bloodTypeId)
+                .Where(x=>x.UserTypeId == UserTypeEnum.Donante && bloodTypes.Contains(x.BloodTypeId))
                 .ToListAsync();
 
             return donors;
         }
 
+        public async Task<Request> GetRequestById(int id)
+        {
+            return await _context.Requests.SingleOrDefaultAsync(x=>x.Id==id);
+        }
+
+        public async Task<bool> GetUserByEmail(string email)
+        {
+            return await _context.Users.AnyAsync(x => x.Email == email);
+        }
+
         public Task<User> GetUserById(int id)
         {
-            var user = _context.Users.SingleAsync(x=>x.Id==id);
+            var user = _context.Users.SingleOrDefaultAsync(x=>x.Id==id);
             return user;
         }
 

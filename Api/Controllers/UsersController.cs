@@ -30,12 +30,17 @@ namespace Api.Controllers
         [HttpPost("")]
         public async Task<ActionResult<User>> RegisterUser(Register register)
         {
-            System.Console.WriteLine("Hola!!");
-            
+            if(await _repo.GetUserByEmail(register.Email))
+            {
+                return Ok("Este correo ya esta en uso");
+            }
+
             User user = _mapper.Map<User>(register);
             _repo.AddUser(user);
             await _repo.SaveChangesAsync();
-            _services.GenerateConfirmationCode(user.Id);
+
+            Response.OnCompleted(async () => await _services.SendConfirmationCode(user.Id));
+            
 
             return Created("api/users", user);
         }

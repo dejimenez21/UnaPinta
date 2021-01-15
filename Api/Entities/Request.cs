@@ -11,8 +11,8 @@ namespace Api.Entities
     {
         [Key]
         public int Id { get; set; }
-        public int? RequesterId { get; set; }
-        public BloodComponentEnum? BloodComponentId { get; set; }
+        public int RequesterId { get; set; }
+        public BloodComponentEnum BloodComponentId { get; set; }
         public double? Amount { get; set; }
         [MaxLength(500)]
         public string Location { get; set; }
