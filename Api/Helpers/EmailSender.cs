@@ -76,7 +76,7 @@ namespace Api.Helpers
 
         public async Task<string> GetConfirmationBody(ConfirmationCode confirmation)
         {
-            string path = "../Templates/ConfirmationEmail.html";
+            string path = "../wwwroot/EmailTemplate.html";
             string body = await File.ReadAllTextAsync(path);
             body = body.Replace("#Codigo OTP#", confirmation.Code);
             return body;
@@ -84,7 +84,7 @@ namespace Api.Helpers
 
         public async Task<string> GetNotificationBody(User user, Request request)
         {
-            string path = "../Templates/NotificationEmail.html";
+            string path = "../wwwroot/EmailTemplate2.html";
             string body = await File.ReadAllTextAsync(path);
             body = body.Replace("#Usuario#", user.FirstName+" "+user.LastName);
             body = body.Replace("#Solicitante#", $"{request.RequesterNav.FirstName} {request.RequesterNav.LastName}");

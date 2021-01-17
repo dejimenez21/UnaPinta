@@ -27,7 +27,7 @@ namespace Api.Entities
         public string Phone { get; set; }
         public string Handle { get; set; }
         public string Password { get; set; }
-        public bool? CanDonate { get; set; } = false;
+        public bool CanDonate { get; set; } = false;
         public UserTypeEnum? UserTypeId { get; set; }
         public bool? Confirmed { get; set; } = false;
 

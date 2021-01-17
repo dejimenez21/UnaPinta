@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Api.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System;
 
 namespace Api.Services
 {
@@ -109,6 +110,11 @@ namespace Api.Services
         public void UpdateUser(User user)
         {
             throw new System.NotImplementedException();
+        }
+
+        public async Task<DateTime> GetAvailabilityDateByDonorId(int id)
+        {
+            return await _context.WaitLists.Where(x=>x.UserId==id).MaxAsync(x=>x.AvailableAt);
         }
     }
 }

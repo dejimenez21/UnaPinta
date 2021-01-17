@@ -29,6 +29,7 @@ namespace Api.Entities
         Transfusion = 4,
         Donado = 5,
         Embarazada = 6,
-        Lactando = 7
+        Lactando = 7,
+        Inaceptable = 8
     }
 }

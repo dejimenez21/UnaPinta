@@ -11,8 +11,8 @@ namespace Api.Entities
     {
         [Key]
         public int Id { get; set; }
-        public ConditionEnum? ConditionId { get; set; }
-        public int? UserId { get; set; }
+        public ConditionEnum ConditionId { get; set; }
+        public int UserId { get; set; }
         public DateTime AvailableAt { get; set; }
 
         [ForeignKey("ConditionId")]

@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Api.Entities;
 using System.Collections.Generic;
+using System;
 
 namespace Api.Services
 {
@@ -34,6 +35,7 @@ namespace Api.Services
 
         //WaitList table methods
         void AddWaitListItem(WaitList item);
+        Task<DateTime> GetAvailabilityDateByDonorId(int id);
 
         //Condition table methods
         Task<Condition> GetConditionById(ConditionEnum id);

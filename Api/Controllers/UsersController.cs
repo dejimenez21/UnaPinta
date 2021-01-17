@@ -36,6 +36,7 @@ namespace Api.Controllers
             }
 
             User user = _mapper.Map<User>(register);
+            user.CanDonate = user.UserTypeId == UserTypeEnum.Donante;
             _repo.AddUser(user);
             await _repo.SaveChangesAsync();
 
