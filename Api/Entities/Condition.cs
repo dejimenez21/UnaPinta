@@ -30,6 +30,7 @@ namespace Api.Entities
         Donado = 5,
         Embarazada = 6,
         Lactando = 7,
-        Inaceptable = 8
+        Inaceptable = 8,
+        SinCondicion = 9
     }
 }

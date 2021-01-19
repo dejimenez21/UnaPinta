@@ -11,6 +11,7 @@
       <div class="form" id="createOpt">
         <label>Favor digitar el código que has recibido a tu correo electrónico.</label>
         <input type="number" placeholder="codigo OTP" id="codigoOTP">
+        <label style="display: block; font-size: small; margin: 0 auto; color: red" id="correoRepetido"></label>
         <span class="show" style="display: none;color: red;">Codigo OTP</span>
         <input type="submit" value="Verificar" onclick="submitConfirmationCode()">
       </div>
@@ -36,6 +37,9 @@
         xhr.onload = () => {
           if(JSON.parse(xhr.responseText).confirmed){
             location.href='Registrardonante2.html';
+          }
+          else{
+            document.getElementById("correoRepetido").innerHTML = JSON.parse(xhr.responseText).message;
           }
           
         }

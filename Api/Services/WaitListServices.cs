@@ -37,6 +37,7 @@ namespace Api.Services
             if(waitList.Any(x=>x.ConditionId==ConditionEnum.Inaceptable) || User.Weight<50 || userAge<18 || userAge>65)
             {
                 User.CanDonate = false;
+                await _repo.SaveChangesAsync();
                 await SendUnableToDonateNotification(User);
                 return;
             }

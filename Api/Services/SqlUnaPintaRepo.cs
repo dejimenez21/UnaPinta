@@ -78,6 +78,10 @@ namespace Api.Services
 
         public async Task<IEnumerable<User>> GetDonorsByBloodType(List<BloodTypeEnum> bloodTypes)
         {
+            foreach (var item in bloodTypes)
+            {
+                System.Console.WriteLine(item);
+            }
             var donors = await _context.Users
                 .Where(x=>x.UserTypeId == UserTypeEnum.Donante && bloodTypes.Contains(x.BloodTypeId))
                 .ToListAsync();
@@ -114,7 +118,9 @@ namespace Api.Services
 
         public async Task<DateTime> GetAvailabilityDateByDonorId(int id)
         {
-            return await _context.WaitLists.Where(x=>x.UserId==id).MaxAsync(x=>x.AvailableAt);
+            var items = await _context.WaitLists.Where(x=>x.UserId==id).ToListAsync();
+            if(!items.Any()) return DateTime.Now.Subtract(new TimeSpan(5,5,5));
+            return items.Max(x=>x.AvailableAt);
         }
     }
 }

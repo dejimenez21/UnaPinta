@@ -4,7 +4,7 @@ namespace Api.Models
 {
     public class WaitListCreate
     {
-        public int DonorId { get; set; }
+        public int UserId { get; set; }
         public List<WaitListItemCreate> Conditions { get; set; }
     }
 }

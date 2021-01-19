@@ -30,18 +30,21 @@ namespace Api.Controllers
         public async Task<ActionResult<WaitList>> CreateWaitListItem(WaitListCreate waitList)
         {
             var EntityWaitList = waitList.Conditions.Select(x=>_mapper.Map<WaitList>(x));
-            var userId = waitList.DonorId;
-            foreach (var item in EntityWaitList)
+            var userId = waitList.UserId;
+            foreach (var item in EntityWaitList.Where(x=>x.ConditionId!=ConditionEnum.SinCondicion))
             {
+                item.UserId = userId;
+                System.Console.WriteLine(item.ConditionId);
+                System.Console.WriteLine(item.UserId);
                 var months = waitList.Conditions.Single(x=>x.ConditionId==item.ConditionId).Months;
-                item.AvailableAt = await _services.CalculateAvailableAtDate(item, months);
+                item.AvailableAt = await _services.CalculateAvailableAtDate(item, (int)months);
                 _repo.AddWaitListItem(item);
             }
             //EntityItem.AvailableAt = await _services.CalculateAvailableAtDate(EntityItem, item.Months);
 
             await _repo.SaveChangesAsync();
 
-            Response.OnCompleted(() => _services.ReviewDonorAvailability(userId, EntityWaitList.ToList()));
+            Response.OnCompleted(async () => await _services.ReviewDonorAvailability(userId, EntityWaitList.ToList()));
 
             return Created("/api/waitlist", new {userId, EntityWaitList});
         }

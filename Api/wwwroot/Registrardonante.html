@@ -58,7 +58,10 @@
 				<div class="wrap-input100 validate-input bg1 rs1-wrap-input100" data-validate = "Favor escribir correo (e@a.x)">
 					<span class="label-input100">Correo *</span>
 					<input class="input100" type="text" name="email" id="email" placeholder="Escribir correo ">
+					<label style="display: block; font-size: small; margin: 0 auto; color: red" id="correoRepetido"></label>
 				</div>
+
+
 
 				<div class="wrap-input100 bg1 rs1-wrap-input100">
 					<span class="label-input100">Telefono</span>
@@ -242,15 +245,19 @@
 
 
 	xhr.onload = () => {
-		if(xhr.status == 404)
-		{
-			console.log(xhr.responseText);
-		}
-		else
+		console.log(xhr.responseText);
+		if(xhr.status == 201)
 		{
 			var user = JSON.parse(xhr.responseText);
 			localStorage.setItem("UserId", user.id);
 			location.href='Confirmation-Email.html';
+			
+			
+		}
+		else
+		{
+			document.getElementById("correoRepetido").innerHTML = xhr.responseText;
+			
 		}		
 	};
 

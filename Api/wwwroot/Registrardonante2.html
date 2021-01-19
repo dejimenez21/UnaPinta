@@ -42,10 +42,10 @@
 				<div class="wrap-input100 bg1 rs1-wrap-input100">
 					<span class="label-input100">¿Se realizó algún tatuaje en los últimos 6 meses? *</span>
 					<div>
-						<select class="js-select2" name="service">
+						<select class="js-select2" name="service" id="tatuaje">
 							<option>Seleccionar</option>
-							<option>Si</option>
-							<option>No</option>
+							<option value="1">Si</option>
+							<option value="9">No</option>
 							
 						</select>
 						<div class="dropDownSelect2"></div>
@@ -57,8 +57,8 @@
 				<!-- -->
 
 				<div class="wrap-input100 bg1 rs1-wrap-input100">
-				<span class="label-input100">¿Hace que tiempo?</span>
-			    <textarea class="input100" name="message" placeholder="Peso"></textarea>
+				<span class="label-input100">¿Hace cuantos meses?</span>
+			    <textarea id="tatuaje-meses" class="input100" name="message"></textarea>
 				</div>
 
 			    <!-- -->
@@ -66,10 +66,10 @@
 				<div class="wrap-input100 bg1 rs1-wrap-input100">
 					<span class="label-input100">¿Se realizó alguna perforación o piercing en los últimos 6 meses? *</span>
 					<div>
-						<select class="js-select2" name="service">
+						<select id="piercing" class="js-select2" name="service">
 							<option>Seleccionar</option>
-							<option>Si</option>
-							<option>No</option>
+							<option value="2">Si</option>
+							<option value="9">No</option>
 							
 						</select>
 						<div class="dropDownSelect2"></div>
@@ -80,31 +80,8 @@
 				<!-- -->
 
 				 <div class="wrap-input100 bg1 rs1-wrap-input100">
-				<span class="label-input100">¿Hace que tiempo?</span>
-			    <textarea class="input100" name="message" placeholder="Peso"></textarea>
-				</div>
-
-				<!-- -->
-
-				<div class="wrap-input100 bg1 rs1-wrap-input100">
-					<span class="label-input100">¿Se ha realizado algún procedimiento odontológico hace menos de un mes? *</span>
-					<div>
-						<select class="js-select2" name="service">
-							<option>Seleccionar</option>
-							<option>Si</option>
-							<option>No</option>
-							
-						</select>
-						<div class="dropDownSelect2"></div>
-
-					</div>
-				</div>
-
-				<!-- -->
-
-				 <div class="wrap-input100 bg1 rs1-wrap-input100">
-				<span class="label-input100">¿Hace que tiempo?</span>
-			    <textarea class="input100" name="message" placeholder="Peso"></textarea>
+				<span class="label-input100">¿Hace cuantos meses?</span>
+			    <textarea id="piercing-meses" class="input100" name="message" ></textarea>
 				</div>
 
 				<!-- -->
@@ -112,10 +89,10 @@
 					<div class="wrap-input100 bg1 rs1-wrap-input100">
 					<span class="label-input100">¿Ha recibido alguna transfusión sanguínea en el último año? *</span>
 					<div>
-						<select class="js-select2" name="service">
+						<select id="transfusion" class="js-select2" name="service">
 							<option>Seleccionar</option>
-							<option>Si</option>
-							<option>No</option>
+							<option value="4">Si</option>
+							<option value="9">No</option>
 							
 						</select>
 						<div class="dropDownSelect2"></div>
@@ -126,8 +103,8 @@
 				<!-- -->
 
 				 <div class="wrap-input100 bg1 rs1-wrap-input100">
-				<span class="label-input100">¿Hace que tiempo?</span>
-			    <textarea class="input100" name="message" placeholder="Peso"></textarea>
+				<span class="label-input100">¿Hace cuantos meses?</span>
+			    <textarea id="transfusion-meses" class="input100" name="message" ></textarea>
 				</div>
 
 				<!-- -->
@@ -136,10 +113,10 @@
 					<div class="wrap-input100 bg1 rs1-wrap-input100">
 					<span class="label-input100">¿Ha donado sangre en los últimos 3 meses? *</span>
 					<div>
-						<select class="js-select2" name="service">
+						<select id="donado" class="js-select2" name="service">
 							<option>Seleccionar</option>
-							<option>Si</option>
-							<option>No</option>
+							<option value="5">Si</option>
+							<option value="9">No</option>
 							
 						</select>
 						<div class="dropDownSelect2"></div>
@@ -150,42 +127,23 @@
 				<!-- -->
 
 				 <div class="wrap-input100 bg1 rs1-wrap-input100">
-				<span class="label-input100">¿Hace que tiempo?</span>
-			    <textarea class="input100" name="message" placeholder="Peso"></textarea>
+				<span class="label-input100">¿Hace cuantos meses?</span>
+			    <textarea id="donado-meses" class="input100" name="message" ></textarea>
 				</div>
 
 				<!-- -->
 
-				<div class="wrap-input100 bg1 rs1-wrap-input100">
-					<span class="label-input100">¿Ha recibido algún trasplante de órgano? *</span>
-					<div>
-						<select class="js-select2" name="service">
-							<option>Seleccionar</option>
-							<option>Si</option>
-							<option>No</option>
-							
-						</select>
-						<div class="dropDownSelect2"></div>
-
-					</div>
-				</div>
-
-				<!-- -->
-
-				 <div class="wrap-input100 bg1 rs1-wrap-input100">
-				<span class="label-input100">¿Hace que tiempo?</span>
-			    <textarea class="input100" name="message" placeholder="Peso"></textarea>
-				</div>
+			
 
 				<!-- -->
 
 				<div class="wrap-input100 bg1 rs1-wrap-input100">
 					<span class="label-input100">¿Ha estado embarazada en los últimos 9 meses? *</span>
 					<div>
-						<select class="js-select2" name="service">
+						<select id="embarazada" class="js-select2" name="service">
 							<option>Seleccionar</option>
-							<option>Si</option>
-							<option>No</option>
+							<option value="6">Si</option>
+							<option value="9">No</option>
 							
 						</select>
 						<div class="dropDownSelect2"></div>
@@ -196,8 +154,8 @@
 				<!-- -->
 
 				 <div class="wrap-input100 bg1 rs1-wrap-input100">
-				<span class="label-input100">¿Hace que tiempo?</span>
-			    <textarea class="input100" name="message" placeholder="Peso"></textarea>
+				<span class="label-input100">¿Hace cuantos meses?</span>
+			    <textarea id="embarazada-meses" class="input100" name="message"></textarea>
 				</div>
 
 				<!-- -->
@@ -205,10 +163,10 @@
 				<div class="wrap-input100 bg1 rs1-wrap-input100">
 					<span class="label-input100">¿Ha estado lactando en los últimos 3 meses? *</span>
 					<div>
-						<select class="js-select2" name="service">
+						<select id="lactando" class="js-select2" name="service">
 							<option>Seleccionar</option>
-							<option>Si</option>
-							<option>No</option>
+							<option value="7">Si</option>
+							<option value="9">No</option>
 							
 						</select>
 						<div class="dropDownSelect2"></div>
@@ -219,8 +177,41 @@
 				<!-- -->
 
 				 <div class="wrap-input100 bg1 rs1-wrap-input100">
-				<span class="label-input100">¿Hace que tiempo?</span>
-			    <textarea class="input100" name="message" placeholder="Peso"></textarea>
+				<span class="label-input100">¿Hace cuantos meses?</span>
+			    <textarea id="lactando-meses" class="input100" name="message"></textarea>
+				</div>
+
+				<!-- -->
+
+					<div class="wrap-input100 bg1 rs1-wrap-input100">
+					<span class="label-input100">¿Ha recibido algún trasplante de órgano? *</span>
+					<div>
+						<select id="transplante" class="js-select2" name="service">
+							<option>Seleccionar</option>
+							<option value="8">Si</option>
+							<option value="9">No</option>
+							
+						</select>
+						<div class="dropDownSelect2"></div>
+
+					</div>
+				</div>
+
+				
+				<!-- -->
+
+				<div class="wrap-input100 bg1 rs1-wrap-input100">
+					<span class="label-input100">¿Se ha realizado algún procedimiento odontológico hace menos de un mes? *</span>
+					<div>
+						<select id="odontologico" class="js-select2" name="service">
+							<option>Seleccionar</option>
+							<option value="3">Si</option>
+							<option value="9">No</option>
+							
+						</select>
+						<div class="dropDownSelect2"></div>
+
+					</div>
 				</div>
 
 				<!-- -->
@@ -228,22 +219,15 @@
 					<div class="wrap-input100 bg1 rs1-wrap-input100">
 					<span class="label-input100">¿Ha consumido drogas?  *</span>
 					<div>
-						<select class="js-select2" name="service">
+						<select id="drogas" class="js-select2" name="service">
 							<option>Seleccionar</option>
-							<option>Si</option>
-							<option>No</option>
+							<option value="8">Si</option>
+							<option value="9">No</option>
 							
 						</select>
 						<div class="dropDownSelect2"></div>
 
 					</div>
-				</div>
-
-				<!-- -->
-
-				 <div class="wrap-input100 bg1 rs1-wrap-input100">
-				<span class="label-input100">¿Hace que tiempo?</span>
-			    <textarea class="input100" name="message" placeholder="Peso"></textarea>
 				</div>
 
 				<!-- -->
@@ -251,13 +235,14 @@
 				<div class="wrap-input100 bg1 rs1-wrap-input100">
 					<span class="label-input100">¿Padece o ha padecido algunas de estas enfermedades? *</span>
 					<div>
-						<select class="js-select2" name="service">
+						<select id="enfermedad" class="js-select2" name="service">
 							<option>Seleccionar</option>
-							<option>VIH SIDA</option>
-							<option>Hepatitis</option>
-							<option>Lupus</option>
-							<option>Cancer</option>
-							<option>Falcemia</option>
+							<option value="9">No</option>
+							<option value="8">VIH SIDA</option>
+							<option value="8">Hepatitis</option>
+							<option value="8">Lupus</option>
+							<option value="8">Cancer</option>
+							<option value="8">Falcemia</option>
 							
 						</select>
 						<div class="dropDownSelect2"></div>
@@ -269,7 +254,7 @@
 
 
 
-					<input type="button" value="Enviar" class="contact100-form-btn" />
+					<input type="button" onclick="onSubmit();" value="Enviar" class="contact100-form-btn" />
 				</div>
 			</form>
 		</div>
@@ -348,6 +333,78 @@
   gtag('js', new Date());
 
   gtag('config', 'UA-23581568-13');
+</script>
+
+<script>
+
+	function onSubmit(){
+
+		console.log('llegue');
+		var xhr = new XMLHttpRequest();
+
+		var json = {};
+		json["userid"] = localStorage.getItem("UserId");
+		json["conditions"] = [];
+
+		console.log(json);
+		//json = fillJson(json);
+		var tatuajes = document.getElementById("tatuaje").value;
+		var tatmeses = document.getElementById("tatuaje-meses").value;
+		json["conditions"].push({"conditionid": tatuajes, "months": tatmeses});
+
+		var tatuajes = document.getElementById("piercing").value;
+		var tatmeses = document.getElementById("piercing-meses").value;
+		json["conditions"].push({"conditionid": tatuajes, "months": tatmeses});
+
+		var tatuajes = document.getElementById("transfusion").value;
+		var tatmeses = document.getElementById("transfusion-meses").value;
+		json["conditions"].push({"conditionid": tatuajes, "months": tatmeses});
+
+		var tatuajes = document.getElementById("donado").value;
+		var tatmeses = document.getElementById("donado-meses").value;
+		json["conditions"].push({"conditionid": tatuajes, "months": tatmeses});
+
+		var tatuajes = document.getElementById("embarazada").value;
+		var tatmeses = document.getElementById("embarazada-meses").value;
+		json["conditions"].push({"conditionid": tatuajes, "months": tatmeses});
+
+		var tatuajes = document.getElementById("lactando").value;
+		var tatmeses = document.getElementById("lactando-meses").value;
+		json["conditions"].push({"conditionid": tatuajes, "months": tatmeses});
+
+		var tatuajes = document.getElementById("transplante").value;
+		var tatmeses = "-1";
+		json["conditions"].push({"conditionid": tatuajes, "months": tatmeses});
+
+		var tatuajes = document.getElementById("odontologico").value;
+		var tatmeses = 1;
+		json["conditions"].push({"conditionid": tatuajes, "months": tatmeses});
+
+		var tatuajes = document.getElementById("drogas").value;
+		var tatmeses = "-1";
+		json["conditions"].push({"conditionid": tatuajes, "months": tatmeses});
+
+		var tatuajes = document.getElementById("enfermedad").value;
+		var tatmeses = "-1";
+		json["conditions"].push({"conditionid": tatuajes, "months": tatmeses});
+
+		console.log(json);
+
+		xhr.onload = () => {
+				console.log(xhr.responseText);
+			
+			
+			
+				location.href="Confirmation-Register.html";
+					
+		};
+
+		xhr.open("POST", "/api/waitlist");
+		xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+		xhr.send(JSON.stringify(json));
+		console.log(JSON.stringify(json));
+		return false;	
+	}
 </script>
 
 </body>
