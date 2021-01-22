@@ -1,4 +1,6 @@
 ﻿using System;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -6,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Api.Entities
 {
-    public partial class UnaPintaDBContext : DbContext
+    public partial class UnaPintaDBContext : IdentityDbContext<User, UserType, string>
     {
         public UnaPintaDBContext()
         {

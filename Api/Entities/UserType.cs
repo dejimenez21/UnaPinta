@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,15 +7,17 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Api.Entities
 {
-    public partial class UserType
+    public partial class UserType : IdentityRole
     {
+        
+
         public UserType()
         {
             Users = new HashSet<User>();
         }
 
         [Key]
-        public UserTypeEnum Id { get; set; }
+        //public UserTypeEnum Id { get; set; }
         [MaxLength(20)]
         public string Description { get; set; }
 

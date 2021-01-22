@@ -15,6 +15,7 @@ using Api.Services;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Api
 {
@@ -38,6 +39,7 @@ namespace Api
             services.AddDbContext<UnaPintaDBContext>(
                 options => options.UseSqlServer(Configuration.GetConnectionString("AzureConnection"))
             );
+            services.AddIdentity<User, UserType>().AddEntityFrameworkStores<UnaPintaDBContext>().AddDefaultTokenProviders();
             services.AddScoped<IUnaPintaRepository, SqlUnaPintaRepo>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -67,6 +69,8 @@ namespace Api
             );
 
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseRouting();
 

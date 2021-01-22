@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Api.Entities
 {
-    public partial class User
+    public partial class User : IdentityUser
     {
         public User()
         {
@@ -14,7 +15,7 @@ namespace Api.Entities
             Requests = new HashSet<Request>();
         }
 
-        public int Id { get; set; }
+        //public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Address { get; set; }
@@ -22,11 +23,11 @@ namespace Api.Entities
         public bool Sex { get; set; }
         public DateTime BirthDate { get; set; }
         public BloodTypeEnum BloodTypeId { get; set; }
-        public string Email { get; set; }
+        //public string Email { get; set; }
         public double? Weight { get; set; }
         public string Phone { get; set; }
-        public string Handle { get; set; }
-        public string Password { get; set; }
+        //public string Handle { get; set; }
+        //public string Password { get; set; }
         public bool CanDonate { get; set; } = false;
         public UserTypeEnum? UserTypeId { get; set; }
         public bool? Confirmed { get; set; } = false;
