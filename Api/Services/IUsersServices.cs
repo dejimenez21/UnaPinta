@@ -8,7 +8,7 @@ namespace Api.Services
     {
         //Task GenerateConfirmationCode(int userId);
         Task<ConfirmationResponse> ConfirmEmail(User userToConfirm, string code);
-        Task SendConfirmationCode(int userId);
+        Task SendConfirmationCode(string userId);
         
     }
 }
