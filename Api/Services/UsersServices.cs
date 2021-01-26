@@ -46,7 +46,7 @@ namespace Api.Services
                 
         }
 
-        private async Task<ConfirmationCode> GenerateConfirmationCode(int userId)
+        private async Task<ConfirmationCode> GenerateConfirmationCode(string userId)
         {
             Random rnd = new Random();
             StringBuilder builder = new StringBuilder();
@@ -68,7 +68,7 @@ namespace Api.Services
             return confirmation;
         }
 
-        public async Task SendConfirmationCode(int userId)
+        public async Task SendConfirmationCode(string userId)
         {
             var confirmation = await GenerateConfirmationCode(userId);
 

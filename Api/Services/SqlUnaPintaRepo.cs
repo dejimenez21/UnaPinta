@@ -66,7 +66,7 @@ namespace Api.Services
             return await _context.BloodTypes.SingleOrDefaultAsync(x=>x.Id==id);
         }
 
-        public async Task<ConfirmationCode> GetCodeByUser(string code, int id)
+        public async Task<ConfirmationCode> GetCodeByUser(string code, string id)
         {
             return await _context.ConfirmationCodes.SingleOrDefaultAsync(x=>x.Code==code&&x.UserId==id);
         }
@@ -99,7 +99,7 @@ namespace Api.Services
             return await _context.Users.AnyAsync(x => x.Email == email);
         }
 
-        public Task<User> GetUserById(int id)
+        public Task<User> GetUserById(string id)
         {
             var user = _context.Users.SingleOrDefaultAsync(x=>x.Id==id);
             return user;
@@ -116,7 +116,7 @@ namespace Api.Services
             throw new System.NotImplementedException();
         }
 
-        public async Task<DateTime> GetAvailabilityDateByDonorId(int id)
+        public async Task<DateTime> GetAvailabilityDateByDonorId(string id)
         {
             var items = await _context.WaitLists.Where(x=>x.UserId==id).ToListAsync();
             if(!items.Any()) return DateTime.Now.Subtract(new TimeSpan(5,5,5));

@@ -14,7 +14,7 @@ namespace Api.Services
         void UpdateUser(User user);
         Task<IEnumerable<User>> GetAllDonors();
         Task<IEnumerable<User>> GetDonorsByBloodType(List<BloodTypeEnum> bloodTypes);
-        Task<User> GetUserById(int id);
+        Task<User> GetUserById(string id);
         Task<bool> GetUserByEmail(string email);
 
         //Request table methods
@@ -31,11 +31,11 @@ namespace Api.Services
 
         //ConfirmationCodes table methods
         void AddConfirmationCode(ConfirmationCode code);
-        Task<ConfirmationCode> GetCodeByUser(string code, int id);
+        Task<ConfirmationCode> GetCodeByUser(string code, string id);
 
         //WaitList table methods
         void AddWaitListItem(WaitList item);
-        Task<DateTime> GetAvailabilityDateByDonorId(int id);
+        Task<DateTime> GetAvailabilityDateByDonorId(string id);
 
         //Condition table methods
         Task<Condition> GetConditionById(ConditionEnum id);

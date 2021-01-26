@@ -4,7 +4,7 @@ namespace Api.Models
 {
     public class RequestCreate
     {
-        public int? RequesterId { get; set; }
+        public string RequesterId { get; set; }
         public int? BloodComponentId { get; set; }
         public double? Amount { get; set; }
         // [MaxLength(500)]

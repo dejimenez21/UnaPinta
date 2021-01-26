@@ -6646,7 +6646,7 @@
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 8.1.0",
       "MailKit >= 2.10.1",
       "Microsoft.AspNetCore.Authentication.Cookies >= 2.2.0",
-      "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 5.0.2",
+      "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= *",
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson >= 3.1.10",
       "Microsoft.EntityFrameworkCore >= 5.0.2",
       "Microsoft.EntityFrameworkCore.Design >= 5.0.2",
@@ -6655,25 +6655,20 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\kameh\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Users\\dejim\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Proyectos\\UnaPintaPlatform\\Api\\Api.csproj",
+      "projectUniqueName": "C:\\Users\\dejim\\OneDrive\\Desktop\\UnaPinta\\Api\\Api.csproj",
       "projectName": "Api",
-      "projectPath": "C:\\Proyectos\\UnaPintaPlatform\\Api\\Api.csproj",
-      "packagesPath": "C:\\Users\\kameh\\.nuget\\packages\\",
-      "outputPath": "C:\\Proyectos\\UnaPintaPlatform\\Api\\obj\\",
+      "projectPath": "C:\\Users\\dejim\\OneDrive\\Desktop\\UnaPinta\\Api\\Api.csproj",
+      "packagesPath": "C:\\Users\\dejim\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\dejim\\OneDrive\\Desktop\\UnaPinta\\Api\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\"
-      ],
       "configFilePaths": [
-        "C:\\Users\\kameh\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Users\\dejim\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
@@ -6684,7 +6679,6 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "projectReferences": {}
         }
       },
@@ -6696,7 +6690,6 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
-        "targetAlias": "netcoreapp3.1",
         "dependencies": {
           "AutoMapper.Extensions.Microsoft.DependencyInjection": {
             "target": "Package",
@@ -6712,7 +6705,7 @@
           },
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
             "target": "Package",
-            "version": "[5.0.2, )"
+            "version": "[*, )"
           },
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
             "target": "Package",
@@ -6755,7 +6748,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.405\\RuntimeIdentifierGraph.json"
       }
     }
   }
