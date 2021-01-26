@@ -50,7 +50,7 @@ namespace Api.Services
 
         public async Task<IEnumerable<User>> GetAllDonors()
         {
-            var donors = await _context.Users.Where(x=>x.UserTypeId == UserTypeEnum.Donante)
+            var donors = await _context.Users.Where(x=>x.UserTypeId == UserTypeEnum.Donante.ToString())
                 .ToListAsync();
 
             return donors;
@@ -83,7 +83,7 @@ namespace Api.Services
                 System.Console.WriteLine(item);
             }
             var donors = await _context.Users
-                .Where(x=>x.UserTypeId == UserTypeEnum.Donante && bloodTypes.Contains(x.BloodTypeId))
+                .Where(x=>x.UserTypeId == UserTypeEnum.Donante.ToString() && bloodTypes.Contains(x.BloodTypeId))
                 .ToListAsync();
 
             return donors;

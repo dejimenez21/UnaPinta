@@ -278,3 +278,8 @@ C:\Proyectos\UnaPintaPlatform\Api\obj\Debug\netcoreapp3.1\Api.csproj.CopyComplet
 C:\Proyectos\UnaPintaPlatform\Api\obj\Debug\netcoreapp3.1\Api.dll
 C:\Proyectos\UnaPintaPlatform\Api\obj\Debug\netcoreapp3.1\Api.pdb
 C:\Proyectos\UnaPintaPlatform\Api\obj\Debug\netcoreapp3.1\Api.genruntimeconfig.cache
+C:\Users\dejim\OneDrive\Desktop\UnaPinta\Api\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\dejim\OneDrive\Desktop\UnaPinta\Api\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\dejim\OneDrive\Desktop\UnaPinta\Api\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\dejim\OneDrive\Desktop\UnaPinta\Api\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Core.dll
+C:\Users\dejim\OneDrive\Desktop\UnaPinta\Api\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Stores.dll

@@ -16,7 +16,7 @@ namespace Api.Entities
             Users = new HashSet<User>();
         }
 
-        [Key]
+        //[Key]
         //public UserTypeEnum Id { get; set; }
         [MaxLength(20)]
         public string Description { get; set; }

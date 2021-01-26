@@ -37,7 +37,7 @@ namespace Api
                 = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 );
             services.AddDbContext<UnaPintaDBContext>(
-                options => options.UseSqlServer(Configuration.GetConnectionString("AzureConnection"))
+                options => options.UseSqlServer(Configuration.GetConnectionString("DanielsConnection"))
             );
             services.AddIdentity<User, UserType>().AddEntityFrameworkStores<UnaPintaDBContext>().AddDefaultTokenProviders();
             services.AddScoped<IUnaPintaRepository, SqlUnaPintaRepo>();
