@@ -65,7 +65,11 @@ namespace Api
             app.UseSwagger();
 
             app.UseSwaggerUI(
-                opt => opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Una Pinta Platform API")
+                opt => 
+                {
+                    opt.RoutePrefix = "";
+                    opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Una Pinta Platform API");
+                }
             );
 
             app.UseStaticFiles();
