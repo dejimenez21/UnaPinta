@@ -16,6 +16,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Sqlite;
 
 namespace Api
 {
@@ -37,7 +38,8 @@ namespace Api
                 = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 );
             services.AddDbContext<UnaPintaDBContext>(
-                options => options.UseSqlServer(Configuration.GetConnectionString("DanielsConnection"))
+                //Para cambiar a SQL Server reemplazar metodo "UseSqlite" por "UseSqlServer" y cambiar el connection string.
+                options => options.UseSqlite(Configuration.GetConnectionString("SQLiteConnection"))
             );
             services.AddIdentity<User, UserType>().AddEntityFrameworkStores<UnaPintaDBContext>().AddDefaultTokenProviders();
             services.AddScoped<IUnaPintaRepository, SqlUnaPintaRepo>();

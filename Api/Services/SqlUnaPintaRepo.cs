@@ -50,7 +50,7 @@ namespace Api.Services
 
         public async Task<IEnumerable<User>> GetAllDonors()
         {
-            var donors = await _context.Users.Where(x=>x.UserTypeId == UserTypeEnum.Donante.ToString())
+            var donors = await _context.Users.Where(x=>x.UserTypeId == (int)UserTypeEnum.Donante)
                 .ToListAsync();
 
             return donors;
@@ -66,7 +66,7 @@ namespace Api.Services
             return await _context.BloodTypes.SingleOrDefaultAsync(x=>x.Id==id);
         }
 
-        public async Task<ConfirmationCode> GetCodeByUser(string code, string id)
+        public async Task<ConfirmationCode> GetCodeByUser(string code, int id)
         {
             return await _context.ConfirmationCodes.SingleOrDefaultAsync(x=>x.Code==code&&x.UserId==id);
         }
@@ -83,7 +83,7 @@ namespace Api.Services
                 System.Console.WriteLine(item);
             }
             var donors = await _context.Users
-                .Where(x=>x.UserTypeId == UserTypeEnum.Donante.ToString() && bloodTypes.Contains(x.BloodTypeId))
+                .Where(x=>x.UserTypeId == (int)UserTypeEnum.Donante && bloodTypes.Contains(x.BloodTypeId))
                 .ToListAsync();
 
             return donors;
@@ -99,7 +99,7 @@ namespace Api.Services
             return await _context.Users.AnyAsync(x => x.Email == email);
         }
 
-        public Task<User> GetUserById(string id)
+        public Task<User> GetUserById(int id)
         {
             var user = _context.Users.SingleOrDefaultAsync(x=>x.Id==id);
             return user;
@@ -116,7 +116,7 @@ namespace Api.Services
             throw new System.NotImplementedException();
         }
 
-        public async Task<DateTime> GetAvailabilityDateByDonorId(string id)
+        public async Task<DateTime> GetAvailabilityDateByDonorId(int id)
         {
             var items = await _context.WaitLists.Where(x=>x.UserId==id).ToListAsync();
             if(!items.Any()) return DateTime.Now.Subtract(new TimeSpan(5,5,5));

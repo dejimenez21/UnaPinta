@@ -36,7 +36,7 @@ namespace Api.Controllers
             }
 
             User user = _mapper.Map<User>(register);
-            user.CanDonate = user.UserTypeId == UserTypeEnum.Donante.ToString();
+            user.CanDonate = user.UserTypeId == (int)UserTypeEnum.Donante;
             _repo.AddUser(user);
             await _repo.SaveChangesAsync();
 
@@ -47,7 +47,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("confirm/{id}")]
-        public async Task<ActionResult<ConfirmationResponse>> ConfirmUser(string id, CodeSubmit code)
+        public async Task<ActionResult<ConfirmationResponse>> ConfirmUser(int id, CodeSubmit code)
         {
             var userToConfirm = await _repo.GetUserById(id);
             if(userToConfirm == null)

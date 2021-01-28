@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Api.Entities
 {
-    public partial class UserType : IdentityRole
+    public partial class UserType : IdentityRole<int>
     {
         
 

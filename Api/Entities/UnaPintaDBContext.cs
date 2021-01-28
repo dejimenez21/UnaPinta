@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Api.Entities
 {
-    public partial class UnaPintaDBContext : IdentityDbContext<User, UserType, string>
+    public partial class UnaPintaDBContext : IdentityDbContext<User, UserType, int>
     {
         public UnaPintaDBContext()
         {

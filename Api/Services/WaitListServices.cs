@@ -22,7 +22,7 @@ namespace Api.Services
             return DateTime.Now.AddMonths(diff);
         }
 
-        public async Task ReviewDonorAvailability(string userId, List<WaitList> waitList)
+        public async Task ReviewDonorAvailability(int userId, List<WaitList> waitList)
         {
             var User = await _repo.GetUserById(userId);
 

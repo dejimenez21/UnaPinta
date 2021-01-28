@@ -11,7 +11,7 @@ namespace Api.Entities
         [StringLength(6)]
         public string Code { get; set; }
         public DateTime ExpiresAt { get; set; } = DateTime.Now.AddHours(2);
-        public string UserId { get; set; }
+        public int UserId { get; set; }
 
         [ForeignKey("UserId")]
         public User UserNav { get; set; }

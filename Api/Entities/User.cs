@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Api.Entities
 {
-    public partial class User : IdentityUser
+    public partial class User : IdentityUser<int>
     {
         public User()
         {
@@ -29,7 +29,7 @@ namespace Api.Entities
         //public string Handle { get; set; }
         //public string Password { get; set; }
         public bool CanDonate { get; set; } = false;
-        public string UserTypeId { get; set; }
+        public int UserTypeId { get; set; }
         public bool? Confirmed { get; set; } = false;
 
         [ForeignKey("BloodTypeId")]
