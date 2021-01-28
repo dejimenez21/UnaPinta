@@ -7,24 +7,23 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Api.Entities
 {
-    public partial class UserType : IdentityRole<int>
+    public partial class Role : IdentityRole<int>
     {
         
 
-        public UserType()
+        public Role()
         {
-            Users = new HashSet<User>();
+            
         }
 
         //[Key]
-        //public UserTypeEnum Id { get; set; }
+        //public RoleEnum Id { get; set; }
         [MaxLength(20)]
         public string Description { get; set; }
 
-        public virtual ICollection<User> Users { get; set; }
     }
 
-    public enum UserTypeEnum{
+    public enum RoleEnum{
         Donante = 1,
         Solicitante = 2,
         Administrador = 3

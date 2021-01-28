@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Api.Entities
 {
-    public partial class UnaPintaDBContext : IdentityDbContext<User, UserType, int>
+    public partial class UnaPintaDBContext : IdentityDbContext<User, Role, int>
     {
         public UnaPintaDBContext()
         {
@@ -24,9 +24,9 @@ namespace Api.Entities
         public virtual DbSet<WaitList> WaitLists { get; set; }
         public virtual DbSet<Request> Requests { get; set; }
         public virtual DbSet<BloodType> BloodTypes { get; set; }
-        public virtual DbSet<UserType> UserTypes { get; set; }
+        //public virtual DbSet<Role> Roles { get; set; }
         //public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<ConfirmationCode> ConfirmationCodes { get; set; }
+        //public virtual DbSet<ConfirmationCode> ConfirmationCodes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -36,6 +36,9 @@ namespace Api.Entities
             }
         }
 
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

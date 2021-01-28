@@ -18,7 +18,7 @@ namespace Api.Services
 
         public void AddConfirmationCode(ConfirmationCode code)
         {
-            _context.ConfirmationCodes.Add(code);
+            // _context.ConfirmationCodes.Add(code);
         }
 
         public void AddUser(User user)
@@ -50,15 +50,17 @@ namespace Api.Services
 
         public async Task<IEnumerable<User>> GetAllDonors()
         {
-            var donors = await _context.Users.Where(x=>x.UserTypeId == (int)UserTypeEnum.Donante)
-                .ToListAsync();
+            // var donors = await _context.Users.Where(x=>x.RoleId == (int)RoleEnum.Donante)
+            //     .ToListAsync();
 
-            return donors;
+            // return donors;
+            throw new NotImplementedException();
         }
 
         public async Task<BloodComponent> GetBloodComponentById(BloodComponentEnum id)
         {
             return await _context.BloodComponents.SingleOrDefaultAsync(x=>x.Id==id);
+            
         }
 
         public async Task<BloodType> GetBloodTypeById(BloodTypeEnum id)
@@ -68,7 +70,8 @@ namespace Api.Services
 
         public async Task<ConfirmationCode> GetCodeByUser(string code, int id)
         {
-            return await _context.ConfirmationCodes.SingleOrDefaultAsync(x=>x.Code==code&&x.UserId==id);
+            // return await _context.ConfirmationCodes.SingleOrDefaultAsync(x=>x.Code==code&&x.UserId==id);
+            throw new NotImplementedException();
         }
 
         public async Task<Condition> GetConditionById(ConditionEnum id)
@@ -78,15 +81,16 @@ namespace Api.Services
 
         public async Task<IEnumerable<User>> GetDonorsByBloodType(List<BloodTypeEnum> bloodTypes)
         {
-            foreach (var item in bloodTypes)
-            {
-                System.Console.WriteLine(item);
-            }
-            var donors = await _context.Users
-                .Where(x=>x.UserTypeId == (int)UserTypeEnum.Donante && bloodTypes.Contains(x.BloodTypeId))
-                .ToListAsync();
+            // foreach (var item in bloodTypes)
+            // {
+            //     System.Console.WriteLine(item);
+            // }
+            // var donors = await _context.Users
+            //     .Where(x=>x.RoleId == (int)RoleEnum.Donante && bloodTypes.Contains(x.BloodTypeId))
+            //     .ToListAsync();
 
-            return donors;
+            // return donors;
+            throw new NotImplementedException();
         }
 
         public async Task<Request> GetRequestById(int id)

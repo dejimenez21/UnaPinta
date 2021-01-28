@@ -37,7 +37,7 @@ namespace Api.Services
                 return response;
             }
             
-            userToConfirm.Confirmed = true;
+            //userToConfirm.Confirmed = true;
             await _repo.SaveChangesAsync();
 
             response.Confirmed = true;

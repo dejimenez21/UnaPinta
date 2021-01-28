@@ -41,13 +41,16 @@ namespace Api
                 //Para cambiar a SQL Server reemplazar metodo "UseSqlite" por "UseSqlServer" y cambiar el connection string.
                 options => options.UseSqlite(Configuration.GetConnectionString("SQLiteConnection"))
             );
-            services.AddIdentity<User, UserType>().AddEntityFrameworkStores<UnaPintaDBContext>().AddDefaultTokenProviders();
+            services.AddIdentity<User, Role>( options => {
+                options.Password.RequiredLength = 8;
+            }).AddEntityFrameworkStores<UnaPintaDBContext>().AddDefaultTokenProviders();
             services.AddScoped<IUnaPintaRepository, SqlUnaPintaRepo>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddSwaggerGen(
                 opt => opt.SwaggerDoc("v1", new OpenApiInfo { Title = "Una Pinta Platform API", Version = "v1"})
             );
+
 
             services.AddScoped<IUsersServices, UsersServices>();
             services.AddScoped<IRequestsService, RequestsService>();

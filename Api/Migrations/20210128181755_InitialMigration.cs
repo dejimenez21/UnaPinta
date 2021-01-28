@@ -95,10 +95,7 @@ namespace Api.Migrations
                     BirthDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     BloodTypeId = table.Column<int>(type: "INTEGER", nullable: false),
                     Weight = table.Column<double>(type: "REAL", nullable: true),
-                    Phone = table.Column<string>(type: "TEXT", nullable: true),
                     CanDonate = table.Column<bool>(type: "INTEGER", nullable: false),
-                    UserTypeId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Confirmed = table.Column<bool>(type: "INTEGER", nullable: true),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -117,12 +114,6 @@ namespace Api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Users_Roles_UserTypeId",
-                        column: x => x.UserTypeId,
-                        principalTable: "Roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Users_BloodTypes_BloodTypeId",
                         column: x => x.BloodTypeId,
@@ -210,26 +201,6 @@ namespace Api.Migrations
                     table.PrimaryKey("PK_UserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
                         name: "FK_UserTokens_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ConfirmationCodes",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    Code = table.Column<string>(type: "TEXT", maxLength: 6, nullable: true),
-                    ExpiresAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ConfirmationCodes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ConfirmationCodes_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -328,20 +299,10 @@ namespace Api.Migrations
                 column: "BloodTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_UserTypeId",
-                table: "Users",
-                column: "UserTypeId");
-
-            migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 table: "Users",
                 column: "NormalizedUserName",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ConfirmationCodes_UserId",
-                table: "ConfirmationCodes",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Requests_BloodComponentId",
@@ -382,13 +343,13 @@ namespace Api.Migrations
                 name: "UserTokens");
 
             migrationBuilder.DropTable(
-                name: "ConfirmationCodes");
-
-            migrationBuilder.DropTable(
                 name: "Requests");
 
             migrationBuilder.DropTable(
                 name: "WaitLists");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "BloodComponents");
@@ -398,9 +359,6 @@ namespace Api.Migrations
 
             migrationBuilder.DropTable(
                 name: "Conditions");
-
-            migrationBuilder.DropTable(
-                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "BloodTypes");

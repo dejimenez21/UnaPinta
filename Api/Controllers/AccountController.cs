@@ -18,10 +18,10 @@ namespace Api.Controllers
     {
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> loginManager;
-        private readonly RoleManager<UserType> roleManager;
+        private readonly RoleManager<Role> roleManager;
         private readonly IMapper mapper;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> loginManager, RoleManager<UserType> roleManager, IMapper mapper)
+        public AccountController(UserManager<User> userManager, SignInManager<User> loginManager, RoleManager<Role> roleManager, IMapper mapper)
         {
             this.userManager = userManager;
             this.loginManager = loginManager;
@@ -45,8 +45,8 @@ namespace Api.Controllers
                     //Esto nunca va a llegar
                     /*if (!roleManager.RoleExistsAsync("NormalUser").Result)
                     {
-                        UserType userType = mapper.Map<UserType>(obj);
-                        IdentityResult roleResult = roleManager.CreateAsync(userType).Result;
+                        Role Role = mapper.Map<Role>(obj);
+                        IdentityResult roleResult = roleManager.CreateAsync(Role).Result;
                         if (!roleResult.Succeeded)
                         {
                             ModelState.AddModelError("","Error while creating role!");

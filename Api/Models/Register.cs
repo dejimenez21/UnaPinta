@@ -23,7 +23,7 @@ namespace Api.Models
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-        public UserTypeEnum? UserTypeId { get; set; }
+        public RoleEnum? RoleId { get; set; }
 
         //Data solo de donante
         public string Address { get; set; }
