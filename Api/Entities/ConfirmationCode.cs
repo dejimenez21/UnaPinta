@@ -6,7 +6,7 @@ namespace Api.Entities
 {
     public class ConfirmationCode
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         [MaxLength(6)]
         [StringLength(6)]
         public string Code { get; set; }

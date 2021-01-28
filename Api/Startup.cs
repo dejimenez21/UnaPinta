@@ -15,6 +15,8 @@ using Api.Services;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Sqlite;
 
 namespace Api
 {
@@ -36,8 +38,10 @@ namespace Api
                 = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 );
             services.AddDbContext<UnaPintaDBContext>(
-                options => options.UseSqlServer(Configuration.GetConnectionString("AzureConnection"))
+                //Para cambiar a SQL Server reemplazar metodo "UseSqlite" por "UseSqlServer" y cambiar el connection string.
+                options => options.UseSqlite(Configuration.GetConnectionString("SQLiteConnection"))
             );
+            services.AddIdentity<User, UserType>().AddEntityFrameworkStores<UnaPintaDBContext>().AddDefaultTokenProviders();
             services.AddScoped<IUnaPintaRepository, SqlUnaPintaRepo>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -63,10 +67,16 @@ namespace Api
             app.UseSwagger();
 
             app.UseSwaggerUI(
-                opt => opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Una Pinta Platform API")
+                opt => 
+                {
+                    opt.RoutePrefix = "";
+                    opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Una Pinta Platform API");
+                }
             );
 
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseRouting();
 

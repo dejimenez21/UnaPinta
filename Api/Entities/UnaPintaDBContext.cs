@@ -1,4 +1,6 @@
 ﻿using System;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -6,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Api.Entities
 {
-    public partial class UnaPintaDBContext : DbContext
+    public partial class UnaPintaDBContext : IdentityDbContext<User, UserType, int>
     {
         public UnaPintaDBContext()
         {
@@ -23,7 +25,7 @@ namespace Api.Entities
         public virtual DbSet<Request> Requests { get; set; }
         public virtual DbSet<BloodType> BloodTypes { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
-        public virtual DbSet<User> Users { get; set; }
+        //public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<ConfirmationCode> ConfirmationCodes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

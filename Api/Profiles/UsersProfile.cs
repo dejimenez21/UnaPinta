@@ -10,6 +10,7 @@ namespace Api.Profiles
         {
             //CreateMap<Usuario, Register>();
             CreateMap<Register, User>();
+            CreateMap<Register, UserType>();
         }
     }
 }
