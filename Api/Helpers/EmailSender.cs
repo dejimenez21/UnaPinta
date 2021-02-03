@@ -6,6 +6,7 @@ using Api.Services;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using MimeKit.Utils;
+using Api.Contracts;
 
 namespace Api.Helpers
 {

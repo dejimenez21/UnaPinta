@@ -7,6 +7,7 @@ using System.Linq;
 using Api.Helpers;
 using MimeKit;
 using System.Collections.Generic;
+using Api.Contracts;
 
 namespace Api.Services
 {

@@ -8,6 +8,7 @@ using Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 //using Api.Models;
+using Api.Contracts;
 
 namespace Api.Controllers
 {

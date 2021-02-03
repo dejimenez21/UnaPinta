@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Api.Entities;
 
-namespace Api.Services
+namespace Api.Contracts
 {
     public interface IRequestsService
     {

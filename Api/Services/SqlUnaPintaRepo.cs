@@ -4,6 +4,7 @@ using Api.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System;
+using Api.Contracts;
 
 namespace Api.Services
 {

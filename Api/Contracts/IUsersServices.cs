@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Api.Entities;
 using Api.Models;
 
-namespace Api.Services
+namespace Api.Contracts
 {
     public interface IUsersServices
     {

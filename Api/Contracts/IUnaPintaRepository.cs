@@ -3,7 +3,7 @@ using Api.Entities;
 using System.Collections.Generic;
 using System;
 
-namespace Api.Services
+namespace Api.Contracts
 {
     public interface IUnaPintaRepository
     {

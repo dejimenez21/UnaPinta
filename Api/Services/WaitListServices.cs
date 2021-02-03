@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Api.Entities;
 using System.Linq;
+using Api.Contracts;
 
 namespace Api.Services
 {

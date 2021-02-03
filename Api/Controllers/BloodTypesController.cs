@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Api.Entities;
 using Api.Services;
+using Api.Contracts;
 
 namespace Api.Controllers
 {

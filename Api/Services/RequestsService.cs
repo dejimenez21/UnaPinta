@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Api.Entities;
 using Api.Helpers;
+using Api.Contracts;
 
 namespace Api.Services
 {

@@ -17,8 +17,6 @@ namespace Api.Entities
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Address { get; set; }
-        public string Location { get; set; }
         public bool Sex { get; set; }
         public DateTime BirthDate { get; set; }
         public BloodTypeEnum BloodTypeId { get; set; }

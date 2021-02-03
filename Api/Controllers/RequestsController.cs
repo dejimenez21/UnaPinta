@@ -8,6 +8,7 @@ using Api.Entities;
 using Api.Services;
 using AutoMapper;
 using Api.Helpers;
+using Api.Contracts;
 
 namespace Api.Controllers
 {
