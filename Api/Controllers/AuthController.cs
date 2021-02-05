@@ -3,6 +3,7 @@ using Api.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,9 +59,33 @@ namespace Api.Controllers
                 
             }
 
-            return BadRequest(ModelState);
+            return BadRequest(ModelState);  
+        }
 
-            
-        }   
+        [HttpPost]
+        public async Task<ActionResult<User>> SingIn(UserLogin obj)
+        {
+            if (ModelState.IsValid)
+            {
+                
+                var user = await userManager.Users.SingleOrDefaultAsync(u => u.UserName == obj.UserName);
+
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+
+                var userSingInResult = await userManager.CheckPasswordAsync(user, obj.Password);
+
+                if(userSingInResult)
+                {
+                    return Ok();
+                }
+
+                return BadRequest("Email or password incorrect.");
+            }
+
+            return BadRequest(ModelState);
+        }
     }
 }
