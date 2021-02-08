@@ -203,8 +203,8 @@ C:\Users\d.jimenezr\Documents\UnaPintaPlatform\Api\obj\Debug\netcoreapp3.1\stati
 C:\Users\d.jimenezr\Documents\UnaPintaPlatform\Api\obj\Debug\netcoreapp3.1\Api.dll
 C:\Users\d.jimenezr\Documents\UnaPintaPlatform\Api\obj\Debug\netcoreapp3.1\Api.pdb
 C:\Users\d.jimenezr\Documents\UnaPintaPlatform\Api\obj\Debug\netcoreapp3.1\Api.genruntimeconfig.cache
+C:\Users\d.jimenezr\Documents\UnaPintaPlatform\Api\bin\Debug\netcoreapp3.1\NLog.dll
+C:\Users\d.jimenezr\Documents\UnaPintaPlatform\Api\bin\Debug\netcoreapp3.1\NLog.Extensions.Logging.dll
 C:\Users\d.jimenezr\Documents\UnaPintaPlatform\Api\obj\Debug\netcoreapp3.1\Api.csproj.CoreCompileInputs.cache
 C:\Users\d.jimenezr\Documents\UnaPintaPlatform\Api\obj\Debug\netcoreapp3.1\Api.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\d.jimenezr\Documents\UnaPintaPlatform\Api\obj\Debug\netcoreapp3.1\Api.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\d.jimenezr\Documents\UnaPintaPlatform\Api\bin\Debug\netcoreapp3.1\NLog.dll
-C:\Users\d.jimenezr\Documents\UnaPintaPlatform\Api\bin\Debug\netcoreapp3.1\NLog.Extensions.Logging.dll

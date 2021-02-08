@@ -1,5 +1,6 @@
 ﻿using Api.Entities;
 using Api.Models;
+using Api.Models.Auth;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -87,5 +88,31 @@ namespace Api.Controllers
 
             return BadRequest(ModelState);
         }
+    
+        [HttpPost("roles")]
+        public async Task<ActionResult<Role>> CreateRole(RoleCreate roleCreate)
+        {
+            if (ModelState.IsValid)
+            {
+                string roleName = roleCreate.RoleName.Trim();
+
+                var newRole = new Role()
+                {
+                    Name = roleName,
+                };
+
+                var roleResult = await roleManager.CreateAsync(newRole);
+
+                if (roleResult.Succeeded)
+                    return Created(Request.Path + $"/{newRole.Name}", newRole);
+
+                return Problem(roleResult.Errors.First().Description, null, 500);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+        }
+            
     }
 }
