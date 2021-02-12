@@ -50,6 +50,21 @@
           "lib/netstandard2.0/MailKit.dll": {}
         }
       },
+      "Microsoft.AspNetCore.Authentication.JwtBearer/3.1.12": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "5.5.0"
+        },
+        "compile": {
+          "lib/netcoreapp3.1/Microsoft.AspNetCore.Authentication.JwtBearer.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/Microsoft.AspNetCore.Authentication.JwtBearer.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "Microsoft.AspNetCore.Cryptography.Internal/5.0.2": {
         "type": "package",
         "compile": {
@@ -1941,6 +1956,21 @@
         "lib/netstandard2.0/MailKit.xml",
         "mailkit.2.10.1.nupkg.sha512",
         "mailkit.nuspec"
+      ]
+    },
+    "Microsoft.AspNetCore.Authentication.JwtBearer/3.1.12": {
+      "sha512": "Kl6VnydiO9kh4xGo5PugXYViy6kVNxV3UrAvF1sDmMTpkSKtcLsdHWVflzGTD8HUnm8VpvzF1z9/1cmNBeYXOg==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.authentication.jwtbearer/3.1.12",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/netcoreapp3.1/Microsoft.AspNetCore.Authentication.JwtBearer.dll",
+        "lib/netcoreapp3.1/Microsoft.AspNetCore.Authentication.JwtBearer.xml",
+        "microsoft.aspnetcore.authentication.jwtbearer.3.1.12.nupkg.sha512",
+        "microsoft.aspnetcore.authentication.jwtbearer.nuspec"
       ]
     },
     "Microsoft.AspNetCore.Cryptography.Internal/5.0.2": {
@@ -6551,6 +6581,7 @@
     ".NETCoreApp,Version=v3.1": [
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 8.1.0",
       "MailKit >= 2.10.1",
+      "Microsoft.AspNetCore.Authentication.JwtBearer >= 3.1.12",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 5.0.2",
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson >= 3.1.10",
       "Microsoft.EntityFrameworkCore >= 5.0.2",
@@ -6611,6 +6642,10 @@
           "MailKit": {
             "target": "Package",
             "version": "[2.10.1, )"
+          },
+          "Microsoft.AspNetCore.Authentication.JwtBearer": {
+            "target": "Package",
+            "version": "[3.1.12, )"
           },
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
             "target": "Package",

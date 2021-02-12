@@ -32,8 +32,8 @@ namespace Api.Controllers
         }
 
 
-        [HttpPost]
-        public async Task <ActionResult<User>> SingUp(UserSignUp obj)
+        [HttpPost("signup")]
+        public async Task <ActionResult<User>> SignUp(UserSignUp obj)
         {
             if(ModelState.IsValid)
             {
@@ -42,20 +42,31 @@ namespace Api.Controllers
                 
                 if (userCreationResult.Succeeded)
                 {
-                    if(obj.Role != null)
-                    {
-                        var userCreaated = await userManager.FindByNameAsync(user.UserName);
-                        await userManager.AddToRoleAsync(userCreaated, obj.Role);
-                    }
 
-                        
+                    IdentityResult userRoleResult = new IdentityResult();
+                    try
+                    {
+                        userRoleResult = await userManager.AddToRoleAsync(user, obj.Role);
+                    }
+                    catch(Exception e)
+                    {
+                        await userManager.DeleteAsync(user);
+                        return BadRequest(e.Message);
+                    }
+                    
+                    if(!userRoleResult.Succeeded)
+                    {
+                        await userManager.DeleteAsync(user);
+                        return Problem(userRoleResult.Errors.First().Description, null, 500);
+                    }
+                       
                 }
                 else
                 {
                     return Problem(userCreationResult.Errors.First().Description, null, 500);
                 }
 
-                return Created($"Api/AccountController/{user.Id}", user);
+                return Created(Request.Path + $"/{user.UserName}", obj);
 
                 
             }
@@ -64,7 +75,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> SingIn(UserLogin obj)
+        public async Task<ActionResult<User>> SignIn(UserLogin obj)
         {
             if (ModelState.IsValid)
             {
@@ -94,8 +105,8 @@ namespace Api.Controllers
         {
             if (ModelState.IsValid)
             {
-                string roleName = roleCreate.RoleName.Trim();
 
+                var roleName = roleCreate.RoleName;
                 var newRole = new Role()
                 {
                     Name = roleName,
@@ -113,6 +124,38 @@ namespace Api.Controllers
                 return BadRequest(ModelState);
             }
         }
-            
+
+        [HttpPost("{username}/roles")]
+        public async Task<ActionResult> AddUserToRole(string userName, RoleCreate roleName)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.FindByNameAsync(userName);
+                if (user == null)
+                    return NotFound("The user specified doesn't exist");
+
+                IdentityResult userRoleResult = new IdentityResult();
+                try
+                {
+                    userRoleResult = await userManager.AddToRoleAsync(user, roleName.RoleName);
+                }
+                catch (Exception e)
+                {
+                    await userManager.DeleteAsync(user);
+                    return BadRequest(e.Message);
+                }
+
+                if (!userRoleResult.Succeeded)
+                {
+                    return Problem(userRoleResult.Errors.First().Description, null, 500);
+                }
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok();
+        }
     }
 }

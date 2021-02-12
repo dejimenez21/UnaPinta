@@ -18,6 +18,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Sqlite;
 using Api.Contracts;
+using Api.Extensions;
 
 namespace Api
 {
@@ -42,9 +43,13 @@ namespace Api
                 //Para cambiar a SQL Server reemplazar metodo "UseSqlite" por "UseSqlServer" y cambiar el connection string.
                 options => options.UseSqlite(Configuration.GetConnectionString("SQLiteConnection"))
             );
+            services.AddAuthentication();
             services.AddIdentity<User, Role>( options => {
                 options.Password.RequiredLength = 8;
+                options.User.RequireUniqueEmail = true;
+                options.SignIn.RequireConfirmedEmail = true;
             }).AddEntityFrameworkStores<UnaPintaDBContext>().AddDefaultTokenProviders();
+            services.ConfigureJWT(Configuration);
             services.AddScoped<IUnaPintaRepository, SqlUnaPintaRepo>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

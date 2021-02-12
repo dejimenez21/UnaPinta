@@ -9,6 +9,7 @@ using Api.Services;
 using AutoMapper;
 using Api.Helpers;
 using Api.Contracts;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Api.Controllers
 {
@@ -43,7 +44,7 @@ namespace Api.Controllers
         //     return null;
         // }
 
-        [HttpPost("")]
+        [HttpPost(""), Authorize]
         public async Task<ActionResult<Request>> CreateRequest(RequestCreate requestCreate)
         {
             var request = _mapper.Map<Request>(requestCreate);
