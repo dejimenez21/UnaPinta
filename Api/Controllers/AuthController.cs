@@ -1,4 +1,5 @@
-﻿using Api.Entities;
+﻿using Api.Contracts;
+using Api.Entities;
 using Api.Models;
 using Api.Models.Auth;
 using AutoMapper;
@@ -22,13 +23,15 @@ namespace Api.Controllers
         private readonly SignInManager<User> loginManager;
         private readonly RoleManager<Role> roleManager;
         private readonly IMapper mapper;
+        private readonly IAuthenticationManager _authManager;
 
-        public AuthController(UserManager<User> userManager, SignInManager<User> loginManager, RoleManager<Role> roleManager, IMapper mapper)
+        public AuthController(IAuthenticationManager authManager, UserManager<User> userManager, SignInManager<User> loginManager, RoleManager<Role> roleManager, IMapper mapper)
         {
             this.userManager = userManager;
             this.loginManager = loginManager;
             this.roleManager = roleManager;
             this.mapper = mapper;
+            _authManager = authManager;
         }
 
 
@@ -74,27 +77,18 @@ namespace Api.Controllers
             return BadRequest(ModelState);  
         }
 
-        [HttpPost]
-        public async Task<ActionResult<User>> SignIn(UserLogin obj)
+        [HttpPost("login")]
+        public async Task<ActionResult<User>> Authenticate(UserLogin obj)
         {
             if (ModelState.IsValid)
             {
                 
-                var user = await userManager.Users.SingleOrDefaultAsync(u => u.UserName == obj.UserName);
-
-                if (user == null)
+                if(!await _authManager.ValidateUser(obj))
                 {
-                    return NotFound("User not found");
+                    return Unauthorized();
                 }
 
-                var userSingInResult = await userManager.CheckPasswordAsync(user, obj.Password);
-
-                if(userSingInResult)
-                {
-                    return Ok();
-                }
-
-                return BadRequest("Email or password incorrect.");
+                return Ok(new { Token = await _authManager.CreateToken() });
             }
 
             return BadRequest(ModelState);

@@ -61,6 +61,7 @@ namespace Api
             services.AddScoped<IUsersServices, UsersServices>();
             services.AddScoped<IRequestsService, RequestsService>();
             services.AddScoped<IWaitListServices, WaitListServices>();
+            services.AddScoped<IAuthenticationManager, AuthenticationManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
