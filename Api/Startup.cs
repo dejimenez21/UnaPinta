@@ -34,15 +34,20 @@ namespace Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Controllers and ignoring reference loop
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling 
                 = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 );
+
+            //DbContext
             services.AddDbContext<UnaPintaDBContext>(
                 //Para cambiar a SQL Server reemplazar metodo "UseSqlite" por "UseSqlServer" y cambiar el connection string.
                 options => options.UseSqlite(Configuration.GetConnectionString("SQLiteConnection"))
             );
+
+            //Identity and authentication
             services.AddAuthentication();
             services.AddIdentity<User, Role>( options => {
                 options.Password.RequiredLength = 8;
@@ -50,18 +55,22 @@ namespace Api
                 options.SignIn.RequireConfirmedEmail = true;
             }).AddEntityFrameworkStores<UnaPintaDBContext>().AddDefaultTokenProviders();
             services.ConfigureJWT(Configuration);
-            services.AddScoped<IUnaPintaRepository, SqlUnaPintaRepo>();
+            
+            //Automapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            //Swagger
             services.AddSwaggerGen(
                 opt => opt.SwaggerDoc("v1", new OpenApiInfo { Title = "Una Pinta Platform API", Version = "v1"})
             );
 
-
+            //Services and repositories
+            services.AddScoped<IUnaPintaRepository, SqlUnaPintaRepo>();
             services.AddScoped<IUsersServices, UsersServices>();
             services.AddScoped<IRequestsService, RequestsService>();
             services.AddScoped<IWaitListServices, WaitListServices>();
             services.AddScoped<IAuthenticationManager, AuthenticationManager>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
