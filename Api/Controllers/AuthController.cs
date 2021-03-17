@@ -60,13 +60,13 @@ namespace Api.Controllers
                     if(!userRoleResult.Succeeded)
                     {
                         await userManager.DeleteAsync(user);
-                        return Problem(userRoleResult.Errors.First().Description, null, 500);
+                        return Problem(userRoleResult.Errors.First().Description, null, 400);
                     }
                        
                 }
                 else
                 {
-                    return Problem(userCreationResult.Errors.First().Description, null, 500);
+                    return Problem(userCreationResult.Errors.First().Description, null, 400);
                 }
 
                 return Created(Request.Path + $"/{user.UserName}", obj);
