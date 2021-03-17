@@ -5,17 +5,30 @@ using System.Threading.Tasks;
 using Api.Entities;
 using Api.Helpers;
 using Api.Contracts;
+using Microsoft.AspNetCore.Identity;
 
 namespace Api.Services
 {
     public class RequestsService : IRequestsService
     {
         private readonly IUnaPintaRepository _repo;
+        private readonly UserManager<User> _userManager;
 
-        public RequestsService(IUnaPintaRepository repo)
+        public RequestsService(IUnaPintaRepository repo, UserManager<User> userManager)
         {
             _repo = repo;
+            _userManager = userManager;
         }
+
+        public async Task CreateRequest(Request request, string userName)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            request.RequesterId = user.Id;
+
+            _repo.CreateRequest(request);
+            await _repo.SaveChangesAsync();
+        }
+
 
         public async Task SendRequestNotification(Request request)
         {  

@@ -15,15 +15,14 @@ namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Solicitante")]
     public class RequestsController : ControllerBase
     {
-        private readonly IUnaPintaRepository _repo;
         private readonly IMapper _mapper;
         private readonly IRequestsService _service;
 
-        public RequestsController(IUnaPintaRepository repo, IMapper mapper, IRequestsService service)
+        public RequestsController(IMapper mapper, IRequestsService service)
         {
-            _repo = repo;
             _mapper = mapper;
             _service = service;
         }
@@ -44,12 +43,20 @@ namespace Api.Controllers
         //     return null;
         // }
 
-        [HttpPost(""), Authorize]
+        [HttpPost("")]
         public async Task<ActionResult<Request>> CreateRequest(RequestCreate requestCreate)
         {
             var request = _mapper.Map<Request>(requestCreate);
-            _repo.CreateRequest(request);
-            await _repo.SaveChangesAsync();
+
+            try
+            {
+                await _service.CreateRequest(request, HttpContext.User.FindFirst("UserName").Value);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
 
             Response.OnCompleted(async () => 
                 await _service.SendRequestNotification(request)
