@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <Folder Include="assets\img\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>
