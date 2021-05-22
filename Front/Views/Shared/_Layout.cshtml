@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Una Pinta</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-dark navbar-expand-md fixed-top navbar--apple" style="background-color: #ef233c">
+            <div class="container">
+                <button data-toggle="collapse" class="navbar-toggler" data-target="#menu"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"><i class="la la-navicon"></i></span></button>
+                <div class="collapse navbar-collapse"
+                     id="menu">
+                    <ul class="list-inline text-center">
+                        <li class="list-inline-item"><a href="#"></a></li>
+                    </ul>
+                    <ul class="nav navbar-nav flex-grow-1 justify-content-between">
+                        <li class="nav-item" role="presentation"><a style="color:#ffffff">Inicio</a></li>
+                        <li class="nav-item" role="presentation"><a style="color:#ffffff">Telefono</a></li>
+                        <li class="nav-item" role="presentation"><a style="color:#ffffff">Correo</a></li>
+                        <li class="nav-item d-none d-xs-block d-md-block" role="presentation"><a class="nav-link" href="#"></a></li>
+                    </ul>
+                </div><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-facebook fa-stack-1x fa-inverse"></i></span><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-instagram fa-stack-1x fa-inverse"></i></span>
+            </div>
+        </nav>
+        
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

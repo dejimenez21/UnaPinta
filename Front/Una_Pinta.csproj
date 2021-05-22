@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="assets\bootstrap\css\bootstrap.min.css" />
+    <Content Include="assets\bootstrap\js\bootstrap.min.js" />
+    <Content Include="assets\css\best-carousel-slide.css" />
+    <Content Include="assets\css\Navigation-Clean.css" />
+    <Content Include="assets\css\Navigation-with-Search.css" />
+    <Content Include="assets\css\styles.css" />
+    <Content Include="assets\fonts\font-awesome.min.css" />
+    <Content Include="assets\fonts\fontawesome-webfont.eot" />
+    <Content Include="assets\fonts\fontawesome-webfont.svg" />
+    <Content Include="assets\fonts\fontawesome-webfont.ttf" />
+    <Content Include="assets\fonts\fontawesome-webfont.woff" />
+    <Content Include="assets\fonts\fontawesome-webfont.woff2" />
+    <Content Include="assets\fonts\FontAwesome.otf" />
+    <Content Include="assets\js\jquery.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Pics\pic-celulas.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="assets\img\" />
+  </ItemGroup>
+
+</Project>
