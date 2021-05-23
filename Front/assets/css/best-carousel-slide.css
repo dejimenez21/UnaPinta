@@ -1,5 +1,5 @@
 div.jumbotron.carousel-hero {
-  color: #fff;
+  color: #ffffff;
   text-align: center;
   background-size: cover;
   background-position: center;
@@ -10,14 +10,17 @@ div.jumbotron.carousel-hero {
 
 div.jumbotron.hero-nature {
   background-image: url('architect-at-the-construction.jpg');
+  background-color:#ffffff;
 }
 
 div.jumbotron.hero-photography {
-  background-image: url('architects-and-worker.jpg');
+    background-image: url('architects-and-worker.jpg');
+    background-color: #ffffff;
 }
 
 div.jumbotron.hero-technology {
-  background-image: url('young-college-students.jpg');
+    background-image: url('young-college-students.jpg');
+    background-color: #ffffff;
 }
 
 h1.hero-title, h2.hero-title, h3.hero-title {
