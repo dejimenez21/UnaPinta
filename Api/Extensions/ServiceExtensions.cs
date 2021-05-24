@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Api.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -36,6 +38,36 @@ namespace Api.Extensions
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
                 };
             }); 
+        }
+
+        public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)
+        {
+            var connectionType = configuration.GetSection("ConnectionType");
+            bool.TryParse(connectionType.GetSection("IsAzureConnection").Value, out bool isAzure);
+            bool.TryParse(connectionType.GetSection("IsLocalConnection").Value, out bool isLocal);
+
+            if (isAzure)
+            {
+                services.AddDbContext<UnaPintaDBContext>(
+                    options => options.UseSqlServer(configuration.GetConnectionString("AzureConnection"))
+                );
+
+                return;
+            }
+
+            if (isLocal)
+            {
+                services.AddDbContext<UnaPintaDBContext>(
+                    options => options.UseSqlServer(configuration.GetConnectionString("LocalConnection"))
+                );
+
+                return;
+            }
+
+            services.AddDbContext<UnaPintaDBContext>(
+
+                options => options.UseSqlite(configuration.GetConnectionString("SQLiteConnection"))
+            );
         }
     }
 }

@@ -42,10 +42,11 @@ namespace Api
                 );
 
             //DbContext
-            services.AddDbContext<UnaPintaDBContext>(
-                //Para cambiar a SQL Server reemplazar metodo "UseSqlite" por "UseSqlServer" y cambiar el connection string.
-                options => options.UseSqlite(Configuration.GetConnectionString("SQLiteConnection"))
-            );
+            //services.AddDbContext<UnaPintaDBContext>(
+            //    //Para cambiar a SQL Server reemplazar metodo "UseSqlite" por "UseSqlServer" y cambiar el connection string.
+            //    options => options.UseSqlite(Configuration.GetConnectionString("SQLiteConnection"))
+            //);
+            services.ConfigureDbContext(Configuration);
 
             //Identity and authentication
             services.AddAuthentication();
