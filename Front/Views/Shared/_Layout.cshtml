@@ -9,11 +9,23 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="shortcut icon" type="image/ico" href="~/Pics/favicon_io/favicon.ico">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/fonts/line-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/best-carousel-slide.css">
+    <link rel="stylesheet" href="assets/css/Footer-with-social-media-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="assets/css/Navbar---Apple-1.css">
+    <link rel="stylesheet" href="assets/css/Navbar---Apple.css">
+    <link rel="stylesheet" href="assets/css/Navigation-Clean.css">
+    <link rel="stylesheet" href="assets/css/Navigation-with-Search.css">
+    <link rel="stylesheet" href="assets/css/Social-Icons.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
 <body>
     <header>
-        <nav class="navbar navbar-dark navbar-expand-md fixed-top navbar--apple" style="background-color: #ef233c">
+        @*<nav class="navbar navbar-dark navbar-expand-md fixed-top navbar--apple" style="background-color: #ef233c">
             <div class="container">
                 <button data-toggle="collapse" class="navbar-toggler" data-target="#menu"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"><i class="la la-navicon"></i></span></button>
                 <div class="collapse navbar-collapse"
@@ -41,8 +53,39 @@
                 <span class="fa-stack fa-lg"><i class="fa fa-facebook fa-stack-1x fa-inverse"></i></span>
                 <span class="fa-stack fa-lg"><i class="fa fa-instagram fa-stack-1x fa-inverse"></i></span>
             </div>
-        </nav>
-
+        </nav>*@
+        <div class="card" style="box-shadow: 0 4px 5px 0 rgba(0,0,0,0.2); transition: 0.3s;">
+            <nav class="navbar navbar-light navbar-expand-md navigation-clean" style="height: 90px;">
+                <div class="container">
+                    <img src="~/Pics/pic-logo.png" style="width:120px" />
+                    <div class="dropdown">
+                        <button class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">Sobre nosotros</button>
+                        <div class="dropdown-menu" role="menu">
+                            <a class="dropdown-item" role="presentation" href="#">First Item</a>
+                            <a class="dropdown-item" role="presentation" href="#">Second Item</a>
+                            <a class="dropdown-item" role="presentation" href="#">Third Item</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">Testimonios</button>
+                        <div class="dropdown-menu" role="menu">
+                            <a class="dropdown-item" role="presentation" href="#">First Item</a>
+                            <a class="dropdown-item" role="presentation" href="#">Second Item</a>
+                            <a class="dropdown-item" role="presentation" href="#">Third Item</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">Eventos</button>
+                        <div class="dropdown-menu" role="menu">
+                            <a class="dropdown-item" role="presentation" href="#">First Item</a>
+                            <a class="dropdown-item" role="presentation" href="#">Second Item</a>
+                            <a class="dropdown-item" role="presentation" href="#">Third Item</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        
     </header>
     <div class="container">
         <main role="main" class="pb-3">
