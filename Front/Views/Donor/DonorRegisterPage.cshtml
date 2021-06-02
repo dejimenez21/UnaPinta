@@ -5,7 +5,7 @@
     </div>
     <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);transition: 0.5s;">
         <div class="card-body">
-            <form data-ajax="true" method="post">
+            <form data-ajax="true" data-ajax-method="post" data-ajax-url="/Donor/DonorTapRegister" id="registerform" method="post">
                 <div class="form-group">
                     <label>Dirección</label>
                     <input type="text" data-val="true" data-val-required="Dirección es requerida" class="form-control" placeholder="Dirección">
@@ -17,7 +17,7 @@
                     <label>Ubicación</label>
                     <input type="text" data-val="true" data-val-required="Ubicación es requerida" class="form-control" placeholder="Ubicación">
                     <div class="text-center">
-                        <span data-valmsg-for=""  class="text-danger" data-valmsg-replace="true" />
+                        <span data-valmsg-for="" class="text-danger" data-valmsg-replace="true" />
                     </div>
                 </div>
                 <div class="form-group">
@@ -40,7 +40,7 @@
                     <input type="text" asp-for="Weight" class="form-control" placeholder="Peso (Kg)">
                 </div>
                 <div class="text-center">
-                    <button type="submit" class="btn-block btn btn-outline-success">Registrar</button>
+                    <button type="submit" id="registeruser" class="btn-block btn btn-outline-success">Registrar</button>
                 </div>
             </form>
         </div>

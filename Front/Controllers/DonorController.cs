@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Api.Models;
 
 namespace Una_Pinta.Controllers
 {
@@ -19,7 +20,12 @@ namespace Una_Pinta.Controllers
         }
 
         [HttpPost]
-        public IActionResult DonorTapRegister()
+        public IActionResult DonorTapRegister(Register register)
+        {
+            return View();
+        }
+
+        public IActionResult DonorQuestionsPage()
         {
             return View();
         }
