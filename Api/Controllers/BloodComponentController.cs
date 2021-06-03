@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Api.Entities;
-using Api.Services;
-using Api.Contracts;
+using UnaPinta.Data.Entities;
+using UnaPinta.Core.Services;
+using UnaPinta.Data.Contracts;
 
-namespace Api.Controllers
+namespace UnaPinta.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

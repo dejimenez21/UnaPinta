@@ -1,26 +1,21 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Api.Entities;
-using Api.Services;
+using UnaPinta.Data.Entities;
+using UnaPinta.Core.Services;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore.Sqlite;
-using Api.Contracts;
-using Api.Extensions;
+using UnaPinta.Data.Contracts;
+using UnaPinta.Core.Contracts;
+using UnaPinta.Api.Extensions;
+using UnaPinta.Data;
 
-namespace Api
+namespace UnaPinta.Api
 {
     public class Startup
     {

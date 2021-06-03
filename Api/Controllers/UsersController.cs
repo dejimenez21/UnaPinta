@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Api.Entities;
-using Api.Models;
-using Api.Services;
+using UnaPinta.Core.Models;
+using UnaPinta.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
-//using Api.Models;
-using Api.Contracts;
+using UnaPinta.Data.Contracts;
+using UnaPinta.Core.Contracts;
+using UnaPinta.Data.Entities;
 
-namespace Api.Controllers
+namespace UnaPinta.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

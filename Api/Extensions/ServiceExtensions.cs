@@ -1,4 +1,4 @@
-﻿using Api.Entities;
+﻿using UnaPinta.Data.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Api.Extensions
+namespace UnaPinta.Api.Extensions
 {
     public static class ServiceExtensions
     {

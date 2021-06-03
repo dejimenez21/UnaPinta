@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Api.Migrations
+namespace UnaPinta.Api.Migrations
 {
     public partial class InitialAzureMigration : Migration
     {
