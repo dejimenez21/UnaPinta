@@ -7,10 +7,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UnaPinta.Data.Entities
 {
-    public partial class Request
+    public partial class Request : BaseEntity
     {
-        [Key]
-        public int Id { get; set; }
+
         public int RequesterId { get; set; }
         public BloodComponentEnum BloodComponentId { get; set; }
         public double? Amount { get; set; }

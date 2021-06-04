@@ -20,6 +20,8 @@ namespace UnaPinta.Data.Entities
         //public RoleEnum Id { get; set; }
         [MaxLength(20)]
         public string Description { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime LastUpdatedAt { get; set; }
 
     }
 

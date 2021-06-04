@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace UnaPinta.Data.Entities
 {
-    public partial class Condition
+    public class Condition
     {
         public Condition()
         {

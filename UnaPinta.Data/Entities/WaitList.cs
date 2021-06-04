@@ -7,10 +7,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UnaPinta.Data.Entities
 {
-    public partial class WaitList
+    public partial class WaitList : BaseEntity
     {
-        [Key]
-        public int Id { get; set; }
         public ConditionEnum ConditionId { get; set; }
         public int UserId { get; set; }
         public DateTime AvailableAt { get; set; }

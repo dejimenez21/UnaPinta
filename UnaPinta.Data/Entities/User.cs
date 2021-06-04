@@ -22,6 +22,8 @@ namespace UnaPinta.Data.Entities
         public BloodTypeEnum BloodTypeId { get; set; }
         public double? Weight { get; set; }
         public bool CanDonate { get; set; } = false;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime LastUpdatedAt { get; set; }
 
 
         [ForeignKey("BloodTypeId")]
