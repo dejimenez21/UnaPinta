@@ -24,7 +24,7 @@ namespace UnaPinta.Core.Models
         public string Email { get; set; }
 
         [DataType(DataType.PhoneNumber)]
-        public string Phone { get; set; }
+        public string PhoneNumber { get; set; }
 
         [Required]
         public string UserName { get; set; }
