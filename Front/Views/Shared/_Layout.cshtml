@@ -31,7 +31,9 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarhome">
-                    <img src="~/Pics/pic-logo.png" class="img-responsive" style="width:120px" />
+                    <a asp-controller="HomePage" asp-action="HomePageView">
+                        <img src="~/Pics/pic-logo.png" class="img-responsive" style="width:120px" />
+                    </a>
                     <div class="dropdown">
                         <button class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">Sobre nosotros</button>
                         <div class="dropdown-menu" role="menu">
