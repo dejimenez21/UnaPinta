@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Una Pinta RD</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" type="image/ico" href="~/Pics/favicon_io/favicon.ico">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/fonts/line-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/best-carousel-slide.css">
+    <link rel="stylesheet" href="assets/css/Footer-with-social-media-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="assets/css/Navbar---Apple-1.css">
+    <link rel="stylesheet" href="assets/css/Navbar---Apple.css">
+    <link rel="stylesheet" href="assets/css/Navigation-Clean.css">
+    <link rel="stylesheet" href="assets/css/Navigation-with-Search.css">
+    <link rel="stylesheet" href="assets/css/Social-Icons.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="card" style="box-shadow: 0 4px 5px 0 rgba(0,0,0,0.2); transition: 0.3s;">
+            <nav class="navbar navbar-light navbar-expand-lg navigation-clean">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarhome" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarhome">
+                    <a asp-controller="HomePage" asp-action="HomePageView">
+                        <img src="~/Pics/pic-logo.png" class="img-responsive" style="width:120px" />
+                    </a>
+                    <div class="dropdown">
+                        <button class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">Sobre nosotros</button>
+                        <div class="dropdown-menu" role="menu">
+                            <a class="dropdown-item" role="presentation" href="#infoPop" data-toggle="modal">Contacto</a>
+                            <a class="dropdown-item" role="presentation" href="#">Valores</a>
+                            <a class="dropdown-item" role="presentation" href="#">Sample sample</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">Testimonios</button>
+                        <div class="dropdown-menu" role="menu">
+                            <a class="dropdown-item" role="presentation" href="#">First Item</a>
+                            <a class="dropdown-item" role="presentation" href="#">Second Item</a>
+                            <a class="dropdown-item" role="presentation" href="#">Third Item</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">Eventos</button>
+                        <div class="dropdown-menu" role="menu">
+                            <a class="dropdown-item" role="presentation" href="#">First Item</a>
+                            <a class="dropdown-item" role="presentation" href="#">Second Item</a>
+                            <a class="dropdown-item" role="presentation" href="#">Third Item</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <div class="modal fade" id="infoPop" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Contacto</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_cq2ykkjy.json" background="transparent" speed="1" style="width: 220px; height: 220px; margin-left:auto; margin-right: auto;" loop autoplay></lottie-player>
+                        <table class="table" style="border:none">
+                            <tbody>
+                                <tr>
+                                    <td><label style="font-size:20px"><i class="fa fa-phone" style="font-size:24px"></i> 809-333-4588</label></td>
+                                    <td><label style="font-size:20px"><i class="fa fa-envelope" style="font-size:24px"></i> unapintard</label></td>
+                                    <td><label style="font-size:20px"><i class="fa fa-facebook" style="font-size:24px"></i> unapintard</label></td>
+                                    <td><label style="font-size:20px"><i class="fa fa-instagram" style="font-size:24px"></i> unapintard</label></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="border-top footer text-muted">
+    </footer>
+    <script src=@Url.Content("https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js")></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/Navbar---Apple.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>
