@@ -7,7 +7,7 @@ namespace Una_Pinta.Helpers.Requests
 {
     public static class ApiRequests
     {
-        public static string HostUrl = "http://localhost:5000/";
-        public static string PostUserUrl = "http://localhost:5000/api/Users";
+        public static string HostUrl = "https://localhost:44393/";
+        public static string PostUserEndPoint = "api/Users";
     }
 }

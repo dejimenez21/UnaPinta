@@ -27,7 +27,7 @@ namespace Una_Pinta.Services
         public async Task PostUser(UserSignUp userSignUp)
         {
             var client = new RestClient(ApiRequests.HostUrl);
-            var request = new RestRequest(ApiRequests.PostUserUrl, Method.POST);
+            var request = new RestRequest(ApiRequests.PostUserEndPoint, Method.POST);
             try
             {
                 request.RequestFormat = DataFormat.Json;
