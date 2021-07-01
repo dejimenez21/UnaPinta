@@ -27,14 +27,14 @@ namespace Una_Pinta.Services
         public async Task PostUser(UserSignUp userSignUp)
         {
             var client = new RestClient(ApiRequests.HostUrl);
-            var request = new RestRequest(ApiRequests.PostUserEndPoint, Method.POST);
+            var request = new RestRequest(ApiRequests.PostUserSignup, Method.POST);
             try
             {
                 request.RequestFormat = DataFormat.Json;
                 request.AddHeader("Content-Type", "application/json");
                 request.AddHeader("Cache-Control", "no-cache");
                 request.AddJsonBody(userSignUp);
-                client.Execute(request);
+                var responseapi = client.Execute(request);
             }
             catch (WebException ex)
             {
