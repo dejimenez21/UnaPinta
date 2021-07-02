@@ -23,9 +23,28 @@
                     </div>
                     <div class="col-sm-6">
                         <label>Sexo</label>
-                        <input type="text" data-val-required="El sexo es un campo obligatorio" asp-for="Sex" data-val="true" class="form-control">
+                        <select data-val-required="El sexo es un campo obligatorio" asp-for="Sex" data-val="true" class="form-control">
+                            <option>M</option>
+                            <option>F</option>
+                        </select>
                         <div class="text-center">
                             <span data-valmsg-for="Sex" class="text-danger" data-valmsg-replace="true" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Tipo de sangre</label>
+                        <select data-val-required="El tipo de sangre es un campo obligatorio" asp-for="BloodTypeId" data-val="true" class="form-control">
+                            <option value="1">A+</option>
+                            <option value="2">A-</option>
+                            <option value="3">B+</option>
+                            <option value="4">B-</option>
+                            <option value="5">AB+</option>
+                            <option value="6">AB-</option>
+                            <option value="7">O+</option>
+                            <option value="8">O-</option>
+                        </select>
+                        <div class="text-center">
+                            <span data-valmsg-for="BloodTypeId" class="text-danger" data-valmsg-replace="true" />
                         </div>
                     </div>
                     <div class="col-sm-6">
@@ -58,15 +77,16 @@
                     </div>
                     <div class="col-sm-6">
                         <label>Contraseña</label>
-                        <input type="text" data-val-required="La contraseña es un campo obligatorio" asp-for="Password" data-val="true" class="form-control">
+                        <input type="password" data-val-required="La contraseña es un campo obligatorio" asp-for="Password" data-val="true" class="form-control">
                         <div class="text-center">
                             <span data-valmsg-for="Password" class="text-danger" data-valmsg-replace="true" />
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <label>Confirmación de contraseña</label>
-                        <input type="text" data-val="true" class="form-control">
-                    </div>                  
+                        <input type="password" data-val="true" class="form-control">
+                    </div>
+                    <input type="text" value="solicitante" hidden="hidden" asp-for="Role" data-val="true">
                 </div>
                 <br />
                 <div class="text-center">

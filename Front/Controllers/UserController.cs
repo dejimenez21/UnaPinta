@@ -31,8 +31,6 @@ namespace Una_Pinta.Controllers
         [HttpPost]
         public IActionResult UserTapRegister(UserSignUp userSignUp)
         {
-            userSignUp.Role = "solicitante";
-            userSignUp.BloodTypeId = 1;
             _userRepository.PostUser(userSignUp);
             return View(registerpage);
         }
