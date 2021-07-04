@@ -11,7 +11,8 @@ namespace Una_Pinta.Controllers
     public class DonorController : Controller
     {
         readonly IUserRepository _userRepository;
-        const string registerpage = "DonorRegisterPage";
+        const string registerPage = "DonorRegisterPage";
+        const string questionPage = "DonorQuestionsPage";
 
         public DonorController(IUserRepository userRepository)
         {
@@ -32,7 +33,7 @@ namespace Una_Pinta.Controllers
         public IActionResult DonorTapRegister(UserSignUp userSignUp)
         {
             _userRepository.PostUser(userSignUp);
-            return View(registerpage);
+            return View(questionPage);
         }
 
         public IActionResult DonorQuestionsPage()
