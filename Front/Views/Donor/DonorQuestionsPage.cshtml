@@ -1,95 +1,174 @@
-﻿@model Una_Pinta.Models.UserSignUp
-<div class="container" style="margin-top:20px;">
+﻿<div class="container" style="margin-top:20px;">
     <div class="text-center">
         <p class="lead">Información General del Donante</p>
     </div>
     <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);transition: 0.5s;">
         <div class="card-body">
-            <form data-ajax="true" method="post" class="container">
+            <form class="container">
                 <div class="row g-3">
                     <div class="col-sm-6">
                         <label>¿Se realizó algún tatuaje en los últimos 6 meses?</label>
-                        <input type="text" data-val="true" class="form-control">
+                        <select class="form-control" id="tattooQuestion">
+							<option>Seleccionar</option>
+							<option value="1">Si</option>
+							<option value="9">No</option>							
+						</select>
                     </div>
                     <div class="col-sm-6">
                         <label>¿Ha donado sangre en los últimos 3 meses?</label>
-                        <input type="text" data-val="true" class="form-control">
+                        <select id="bloodQuestion" class="form-control" >
+                            <option>Seleccionar</option>
+                            <option value="5">Si</option>
+                            <option value="9">No</option>
+                        </select>
                     </div>
                     <div class="col-sm-6">
                         <label>¿Hace cuantos meses?</label>
-                        <input type="text" data-val="true" class="form-control">
+                        <input type="text" id="tattooCondition" data-val="true" class="form-control">
                     </div>
                     <div class="col-sm-6">
                         <label>¿Hace cuantos meses?</label>
-                        <input type="text" data-val="true" class="form-control">
+                        <input type="text" id="bloodCondition" data-val="true" class="form-control">
                     </div>
                     <div class="col-sm-6">
                         <label>¿Se realizó alguna perforación o piercing en los últimos 6 meses?</label>
-                        <input type="text" data-val="true" class="form-control">
+                        <select id="piercingQuestion" class="form-control" >
+                            <option>Seleccionar</option>
+                            <option value="2">Si</option>
+                            <option value="9">No</option>
+                        </select>
                     </div>
                     <div class="col-sm-6">
                         <label>¿Ha recibido algún trasplante de órgano?</label>
-                        <input type="text" data-val="true" class="form-control">
+                        <select id="transplanteQuestion" class="form-control" >
+                            <option>Seleccionar</option>
+                            <option value="8">Si</option>
+                            <option value="9">No</option>
+                        </select>
                     </div>
                     <div class="col-sm-6">
                         <label>¿Hace cuantos meses?</label>
-                        <input type="text" data-val="true" class="form-control">
+                        <input type="text" id="piercingCondition" data-val="true" class="form-control">
                     </div>
                     <div class="col-sm-6">
                         <label>¿Hace cuantos meses?</label>
-                        <input type="text" data-val="true" class="form-control">
+                        <input type="text" id="transplanteCondition" data-val="true" class="form-control">
                     </div>
                     <div class="col-sm-6">
                         <label>¿Se ha realizado algún procedimiento odontológico hace menos de un mes?</label>
-                        <input type="text" data-val="true" class="form-control">
+                        <select id="odonQuestion" class="form-control" >
+                            <option>Seleccionar</option>
+                            <option value="3">Si</option>
+                            <option value="9">No</option>
+                        </select>
                     </div>
                     <div class="col-sm-6">
                         <label>¿Ha estado embarazada en los últimos 9 meses?</label>
-                        <input type="text" data-val="true" class="form-control">
+                        <select id="pregnanQuestion" class="form-control" >
+                            <option>Seleccionar</option>
+                            <option value="6">Si</option>
+                            <option value="9">No</option>
+                        </select>
                     </div>
                     <div class="col-sm-6">
                         <label>¿Ha recibido alguna transfusión sanguínea en el último año?</label>
-                        <input type="text" data-val="true" class="form-control">
+                        <select id="transfusion" class="form-control">
+                            <option>Seleccionar</option>
+                            <option value="4">Si</option>
+                            <option value="9">No</option>
+                        </select>
                     </div>
                     <div class="col-sm-6">
                         <label>¿Padece o ha padecido algunas de estas enfermedades?</label>
-                        <div class="container">
+                        <select id="enfermedadesList" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
+                            <option value="8">VIH</option>
+                            <option value="8">Hepatitis B</option>
+                            <option value="8">Hepatitis C</option>
+                            <option value="8">Cancer</option>
+                            <option value="8">Lupus</option>
+                            <option value="8">Falcemia</option>
+                            <option value="9">Ninguno</option>
+                        </select>
+                        @*<div class="container">
                             <div>
                                 <label class="checkbox-inline">
-                                    <input type="checkbox">VIH Sida
+                                    <input type="checkbox" id="VIH">VIH Sida
                                 </label>
                                 <label class="checkbox-inline">
-                                    <input type="checkbox">Hepatitis B
+                                    <input type="checkbox" id="HB">Hepatitis B
                                 </label>
                                 <label class="checkbox-inline">
-                                    <input type="checkbox">Hepatitis C
+                                    <input type="checkbox" id="HC">Hepatitis C
                                 </label>
                                 <label class="checkbox-inline">
-                                    <input type="checkbox">Lupus
+                                    <input type="checkbox" id="Lupus">Lupus
                                 </label>
                                 <label class="checkbox-inline">
-                                    <input type="checkbox">Cancer
+                                    <input type="checkbox" id="Cancer">Cancer
                                 </label>
                                 <label class="checkbox-inline">
-                                    <input type="checkbox">Falcemia
+                                    <input type="checkbox" id="Falcemia">Falcemia
                                 </label>
                             </div>
-                        </div>                        
+                        </div>*@
                     </div>
                     <div class="col-sm-6">
                         <label>¿Hace cuantos meses?</label>
-                        <input type="text" data-val="true" class="form-control">
+                        <input type="text" id="transfusionCondition" data-val="true" class="form-control">
                     </div>
                     <div class="col-sm-6">
                         <label>¿Ha consumido drogas?</label>
-                        <input type="text" data-val="true" class="form-control">
+                        <select id="drugQuestion" class="form-control" >
+                            <option>Seleccionar</option>
+                            <option value="8">Si</option>
+                            <option value="9">No</option>
+                        </select>
                     </div>
                 </div>
                 <br />
                 <div class="text-center">
-                    <button type="submit" class="btn-block btn btn-outline-success">Guardar</button>
+                    <button type="button" id="btnRegister" onclick="btnRegister_Click()" class="btn-block btn btn-outline-success">Guardar</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+        function btnRegister_Click() {
+            //alert("");
+            var obj = {};
+
+            obj.userId = 1;
+            obj.conditions = [];
+
+            obj.conditions.push(conditionId: $("#tattooQuestion").val(), months: $("#tattooCondition").val());
+            obj.conditions.push(conditionId: $("#bloodQuestion").val(), months: $("#bloodCondition").val());
+            obj.conditions.push(conditionId: $("#piercingQuestion").val(), months: $("#piercingCondition").val());
+            obj.conditions.push(conditionId: $("#transplanteQuestion").val(), months: -1);
+            obj.conditions.push(conditionId: $("#drugQuestion").val(), months: $("#drugCondition").val());
+            obj.conditions.push(conditionId: $("#pregnanQuestion").val(), months: $("#pregnanCondition").val());
+            obj.conditions.push(conditionId: $("#transfusionQuestion").val(), months: $("#transfusionCondition").val());
+            obj.conditions.push(conditionId: $("#odonQuestion").val(), months: 1);
+            obj.conditions.push(conditionId: $("#enfermedadesList").val(), months: -1);
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("https://localhost:44393/api/waitlist")',
+                data: JSON.stringify(obj),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function () {
+                    alert("Data has been added successfully.");
+                },
+                error: function () {
+                    alert("Error while inserting data");
+                }
+            });
+            return false;
+        }
+    
+    </script>
+}
