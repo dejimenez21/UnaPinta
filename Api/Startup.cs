@@ -67,6 +67,13 @@ namespace UnaPinta.Api
             services.AddScoped<IWaitListServices, WaitListServices>();
             services.AddScoped<IAuthenticationManager, AuthenticationManager>();
 
+            //CORS
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder => builder.AllowAnyOrigin().AllowAnyMethod());
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -94,6 +101,8 @@ namespace UnaPinta.Api
             app.UseAuthentication();
 
             app.UseRouting();
+
+            app.UseCors("AllowSpecificOrigin");
 
             app.UseAuthorization();
 
