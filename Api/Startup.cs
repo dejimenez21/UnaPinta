@@ -71,7 +71,7 @@ namespace UnaPinta.Api
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowSpecificOrigin",
-                    builder => builder.AllowAnyOrigin().AllowAnyMethod());
+                    builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
 
         }
