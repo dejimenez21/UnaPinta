@@ -46,7 +46,10 @@ function btnRegister_Click() {
         method: "POST",
         data: JSON.stringify(obj),
         dataType: "json",
-        //contentType: "application/json; charset=utf-8",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json' 
+        }
       }).done(onSuccess)
         .fail(onError)
         .always(always);
