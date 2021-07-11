@@ -10,6 +10,6 @@ namespace Una_Pinta.Services
     public interface IUserRepository
     {
         Task<int> GetUser(UserSignUp userSignUp);
-        Task PostUser(UserSignUp userSignUp);
+        Task<int> PostUser(UserSignUp userSignUp);
     }
 }

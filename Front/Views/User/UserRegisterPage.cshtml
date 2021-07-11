@@ -5,7 +5,9 @@
     </div>
     <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);transition: 0.5s;">
         <div class="card-body">
-            <form data-ajax="true" data-ajax-url="/User/UserTapRegister" method="post" class="container">
+            <form data-ajax="true" asp-controller="User" asp-action="UserTapRegister"
+                  data-ajax-method="POST"
+                  data-ajax-success="OnSuccess" class="container">
                 <div class="row g-3">
                     <div class="col-sm-6">
                         <label>Nombre</label>
@@ -96,3 +98,14 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    function OnSuccess(response) {
+        if (response != 201) {
+            alert("Error al crear usuario");
+        }
+        else {
+            alert("Usuario creado correctamente");
+            window.location.href="/homepage/homepageview"
+        }
+    }
+</script>
