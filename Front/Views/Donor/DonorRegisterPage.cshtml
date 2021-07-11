@@ -67,7 +67,7 @@
                     </div>
                     <div class="col-sm-6">
                         <label>Telefono</label>
-                        <input type="text" data-val-required="El telefono es un campo obligatorio" asp-for="PhoneNumber" data-val="true" class="form-control">
+                        <input type="text" id="phonetxt" data-val-required="El telefono es un campo obligatorio" asp-for="PhoneNumber" data-val="true" class="form-control">
                         <div class="text-center">
                             <span data-valmsg-for="PhoneNumber" class="text-danger" data-valmsg-replace="true" />
                         </div>
@@ -87,7 +87,7 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <label>Peso</label>
+                        <label>Peso (Kg)</label>
                         <input type="number" data-val-required="El peso es un campo obligatorio" asp-for="Weight" data-val="true" class="form-control">
                         <div class="text-center">
                             <span data-valmsg-for="Weight" class="text-danger" data-valmsg-replace="true" />
@@ -117,6 +117,12 @@
         var confirmPassword = document.getElementById("confirmpasswordtxt").value;
         if (password != confirmPassword) {
             alert("Las contraseñas no coinciden");
+            return false;
+        }
+        var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        var phone = document.getElementById("phonetxt").value;
+        if ((!phone.match(phoneno))) {
+            alert("El teléfono no es válido");
             return false;
         }
         return true;
