@@ -38,11 +38,11 @@
 </div>
 <script type="text/javascript">
     function OnSuccess(response) {
-        if (response.UserName == undefined && response.Password == undefined) {
-            alert("Este usuario no existe");
+        if (response != 200) {
+            alert("este usuario no existe");
         }
         else {
-            window.location.href="/HomePage/HomePageView"
+            window.location.href="/homepage/homepageview"
         }
     }
 </script>

@@ -43,12 +43,12 @@ namespace Una_Pinta.Controllers
             if (result == 200)
             {
                 SetUserCookies(userSignUp);
-                return Json(userSignUp);
+                return Json(result);
             }
             else
             {
                 ViewBag.NotFound = "Este usuario no existe";
-                return Json(userSignUp);
+                return Json(result);
             }
         }
 
