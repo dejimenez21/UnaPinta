@@ -30,7 +30,6 @@ namespace Una_Pinta.Models
 
         [Required]
         [MinLength(8)]
-        [RegularExpression("^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
