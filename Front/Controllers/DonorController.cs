@@ -32,8 +32,8 @@ namespace Una_Pinta.Controllers
         [HttpPost]
         public IActionResult DonorTapRegister(UserSignUp userSignUp)
         {
-            _userRepository.PostUser(userSignUp);
-            return View(questionPage);
+            var result = _userRepository.PostUser(userSignUp).Result;
+            return Json(result);
         }
 
         public IActionResult DonorQuestionsPage()
