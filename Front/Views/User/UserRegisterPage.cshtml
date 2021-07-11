@@ -81,14 +81,14 @@
                     </div>
                     <div class="col-sm-6">
                         <label>Contraseña</label>
-                        <input type="password" data-val-required="La contraseña es un campo obligatorio" asp-for="Password" data-val="true" class="form-control">
+                        <input type="password" id="passwordtxt" data-val-required="La contraseña es un campo obligatorio" asp-for="Password" data-val="true" class="form-control">
                         <div class="text-center">
                             <span data-valmsg-for="Password" class="text-danger" data-valmsg-replace="true" />
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <label>Confirmación de contraseña</label>
-                        <input type="password" data-val-required="Este es un campo obligatorio" data-val="true" class="form-control">
+                        <input type="password" id="confirmpasswordtxt" data-val-required="Este es un campo obligatorio" data-val="true" class="form-control">
                         <div class="text-center">
                             <span data-valmsg-for="" class="text-danger" data-valmsg-replace="true" />
                         </div>
@@ -97,13 +97,23 @@
                 </div>
                 <br />
                 <div class="text-center">
-                    <button type="submit" class="btn-block btn btn-outline-success">Guardar</button>
+                    <button type="submit" class="btn-block btn btn-outline-success" onclick="return Validate()">Guardar</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 <script type="text/javascript">
+    function Validate() {
+        var password = document.getElementById("passwordtxt").value;
+        var confirmPassword = document.getElementById("confirmpasswordtxt").value;
+        if (password != confirmPassword) {
+            alert("Las contraseñas no coinciden");
+            return false;
+        }
+        return true;
+    }
+
     function OnSuccess(response) {
         if (response != 201) {
             alert("Error al crear usuario");
