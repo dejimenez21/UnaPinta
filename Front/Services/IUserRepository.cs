@@ -9,7 +9,7 @@ namespace Una_Pinta.Services
 {
     public interface IUserRepository
     {
-        Task<UserSignUp> GetUser();
+        Task<UserSignUp> GetUser(UserSignUp userSignUp);
         Task PostUser(UserSignUp userSignUp);
     }
 }

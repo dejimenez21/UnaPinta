@@ -9,5 +9,6 @@ namespace Una_Pinta.Helpers.Requests
     {
         public static string HostUrl = "https://localhost:44393/";
         public static string PostUserSignup = "api/Auth/signup";
+        public static string GetUserLogin = "api/Auth/login";
     }
 }

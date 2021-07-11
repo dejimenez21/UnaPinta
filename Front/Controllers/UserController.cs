@@ -18,7 +18,7 @@ namespace Una_Pinta.Controllers
             _userRepository = userRepository;
         }
 
-        public IActionResult UserIndexPage()
+        public IActionResult UserLoginPage()
         {
             return View();
         }
@@ -33,6 +33,16 @@ namespace Una_Pinta.Controllers
         {
             _userRepository.PostUser(userSignUp);
             return View(registerpage);
+        }
+
+        [HttpPost]
+        public IActionResult UserTapLogin(UserSignUp userSignUp)
+        {
+            var result = _userRepository.GetUser(userSignUp).Result;
+            if (result is null)
+                return View(registerpage);
+            else
+                return RedirectToAction(actionName: "HomePageView", controllerName: "HomePage");
         }
     }
 }
