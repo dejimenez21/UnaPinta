@@ -26,6 +26,7 @@
                     <div class="col-sm-6">
                         <label>Sexo</label>
                         <select data-val-required="El sexo es un campo obligatorio" asp-for="Sex" data-val="true" class="form-control">
+                            <option value="" disabled selected hidden>Seleccionar</option>
                             <option value="true">M</option>
                             <option value="false">F</option>
                         </select>
@@ -36,6 +37,7 @@
                     <div class="col-sm-6">
                         <label>Tipo de sangre</label>
                         <select data-val-required="El tipo de sangre es un campo obligatorio" asp-for="BloodTypeId" data-val="true" class="form-control">
+                            <option value="" disabled selected hidden>Seleccionar</option>
                             <option value="1">A+</option>
                             <option value="2">A-</option>
                             <option value="3">B+</option>
@@ -67,7 +69,7 @@
                         <label>Telefono</label>
                         <input type="text" data-val-required="El telefono es un campo obligatorio" asp-for="PhoneNumber" data-val="true" class="form-control">
                         <div class="text-center">
-                            <span data-valmsg-for="Phone" class="text-danger" data-valmsg-replace="true" />
+                            <span data-valmsg-for="PhoneNumber" class="text-danger" data-valmsg-replace="true" />
                         </div>
                     </div>
                     <div class="col-sm-6">
@@ -93,7 +95,10 @@
                     </div>
                     <div class="col-sm-6">
                         <label>Confirmación de contraseña</label>
-                        <input type="password" data-val="true" class="form-control">
+                        <input type="password" data-val="true" data-val-required="Este es un campo obligatorio" class="form-control">
+                        <div class="text-center">
+                            <span data-valmsg-for="" class="text-danger" data-valmsg-replace="true" />
+                        </div>
                     </div>
                     <input type="text" value="donante" hidden="hidden" asp-for="Role" data-val="true">
                 </div>
