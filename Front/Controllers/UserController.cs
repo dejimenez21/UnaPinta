@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,10 +40,30 @@ namespace Una_Pinta.Controllers
         public IActionResult UserTapLogin(UserSignUp userSignUp)
         {
             var result = _userRepository.GetUser(userSignUp).Result;
-            if (result is null)
-                return View(registerpage);
+            if (result == 200)
+            {
+                SetUserCookies(userSignUp);
+                return Json(userSignUp);
+            }
             else
-                return RedirectToAction(actionName: "HomePageView", controllerName: "HomePage");
+            {
+                ViewBag.NotFound = "Este usuario no existe";
+                return Json(userSignUp);
+            }
+        }
+
+        public void SetUserCookies(UserSignUp userSignUp)
+        {
+            var option = new CookieOptions();
+            option.Expires = DateTime.Now.AddMinutes(50);
+            var username = "";
+
+            if (userSignUp.UserName is not null && userSignUp.Password is not null)
+            {
+                HttpContext.Session.SetString(username, userSignUp.UserName);
+                ViewBag.UserKeyName = HttpContext.Session.GetString(username);
+                Response.Cookies.Append("id_user_key", $"{username}", option);
+            }
         }
     }
 }

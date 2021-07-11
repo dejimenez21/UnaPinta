@@ -25,6 +25,7 @@ namespace Una_Pinta
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSession();
             services.AddSingleton<IUserRepository, UserRepository>();
         }
 
@@ -43,7 +44,7 @@ namespace Una_Pinta
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthorization();
