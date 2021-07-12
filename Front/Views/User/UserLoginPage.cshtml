@@ -38,7 +38,15 @@
 <script type="text/javascript">
     function OnSuccess(response) {
         if (response != 200) {
-            alert("Este usuario no existe");
+            swal({
+                title: "Advertencia",
+                text: "Este usuario no existe",
+                type: "warning",
+                icon: "warning",
+                showCancelButton: true,
+                closeOnConfirm: true,
+                closeOnCancel: true
+            });
         }
         else {
             window.location.href ="/BloodRequest/BloodRequestPage"
