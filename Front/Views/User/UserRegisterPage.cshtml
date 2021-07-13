@@ -108,13 +108,29 @@
         var password = document.getElementById("passwordtxt").value;
         var confirmPassword = document.getElementById("confirmpasswordtxt").value;
         if (password != confirmPassword) {
-            alert("Las contraseñas no coinciden");
+            swal({
+                title: "Error",
+                text: "Las contraseñas no coinciden",
+                type: "error",
+                icon: "error",
+                showCancelButton: true,
+                closeOnConfirm: true,
+                closeOnCancel: true
+            });
             return false;
         }
         var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
         var phone = document.getElementById("phonetxt").value;
         if ((!phone.match(phoneno))) {
-            alert("El teléfono no es válido");
+            swal({
+                title: "Error",
+                text: "El número de teléfono, no es válido",
+                type: "error",
+                icon: "error",
+                showCancelButton: true,
+                closeOnConfirm: true,
+                closeOnCancel: true
+            });
             return false;
         }
         return true;
@@ -122,10 +138,26 @@
 
     function OnSuccess(response) {
         if (response != 201) {
-            alert("Error al crear usuario");
+            swal({
+                title: "Error",
+                text: "Error al crear usuario",
+                type: "error",
+                icon: "error",
+                showCancelButton: true,
+                closeOnConfirm: true,
+                closeOnCancel: true
+            });
         }
-        else {
-            alert("Usuario creado correctamente");
+        else {            
+            swal({
+                title: "Correcto",
+                text: "Usuario creado correctamente",
+                type: "success",
+                icon: "success",
+                showCancelButton: true,
+                closeOnConfirm: true,
+                closeOnCancel: true
+            });
             window.location.href="/homepage/homepageview"
         }
     }
