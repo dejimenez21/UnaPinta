@@ -32,10 +32,7 @@ namespace Una_Pinta.Services
             try
             {
                 var queryResult = client.ExecuteAsync(request).Result.StatusCode;
-                if (((int)queryResult) == 200)
-                    return Task.FromResult(((int)queryResult));
-                else
-                    return Task.FromResult(((int)queryResult));
+                return Task.FromResult(((int)queryResult));
             }
             catch (WebException ex)
             {
@@ -61,10 +58,7 @@ namespace Una_Pinta.Services
             try
             {
                 var queryResult = client.ExecuteAsync(request).Result.StatusCode;
-                if (((int)queryResult) == 201)
-                    return Task.FromResult(((int)queryResult));
-                else
-                    return Task.FromResult(((int)queryResult));
+                return Task.FromResult(((int)queryResult));
             }
             catch (WebException ex)
             {
