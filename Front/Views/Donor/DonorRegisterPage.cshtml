@@ -145,11 +145,10 @@
     }
 
     function OnSuccess(response) {
-        if (response != 201) {
+        if (response.code != 201) {
             swal({
                 title: "Error",
-                text: "Error al guardar donante",
-                type: "error",
+                text: response.responseText,
                 icon: "error",
                 showCancelButton: true,
                 closeOnConfirm: true,
