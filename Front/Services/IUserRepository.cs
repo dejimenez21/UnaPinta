@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -10,6 +11,6 @@ namespace Una_Pinta.Services
     public interface IUserRepository
     {
         Task<int> GetUser(UserSignUp userSignUp);
-        Task<int> PostUser(UserSignUp userSignUp);
+        Task<IRestResponse> PostUser(UserSignUp userSignUp);
     }
 }

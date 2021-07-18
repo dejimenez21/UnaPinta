@@ -33,7 +33,7 @@ namespace Una_Pinta.Controllers
         public IActionResult UserTapRegister(UserSignUp userSignUp)
         {
             var result = _userRepository.PostUser(userSignUp).Result;
-            return Json(result);
+            return Json(new { code = ((int)result.StatusCode), responseText = result.Content });
         }
 
         [HttpPost]

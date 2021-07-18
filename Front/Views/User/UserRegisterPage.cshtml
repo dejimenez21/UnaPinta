@@ -137,10 +137,10 @@
     }
 
     function OnSuccess(response) {
-        if (response != 201) {
+        if (response.code != 201) {
             swal({
                 title: "Error",
-                text: "Error al crear usuario",
+                text: response.responseText,
                 icon: "error",
                 showCancelButton: true,
                 closeOnConfirm: true,
