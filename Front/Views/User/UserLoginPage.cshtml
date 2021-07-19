@@ -9,7 +9,7 @@
                   data-ajax-method="POST"
                   data-ajax-success="OnSuccess" class="container">
                 <label>Usuario:</label>
-                <input type="text" data-val-required="El usuario es un campo obligatorio" asp-for="UserName" placeholder="jhondoe" class="form-control" />
+                <input type="text" id="userNametxt" data-val-required="El usuario es un campo obligatorio" asp-for="UserName" placeholder="jhondoe" class="form-control" />
                 <div class="text-center">
                     <span data-valmsg-for="UserName" class="text-danger" data-valmsg-replace="true" />
                 </div>
@@ -37,6 +37,7 @@
 </div>
 <script type="text/javascript">
     function OnSuccess(response) {
+        var userName = document.getElementById("userNametxt").value;
         if (response != 200) {
             swal({
                 title: "Advertencia",
@@ -49,7 +50,8 @@
             });
         }
         else {
-            window.location.href ="/BloodRequest/BloodRequestPage"
+            window.localStorage.setItem("userKey", userName);
+            window.location.href = "/BloodRequest/BloodRequestPage"
         }
     }
 </script>

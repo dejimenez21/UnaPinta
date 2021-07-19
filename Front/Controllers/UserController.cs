@@ -12,7 +12,6 @@ namespace Una_Pinta.Controllers
     public class UserController : Controller
     {
         readonly IUserRepository _userRepository;
-        const string registerpage = "UserRegisterPage";
 
         public UserController(IUserRepository userRepository)
         {
@@ -33,7 +32,7 @@ namespace Una_Pinta.Controllers
         public IActionResult UserTapRegister(UserSignUp userSignUp)
         {
             var result = _userRepository.PostUser(userSignUp).Result;
-            return Json(new { code = ((int)result.StatusCode), responseText = result.Content });
+            return Json(new { code = (int)result.StatusCode, responseText = result.Content });
         }
 
         [HttpPost]

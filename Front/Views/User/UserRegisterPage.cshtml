@@ -74,7 +74,7 @@
                     </div>
                     <div class="col-sm-6">
                         <label>Usuario</label>
-                        <input type="text" data-val-required="El usuario es un campo obligatorio" asp-for="UserName" data-val="true" class="form-control">
+                        <input type="text" id="userNametxt" data-val-required="El usuario es un campo obligatorio" asp-for="UserName" data-val="true" class="form-control">
                         <div class="text-center">
                             <span data-valmsg-for="UserName" class="text-danger" data-valmsg-replace="true" />
                         </div>
@@ -137,6 +137,7 @@
     }
 
     function OnSuccess(response) {
+        var userName = document.getElementById("userNametxt").value;
         if (response.code != 201) {
             swal({
                 title: "Error",
@@ -156,7 +157,8 @@
                 closeOnConfirm: true,
                 closeOnCancel: true
             });
-            window.location.href="/homepage/homepageview"
+            window.localStorage.setItem("userKey", userName);
+            window.location.href = "/BloodRequest/BloodRequestPage"
         }
     }
 </script>
