@@ -1,0 +1,204 @@
+﻿.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+.carouselSlide {
+  position: relative;
+}
+
+.carouselSlide.pointer-event {
+  -ms-touch-action: pan-y;
+  touch-action: pan-y;
+}
+
+.carouselSlide-inner {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.carouselSlide-inner::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+
+.carouselSlide-item {
+  position: relative;
+  display: none;
+  float: left;
+  width: 100%;
+  margin-right: -100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transition: -webkit-transform 0.6s ease-in-out;
+  transition: transform 0.6s ease-in-out;
+  transition: transform 0.6s ease-in-out, -webkit-transform 0.6s ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carouselSlide-item {
+    transition: none;
+  }
+}
+
+.carouselSlide-item.active,
+.carouselSlide-item-next,
+.carouselSlide-item-prev {
+  display: block;
+}
+
+.carouselSlide-item-next:not(.carouselSlide-item-left),
+.active.carouselSlide-item-right {
+  -webkit-transform: translateX(100%);
+  transform: translateX(100%);
+}
+
+.carouselSlide-item-prev:not(.carouselSlide-item-right),
+.active.carouselSlide-item-left {
+  -webkit-transform: translateX(-100%);
+  transform: translateX(-100%);
+}
+
+.carouselSlide-fade .carouselSlide-item {
+  opacity: 0;
+  transition-property: opacity;
+  -webkit-transform: none;
+  transform: none;
+}
+
+.carouselSlide-fade .carouselSlide-item.active,
+.carouselSlide-fade .carouselSlide-item-next.carouselSlide-item-left,
+.carouselSlide-fade .carouselSlide-item-prev.carouselSlide-item-right {
+  z-index: 1;
+  opacity: 1;
+}
+
+.carouselSlide-fade .active.carouselSlide-item-left,
+.carouselSlide-fade .active.carouselSlide-item-right {
+  z-index: 0;
+  opacity: 0;
+  transition: 0s 0.6s opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carouselSlide-fade .active.carouselSlide-item-left,
+  .carouselSlide-fade .active.carouselSlide-item-right {
+    transition: none;
+  }
+}
+
+.carouselSlide-control-prev,
+.carouselSlide-control-next {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 15%;
+  color: #fff;
+  text-align: center;
+  opacity: 0.5;
+  transition: opacity 0.15s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carouselSlide-control-prev,
+  .carouselSlide-control-next {
+    transition: none;
+  }
+}
+
+.carouselSlide-control-prev:hover, .carouselSlide-control-prev:focus,
+.carouselSlide-control-next:hover,
+.carouselSlide-control-next:focus {
+  color: #fff;
+  text-decoration: none;
+  outline: 0;
+  opacity: 0.9;
+}
+
+.carouselSlide-control-prev {
+  left: 0;
+}
+
+.carouselSlide-control-next {
+  right: 0;
+}
+
+.carouselSlide-control-prev-icon,
+.carouselSlide-control-next-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: no-repeat 50% / 100% 100%;
+}
+
+.carouselSlide-control-prev-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3e%3c/svg%3e");
+}
+
+.carouselSlide-control-next-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3e%3c/svg%3e");
+}
+
+.carouselSlide-indicators {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 15;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding-left: 0;
+  margin-right: 15%;
+  margin-left: 15%;
+  list-style: none;
+}
+
+.carouselSlide-indicators li {
+  box-sizing: content-box;
+  -ms-flex: 0 1 auto;
+  flex: 0 1 auto;
+  width: 30px;
+  height: 3px;
+  margin-right: 3px;
+  margin-left: 3px;
+  text-indent: -999px;
+  cursor: pointer;
+  background-color: #fff;
+  background-clip: padding-box;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  opacity: .5;
+  transition: opacity 0.6s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carouselSlide-indicators li {
+    transition: none;
+  }
+}
+
+.carouselSlide-indicators .active {
+  opacity: 1;
+}
+
+.carouselSlide-caption {
+  position: absolute;
+  right: 15%;
+  bottom: 20px;
+  left: 15%;
+  z-index: 10;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  color: #fff;
+  text-align: center;
+}
