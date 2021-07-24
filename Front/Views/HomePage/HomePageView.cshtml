@@ -1,6 +1,6 @@
 ﻿<div class="container-fluid px-0">
     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner bg-info" role="listbox">
+        <div class="carousel-inner" role="listbox">
             <div class="carousel-item active" style="height:700px">
                 <div class="d-flex align-items-center justify-content-center min-vh-100">
                     <img src="~/Pics/blood-1968458.svg" style="width:100%; height:auto;" />
@@ -55,3 +55,34 @@
         </div>
     </div>
 </div>
+
+<div id="overlay" class="text-center">
+    <div id="overlay-content">
+        <img src="~/Pics/logo_splash.svg" id="splashIcon" />
+    </div>
+</div>
+
+<script type="text/javascript">
+    $.fn.center = function () {
+        this.css("position", "absolute");
+        this.css("top", Math.max(0, (
+            ($(window).height() - $(this).outerHeight()) / 2) +
+            $(window).scrollTop()) + "px"
+        );
+        this.css("left", Math.max(0, (
+            ($(window).width() - $(this).outerWidth()) / 2) +
+            $(window).scrollLeft()) + "px"
+        );
+        return this;
+    }
+
+    $("#overlay").show();
+    $("#splashIcon").hide();
+    $("#overlay-content").show().center();
+    $("#splashIcon").fadeIn("slow");
+
+
+    setTimeout(function () {
+        $("#overlay").fadeOut("slow");
+    }, 3000);
+</script>
