@@ -10,8 +10,8 @@ using UnaPinta.Data.Entities;
 namespace UnaPinta.Api.Migrations
 {
     [DbContext(typeof(UnaPintaDBContext))]
-    [Migration("20210604011702_EntityBase class added")]
-    partial class EntityBaseclassadded
+    [Migration("20210709045255_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

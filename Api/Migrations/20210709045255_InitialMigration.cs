@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace UnaPinta.Api.Migrations
 {
-    public partial class InitialAzureMigration : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -51,6 +51,8 @@ namespace UnaPinta.Api.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastUpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -73,6 +75,8 @@ namespace UnaPinta.Api.Migrations
                     BloodTypeId = table.Column<int>(type: "int", nullable: false),
                     Weight = table.Column<double>(type: "float", nullable: true),
                     CanDonate = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastUpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -129,7 +133,9 @@ namespace UnaPinta.Api.Migrations
                     RequesterId = table.Column<int>(type: "int", nullable: false),
                     BloodComponentId = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<double>(type: "float", nullable: true),
-                    Location = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
+                    Location = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastUpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -241,7 +247,9 @@ namespace UnaPinta.Api.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ConditionId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    AvailableAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    AvailableAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastUpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {

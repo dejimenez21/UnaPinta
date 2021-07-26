@@ -3,12 +3,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using UnaPinta.Core.Models;
+using Una_Pinta.Models;
+using Una_Pinta.Services;
 
 namespace Una_Pinta.Controllers
 {
     public class DonorController : Controller
     {
+        readonly IUserRepository _userRepository;
+
+        public DonorController(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
         public IActionResult DonorIndexPage()
         {
             return View();
@@ -22,7 +30,8 @@ namespace Una_Pinta.Controllers
         [HttpPost]
         public IActionResult DonorTapRegister(UserSignUp userSignUp)
         {
-            return View();
+            var result = _userRepository.PostUser(userSignUp).Result;
+            return Json(new { code = ((int)result.StatusCode), responseText = result.Content });
         }
 
         public IActionResult DonorQuestionsPage()

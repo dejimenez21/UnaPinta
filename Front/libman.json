@@ -9,6 +9,10 @@
     {
       "library": "jquery@3.6.0",
       "destination": "wwwroot/jquery/"
+    },
+    {
+      "library": "bootstrap-sweetalert@1.0.1",
+      "destination": "wwwroot/bootstrap-sweetalert/"
     }
   ]
 }
