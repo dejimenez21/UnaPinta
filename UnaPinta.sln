@@ -22,15 +22,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{2DEB96
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnaPinta", "UnaPinta", "{0D48A7D2-68F8-4963-8EC4-61FB835F1310}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnaPinta.Tests", "UnaPinta.Tests\UnaPinta.Tests.csproj", "{35F8E5CE-FC86-43D6-9893-EBFA0595638E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnaPinta.Tests", "UnaPinta.Tests\UnaPinta.Tests.csproj", "{35F8E5CE-FC86-43D6-9893-EBFA0595638E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{E6683C8D-D748-4FC4-8013-3FE4FCE964C5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CAEFCDA5-02A8-464E-B6BE-D3DF33EA2C4B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DTOs", "DTOs", "{E9820216-0074-46E9-8253-854E8C870980}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{E9820216-0074-46E9-8253-854E8C870980}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnaPinta.Dto", "UnaPinta.Dto\UnaPinta.Dto.csproj", "{13D90F27-D796-42A4-8EB4-24C0EEBB3D9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnaPinta.Dto", "UnaPinta.Dto\UnaPinta.Dto.csproj", "{13D90F27-D796-42A4-8EB4-24C0EEBB3D9B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
