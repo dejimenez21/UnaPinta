@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using UnaPinta.Dto.Enums;
 
 #nullable disable
 
@@ -22,13 +23,5 @@ namespace UnaPinta.Data.Entities
         public virtual ICollection<Request> Requests { get; set; }
     }
 
-    public enum BloodComponentEnum
-    {
-        Plasma = 1,
-        Plaquetas = 2,
-        [Display(Name="Globulos Blancos")]
-        GlobulosBlancos = 3,
-        [Display(Name="Globulos Rojos")]
-        GlobulosRojos = 4
-    }
+
 }

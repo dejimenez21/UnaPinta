@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using UnaPinta.Data.Entities;
-using UnaPinta.Core.Models;
+using UnaPinta.Dto.Models;
 using UnaPinta.Data.Contracts;
 using UnaPinta.Core.Contracts;
 

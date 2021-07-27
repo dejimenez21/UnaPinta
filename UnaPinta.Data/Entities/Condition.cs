@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using UnaPinta.Dto.Enums;
 
 #nullable disable
 
@@ -22,15 +22,5 @@ namespace UnaPinta.Data.Entities
         public virtual ICollection<WaitList> WaitLists { get; set; }
     }
 
-    public enum ConditionEnum{
-        Tatuaje = 1,
-        Piercing = 2,
-        Dental = 3,
-        Transfusion = 4,
-        Donado = 5,
-        Embarazada = 6,
-        Lactando = 7,
-        Inaceptable = 8,
-        SinCondicion = 9
-    }
+    
 }

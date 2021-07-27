@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System;
 using UnaPinta.Data.Contracts;
+using UnaPinta.Dto.Enums;
 
 namespace UnaPinta.Data
 {

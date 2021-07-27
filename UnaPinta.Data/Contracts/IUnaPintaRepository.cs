@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using UnaPinta.Data.Entities;
 using System.Collections.Generic;
 using System;
+using UnaPinta.Dto.Enums;
 
 namespace UnaPinta.Data.Contracts
 {

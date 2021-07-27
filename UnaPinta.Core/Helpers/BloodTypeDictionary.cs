@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnaPinta.Data.Entities;
+using UnaPinta.Dto.Enums;
 
 namespace UnaPinta.Core.Helpers
 {

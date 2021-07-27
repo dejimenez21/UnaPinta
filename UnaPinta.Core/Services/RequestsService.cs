@@ -7,6 +7,7 @@ using UnaPinta.Core.Helpers;
 using UnaPinta.Data.Contracts;
 using UnaPinta.Core.Contracts;
 using Microsoft.AspNetCore.Identity;
+using UnaPinta.Dto.Enums;
 
 namespace UnaPinta.Core.Services
 {

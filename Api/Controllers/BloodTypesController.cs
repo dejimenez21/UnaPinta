@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using UnaPinta.Data.Entities;
 using UnaPinta.Core.Services;
 using UnaPinta.Data.Contracts;
+using UnaPinta.Dto.Enums;
 
 namespace UnaPinta.Api.Controllers
 {

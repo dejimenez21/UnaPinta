@@ -25,9 +25,4 @@ namespace UnaPinta.Data.Entities
 
     }
 
-    public enum RoleEnum{
-        Donante = 1,
-        Solicitante = 2,
-        Administrador = 3
-    }
 }

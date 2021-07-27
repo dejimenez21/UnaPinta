@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using UnaPinta.Data.Entities;
+using UnaPinta.Dto.Enums;
 
 namespace UnaPinta.Dto.Models
 {

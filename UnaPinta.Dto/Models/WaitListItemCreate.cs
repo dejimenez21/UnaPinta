@@ -1,5 +1,5 @@
 using System;
-using UnaPinta.Data.Entities;
+using UnaPinta.Dto.Enums;
 
 namespace UnaPinta.Dto.Models
 {
