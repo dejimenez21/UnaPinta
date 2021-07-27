@@ -90,7 +90,8 @@
 </div>
 <script type="text/javascript">
     var userName = localStorage.getItem("userKey");
-
+    var jsonObj = JSON.parse(userName);
+    alert(jsonObj.token);
     function btnRequestBlood() {
         var obj = {};
         obj.bloodRequests = [];
@@ -117,7 +118,7 @@
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ${userName}'
+                'Authorization': `Bearer ${jsonObj.token}`
             }
         }).done(onSuccess)
             .fail(onError)
