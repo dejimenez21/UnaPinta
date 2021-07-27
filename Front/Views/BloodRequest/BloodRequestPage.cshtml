@@ -54,7 +54,7 @@
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Tipos de sangre a donar:</label>
-                <select asp-for="BloodTypeId" id="BloodTypeId_Required" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
+                <select asp-for="PossibleBloodTypesId" id="BloodTypeId_Required" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
                     <option value="" disabled selected hidden>Seleccionar</option>
                     <option value="1">A+</option>
                     <option value="2">A-</option>
@@ -92,30 +92,32 @@
     var userName = localStorage.getItem("userKey");
 
     function btnRequestBlood() {
-        //alert("");
         var obj = {};
-
-        obj.userId = 1;
-        obj.conditions = [];
-
-        obj.conditions.push({ conditionId: $("#tattooQuestion").val(), months: $("#tattooCondition").val() });
-        obj.conditions.push({ conditionId: $("#bloodQuestion").val(), months: $("#bloodCondition").val() });
-        obj.conditions.push({ conditionId: $("#piercingQuestion").val(), months: $("#piercingCondition").val() });
-        obj.conditions.push({ conditionId: $("#transplanteQuestion").val(), months: -1 });
-        obj.conditions.push({ conditionId: $("#drugQuestion").val(), months: $("#drugCondition").val() });
-        obj.conditions.push({ conditionId: $("#pregnanQuestion").val(), months: $("#pregnanCondition").val() });
-        obj.conditions.push({ conditionId: $("#transfusionQuestion").val(), months: $("#transfusionCondition").val() });
-        obj.conditions.push({ conditionId: $("#odonQuestion").val(), months: 1 });
-        obj.conditions.push({ conditionId: $("#enfermedadesList").val(), months: -1 });
+        obj.bloodRequests = [];
+        obj.bloodRequests.push({
+            bloodComponentId: $("#BloodComponentId").val(),
+            amount: $("#Amount").val(),
+            name: $("#Name").val(),
+            centerAddress: $("#CenterAddress").val(),
+            bloodTypeId: $("#BloodTypeId").val(),
+            document: null,
+            birthDate: $("#BirthDate").val(),
+            prescriptionBase64: $("#PrescriptionBase64").val(),
+            possibleBloodTypesId: $("#PossibleBloodTypesId").val(),
+            patientStory: $("#PatientStory").val(),
+            responseDueDate: $("#ResponseDueDate").val(),
+            forMe: false
+        });
 
         $.ajax({
-            url: 'https://localhost:44393/api/waitlist',
+            url: 'https://localhost:44393/api/Requests',
             method: "POST",
             data: JSON.stringify(obj),
             dataType: "json",
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ${userName}'
             }
         }).done(onSuccess)
             .fail(onError)

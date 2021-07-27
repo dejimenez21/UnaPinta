@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using UnaPinta.Data.Entities;
-using UnaPinta.Core.Models;
+using UnaPinta.Dto.Models;
 
 namespace UnaPinta.Core.Contracts
 {

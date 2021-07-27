@@ -2,9 +2,9 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using UnaPinta.Data.Entities;
-using UnaPinta.Core.Models;
 using UnaPinta.Data.Contracts;
 using UnaPinta.Core.Contracts;
+using UnaPinta.Dto.Models;
 
 namespace UnaPinta.Core.Services
 {

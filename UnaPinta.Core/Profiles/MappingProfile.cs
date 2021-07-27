@@ -1,10 +1,10 @@
 ﻿using UnaPinta.Data.Entities;
-using UnaPinta.Core.Models;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UnaPinta.Dto.Models;
 
 namespace UnaPinta.Core.Profiles
 {

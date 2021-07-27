@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 //using Api.Models;
 using UnaPinta.Data.Entities;
 using UnaPinta.Core.Services;
-using UnaPinta.Core.Models;
 using AutoMapper;
 using UnaPinta.Core.Contracts;
 using UnaPinta.Data.Contracts;
+using UnaPinta.Dto.Models;
 
 namespace UnaPinta.Api.Controllers
 {
