@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using UnaPinta.Core.Models;
+using UnaPinta.Dto.Models;
 using UnaPinta.Data.Entities;
 using AutoMapper;
 using UnaPinta.Core.Contracts;

@@ -1,6 +1,6 @@
 ﻿using UnaPinta.Core.Contracts;
 using UnaPinta.Data.Entities;
-using UnaPinta.Core.Models;
+using UnaPinta.Dto.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

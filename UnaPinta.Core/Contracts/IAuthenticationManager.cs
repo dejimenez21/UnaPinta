@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using UnaPinta.Core.Models;
+using UnaPinta.Dto.Models;
 
 namespace UnaPinta.Core.Contracts
 {
