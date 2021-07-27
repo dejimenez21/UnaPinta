@@ -39,11 +39,11 @@ namespace Una_Pinta.Controllers
         public IActionResult UserTapLogin(UserSignUp userSignUp)
         {
             var result = _userRepository.GetUser(userSignUp).Result;
-            if (result == 200)
+            if (((int)result.StatusCode) == 200)
             {
                 SetUserCookies(userSignUp);
             }
-            return Json(result);            
+            return Json(new { code = (int)result.StatusCode, responseText = result.Content });
         }
 
         public void SetUserCookies(UserSignUp userSignUp)
