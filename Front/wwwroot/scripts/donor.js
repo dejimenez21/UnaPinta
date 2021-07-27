@@ -27,19 +27,6 @@ function btnRegister_Click() {
     obj.conditions.push({conditionId: $("#transfusionQuestion").val(), months: $("#transfusionCondition").val()});
     obj.conditions.push({conditionId: $("#odonQuestion").val(), months: 1});
     obj.conditions.push({conditionId: $("#enfermedadesList").val(), months: -1});
-    // $.ajax({
-    //     type: "POST",
-    //     url: 'https://localhost:44393/api/waitlist',
-    //     data: JSON.stringify(obj),
-    //     dataType: "json",
-    //     contentType: "application/json; charset=utf-8",
-    //     success: function (data) {
-    //         alert("Data has been added successfully." + data);
-    //     },
-    //     error: function (request, error) {
-    //         alert(JSON.stringify(request));
-    //     }
-    // });
 
     $.ajax({
         url: 'https://localhost:44393/api/waitlist',
