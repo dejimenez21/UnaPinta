@@ -11,7 +11,7 @@ namespace UnaPinta.Data.Entities
     public partial class Request : BaseEntity
     {
 
-        public int RequesterId { get; set; }
+        public long RequesterId { get; set; }
         public BloodComponentEnum BloodComponentId { get; set; }
         public double? Amount { get; set; }
         [MaxLength(500)]

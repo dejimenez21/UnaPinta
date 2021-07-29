@@ -48,7 +48,7 @@ namespace UnaPinta.Api.Controllers
         }
 
         [HttpPost("confirm/{id}")]
-        public async Task<ActionResult<ConfirmationResponse>> ConfirmUser(int id, CodeSubmit code)
+        public async Task<ActionResult<ConfirmationResponse>> ConfirmUser(long id, CodeSubmit code)
         {
             var userToConfirm = await _repo.GetUserById(id);
             if(userToConfirm == null)

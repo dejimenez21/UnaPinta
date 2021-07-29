@@ -8,7 +8,7 @@ using UnaPinta.Dto.Enums;
 
 namespace UnaPinta.Data.Entities
 {
-    public partial class User : IdentityUser<int>
+    public partial class User : IdentityUser<long>
     {
         public User()
         {

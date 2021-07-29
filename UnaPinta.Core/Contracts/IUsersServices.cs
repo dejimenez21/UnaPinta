@@ -8,7 +8,7 @@ namespace UnaPinta.Core.Contracts
     {
         //Task GenerateConfirmationCode(int userId);
         Task<ConfirmationResponse> ConfirmEmail(User userToConfirm, string code);
-        Task SendConfirmationCode(int userId);
+        Task SendConfirmationCode(long userId);
         
     }
 }

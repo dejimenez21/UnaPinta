@@ -70,7 +70,7 @@ namespace UnaPinta.Data
             return await _context.BloodTypes.SingleOrDefaultAsync(x=>x.Id==id);
         }
 
-        public async Task<ConfirmationCode> GetCodeByUser(string code, int id)
+        public async Task<ConfirmationCode> GetCodeByUser(string code, long id)
         {
             // return await _context.ConfirmationCodes.SingleOrDefaultAsync(x=>x.Code==code&&x.UserId==id);
             throw new NotImplementedException();
@@ -95,7 +95,7 @@ namespace UnaPinta.Data
             throw new NotImplementedException();
         }
 
-        public async Task<Request> GetRequestById(int id)
+        public async Task<Request> GetRequestById(long id)
         {
             return await _context.Requests.SingleOrDefaultAsync(x=>x.Id==id);
         }
@@ -105,7 +105,7 @@ namespace UnaPinta.Data
             return await _context.Users.AnyAsync(x => x.Email == email);
         }
 
-        public Task<User> GetUserById(int id)
+        public Task<User> GetUserById(long id)
         {
             var user = _context.Users.SingleOrDefaultAsync(x=>x.Id==id);
             return user;
@@ -122,7 +122,7 @@ namespace UnaPinta.Data
             throw new System.NotImplementedException();
         }
 
-        public async Task<DateTime> GetAvailabilityDateByDonorId(int id)
+        public async Task<DateTime> GetAvailabilityDateByDonorId(long id)
         {
             var items = await _context.WaitLists.Where(x=>x.UserId==id).ToListAsync();
             if(!items.Any()) return DateTime.Now.Subtract(new TimeSpan(5,5,5));
