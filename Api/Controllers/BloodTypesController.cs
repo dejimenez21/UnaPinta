@@ -29,6 +29,15 @@ namespace UnaPinta.Api.Controllers
             return Ok(bloodTypes);
         }
 
+        [HttpGet("compatible/{bloodTypeId}")]
+        public async Task<ActionResult<IEnumerable<BloodType>>> GetCompatibleBloodTypes(int bloodTypeId)
+        {
+            var bloodTypeDict = new BloodTypeDictionary();
+            var compatibleBloodTypes = bloodTypeDict.GetCompatibleWith((BloodTypeEnum)bloodTypeId);
+            
+            return Ok(compatibleBloodTypes);
+        }
+
         // [HttpGet("{id}")]
         // public async Task<ActionResult<TModel>> GetTModelById(int id)
         // {

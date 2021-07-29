@@ -83,6 +83,8 @@ namespace UnaPinta.Data.Entities
                 // entity.HasKey(key => new { key.UserId, key.LoginProvider, key.Name });
 
             });
+
+            modelBuilder.ApplyConfiguration(new RequestPossibleBloodTypesConfiguration());
         }
     }
 }
