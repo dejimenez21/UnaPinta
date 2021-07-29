@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UnaPinta.Data.Entities;
 
-namespace UnaPinta.Api.Migrations
+namespace UnaPinta.Data.Migrations
 {
     [DbContext(typeof(UnaPintaDBContext))]
     partial class UnaPintaDBContextModelSnapshot : ModelSnapshot
@@ -18,6 +18,27 @@ namespace UnaPinta.Api.Migrations
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.2");
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RoleClaims");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
                 {
@@ -39,7 +60,7 @@ namespace UnaPinta.Api.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RoleClaims");
+                    b.ToTable("AspNetRoleClaims");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<long>", b =>
@@ -143,7 +164,12 @@ namespace UnaPinta.Api.Migrations
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
 
+                    b.Property<long?>("RequestId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("RequestId");
 
                     b.ToTable("BloodTypes");
                 });
@@ -222,21 +248,6 @@ namespace UnaPinta.Api.Migrations
                     b.HasIndex("RequesterId");
 
                     b.ToTable("Requests");
-                });
-
-            modelBuilder.Entity("UnaPinta.Data.Entities.RequestPossibleBloodTypes", b =>
-                {
-                    b.Property<long>("RequestId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("BloodTypeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RequestId", "BloodTypeId");
-
-                    b.HasIndex("BloodTypeId");
-
-                    b.ToTable("RequestPossibleBloodTypes");
                 });
 
             modelBuilder.Entity("UnaPinta.Data.Entities.Role", b =>
@@ -456,6 +467,13 @@ namespace UnaPinta.Api.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("UnaPinta.Data.Entities.BloodType", b =>
+                {
+                    b.HasOne("UnaPinta.Data.Entities.Request", null)
+                        .WithMany("PossibleBloodTypes")
+                        .HasForeignKey("RequestId");
+                });
+
             modelBuilder.Entity("UnaPinta.Data.Entities.Request", b =>
                 {
                     b.HasOne("UnaPinta.Data.Entities.BloodComponent", "BloodComponentNav")
@@ -473,25 +491,6 @@ namespace UnaPinta.Api.Migrations
                     b.Navigation("BloodComponentNav");
 
                     b.Navigation("RequesterNav");
-                });
-
-            modelBuilder.Entity("UnaPinta.Data.Entities.RequestPossibleBloodTypes", b =>
-                {
-                    b.HasOne("UnaPinta.Data.Entities.BloodType", "BloodTypeNav")
-                        .WithMany("Requests")
-                        .HasForeignKey("BloodTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("UnaPinta.Data.Entities.Request", "RequestNav")
-                        .WithMany("PossibleBloodTypes")
-                        .HasForeignKey("RequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BloodTypeNav");
-
-                    b.Navigation("RequestNav");
                 });
 
             modelBuilder.Entity("UnaPinta.Data.Entities.User", b =>
@@ -531,8 +530,6 @@ namespace UnaPinta.Api.Migrations
 
             modelBuilder.Entity("UnaPinta.Data.Entities.BloodType", b =>
                 {
-                    b.Navigation("Requests");
-
                     b.Navigation("Users");
                 });
 

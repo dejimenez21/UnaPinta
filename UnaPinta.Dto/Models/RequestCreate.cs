@@ -19,6 +19,7 @@ namespace UnaPinta.Dto.Models
 
         public int BloodTypeId { get; set; }
 
+        [MaxLength(11)]
         public string Document { get; set; }
 
         public DateTime BirthDate { get; set; }
@@ -27,7 +28,7 @@ namespace UnaPinta.Dto.Models
         public string PrescriptionBase64 { get; set; }
 
         [Required]
-        public IEnumerable<int> PossibleBloodTypesId { get; set; }
+        public IEnumerable<int> PossibleBloodTypes { get; set; }
 
         public string PatientStory { get; set; }
 

@@ -23,7 +23,9 @@ namespace UnaPinta.Dto.Models
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
+        [Required(ErrorMessage = "Debe proveer un numero telefonico")]
         [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Numero telefonico no valido")]
         public string PhoneNumber { get; set; }
 
         [Required]
@@ -36,7 +38,7 @@ namespace UnaPinta.Dto.Models
 
         [Required]
         public string Role { get; set; }
-
+        [Range(1, 8)]
         public int? BloodTypeId { get; set; }
 
         public double? Weight { get; set; }

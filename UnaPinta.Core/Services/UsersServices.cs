@@ -44,7 +44,7 @@ namespace UnaPinta.Core.Services
                 
         }
 
-        private async Task<ConfirmationCode> GenerateConfirmationCode(int userId)
+        private async Task<ConfirmationCode> GenerateConfirmationCode(long userId)
         {
             Random rnd = new Random();
             StringBuilder builder = new StringBuilder();
@@ -66,7 +66,7 @@ namespace UnaPinta.Core.Services
             return confirmation;
         }
 
-        public async Task SendConfirmationCode(int userId)
+        public async Task SendConfirmationCode(long userId)
         {
             var confirmation = await GenerateConfirmationCode(userId);
 

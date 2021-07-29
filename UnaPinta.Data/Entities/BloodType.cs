@@ -12,6 +12,7 @@ namespace UnaPinta.Data.Entities
         public BloodType()
         {
             Users = new HashSet<User>();
+            Requests = new HashSet<RequestPossibleBloodTypes>();
         }
 
         [Key]
@@ -20,6 +21,7 @@ namespace UnaPinta.Data.Entities
         public string Description { get; set; }
 
         public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<RequestPossibleBloodTypes> Requests { get; set; }
     }
 
     

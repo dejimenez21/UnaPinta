@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace UnaPinta.Data.Entities
 {
-    public partial class Role : IdentityRole<int>
+    public partial class Role : IdentityRole<long>
     {
         
 
