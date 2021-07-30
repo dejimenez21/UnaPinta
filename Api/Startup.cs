@@ -14,6 +14,8 @@ using UnaPinta.Data.Contracts;
 using UnaPinta.Core.Contracts;
 using UnaPinta.Api.Extensions;
 using UnaPinta.Data;
+using NLog;
+using System.IO;
 
 namespace UnaPinta.Api
 {
@@ -22,6 +24,7 @@ namespace UnaPinta.Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
         }
 
         public IConfiguration Configuration { get; }
@@ -29,6 +32,8 @@ namespace UnaPinta.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.ConfigureLoggerService();
+
             //Controllers and ignoring reference loop
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
@@ -65,7 +70,7 @@ namespace UnaPinta.Api
             services.AddScoped<IUsersServices, UsersServices>();
             services.AddScoped<IRequestsService, RequestsService>();
             services.AddScoped<IWaitListServices, WaitListServices>();
-            services.AddScoped<IAuthenticationManager, AuthenticationService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
 
             //CORS
             services.AddCors(options =>
@@ -77,12 +82,14 @@ namespace UnaPinta.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.ConfigureExceptionHandler(logger);
 
             //app.UseHttpsRedirection();
 
