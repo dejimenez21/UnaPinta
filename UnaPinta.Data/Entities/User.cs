@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using UnaPinta.Dto.Enums;
 
 #nullable disable
 
 namespace UnaPinta.Data.Entities
 {
-    public partial class User : IdentityUser<int>
+    public partial class User : IdentityUser<long>
     {
         public User()
         {

@@ -1,4 +1,5 @@
 ﻿using UnaPinta.Data.Entities;
+using UnaPinta.Dto.Models;
 using AutoMapper;
 using System;
 using System.Collections.Generic;

@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using UnaPinta.Data.Configuration;
 
 #nullable disable
 
 namespace UnaPinta.Data.Entities
 {
-    public partial class UnaPintaDBContext : IdentityDbContext<User, Role, int>
+    public partial class UnaPintaDBContext : IdentityDbContext<User, Role, long>
     {
         public UnaPintaDBContext()
         {
@@ -45,43 +46,45 @@ namespace UnaPinta.Data.Entities
                 entity.ToTable(name: "Users");
             });
 
+
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.ToTable("Roles");
             });
-            modelBuilder.Entity<IdentityUserRole<int>>(entity =>
+            modelBuilder.Entity<IdentityUserRole<long>>(entity =>
             {
                 entity.ToTable("UserRoles");
                 //in case you chagned the TKey type
                 //  entity.HasKey(key => new { key.UserId, key.RoleId });
             });
 
-            modelBuilder.Entity<IdentityUserClaim<int>>(entity =>
+            modelBuilder.Entity<IdentityUserClaim<long>>(entity =>
             {
                 entity.ToTable("UserClaims");
             });
 
-            modelBuilder.Entity<IdentityUserLogin<int>>(entity =>
+            modelBuilder.Entity<IdentityUserLogin<long>>(entity =>
             {
                 entity.ToTable("UserLogins");
                 //in case you chagned the TKey type
                 //  entity.HasKey(key => new { key.ProviderKey, key.LoginProvider });       
             });
 
-            modelBuilder.Entity<IdentityRoleClaim<int>>(entity =>
+            modelBuilder.Entity<IdentityRoleClaim<long>>(entity =>
             {
                 entity.ToTable("RoleClaims");
 
             });
 
-            modelBuilder.Entity<IdentityUserToken<int>>(entity =>
+            modelBuilder.Entity<IdentityUserToken<long>>(entity =>
             {
                 entity.ToTable("UserTokens");
                 //in case you chagned the TKey type
                 // entity.HasKey(key => new { key.UserId, key.LoginProvider, key.Name });
 
             });
-            
+
+            modelBuilder.ApplyConfiguration(new RequestPossibleBloodTypesConfiguration());
         }
     }
 }

@@ -7,7 +7,7 @@ namespace UnaPinta.Data.Entities
 {
     public class Addresses
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public int MyProperty { get; set; }
     }
 }

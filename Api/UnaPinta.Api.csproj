@@ -26,6 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\UnaPinta.Core\UnaPinta.Core.csproj" />
     <ProjectReference Include="..\UnaPinta.Data\UnaPinta.Data.csproj" />
+    <ProjectReference Include="..\UnaPinta.Dto\UnaPinta.Dto.csproj" />
   </ItemGroup>
 
 
