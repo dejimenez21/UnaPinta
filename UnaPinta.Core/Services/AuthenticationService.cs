@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace UnaPinta.Core.Services
 {
-    public class AuthenticationService : IAuthenticationManager
+    public class AuthenticationService : IAuthenticationService
     {
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;

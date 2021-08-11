@@ -65,7 +65,7 @@ namespace UnaPinta.Api
             services.AddScoped<IUsersServices, UsersServices>();
             services.AddScoped<IRequestsService, RequestsService>();
             services.AddScoped<IWaitListServices, WaitListServices>();
-            services.AddScoped<IAuthenticationManager, AuthenticationService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
 
             //CORS
             services.AddCors(options =>
