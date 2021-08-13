@@ -22,9 +22,9 @@ namespace UnaPinta.Api.Controllers
         private readonly SignInManager<User> loginManager;
         private readonly RoleManager<Role> roleManager;
         private readonly IMapper mapper;
-        private readonly IAuthenticationManager _authManager;
+        private readonly IAuthenticationService _authManager;
 
-        public AuthController(IAuthenticationManager authManager, UserManager<User> userManager, SignInManager<User> loginManager, RoleManager<Role> roleManager, IMapper mapper)
+        public AuthController(IAuthenticationService authManager, UserManager<User> userManager, SignInManager<User> loginManager, RoleManager<Role> roleManager, IMapper mapper)
         {
             this.userManager = userManager;
             this.loginManager = loginManager;

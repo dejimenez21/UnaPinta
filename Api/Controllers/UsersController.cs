@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UnaPinta.Dto.Models;
 using UnaPinta.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
@@ -48,7 +49,7 @@ namespace UnaPinta.Api.Controllers
         }
 
         [HttpPost("confirm/{id}")]
-        public async Task<ActionResult<ConfirmationResponse>> ConfirmUser(int id, CodeSubmit code)
+        public async Task<ActionResult<ConfirmationResponse>> ConfirmUser(long id, CodeSubmit code)
         {
             var userToConfirm = await _repo.GetUserById(id);
             if(userToConfirm == null)

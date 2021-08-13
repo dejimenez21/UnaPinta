@@ -17,4 +17,8 @@
     <ProjectReference Include="..\UnaPinta.Dto\UnaPinta.Dto.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+
 </Project>

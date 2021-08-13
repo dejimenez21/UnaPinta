@@ -6,7 +6,7 @@ using UnaPinta.Dto.Models;
 
 namespace UnaPinta.Core.Contracts
 {
-    public interface IAuthenticationManager
+    public interface IAuthenticationService
     {
         Task<bool> ValidateUser(UserLogin login);
         Task<string> CreateToken();

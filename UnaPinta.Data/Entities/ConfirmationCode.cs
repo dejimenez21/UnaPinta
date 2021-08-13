@@ -11,7 +11,7 @@ namespace UnaPinta.Data.Entities
         [StringLength(6)]
         public string Code { get; set; }
         public DateTime ExpiresAt { get; set; } = DateTime.Now.AddHours(2);
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         [ForeignKey("UserId")]
         public User UserNav { get; set; }

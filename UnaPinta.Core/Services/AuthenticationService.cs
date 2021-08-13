@@ -14,14 +14,14 @@ using System.Threading.Tasks;
 
 namespace UnaPinta.Core.Services
 {
-    public class AuthenticationManager : IAuthenticationManager
+    public class AuthenticationService : IAuthenticationService
     {
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
 
         private User _user;
 
-        public AuthenticationManager(UserManager<User> userManager, IConfiguration configuration)
+        public AuthenticationService(UserManager<User> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _configuration = configuration;
