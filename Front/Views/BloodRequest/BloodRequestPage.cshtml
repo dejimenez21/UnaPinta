@@ -28,7 +28,7 @@
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Tipo de sangre</label>
-                <select asp-for="BloodTypeId" id="BloodTypeId" onchange="selBox()" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
+                <select asp-for="BloodTypeId" id="BloodTypeId" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
                     <option value="" disabled selected hidden>Seleccionar</option>
                     <option value="1">A+</option>
                     <option value="2">A-</option>
@@ -59,6 +59,15 @@
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Tipos de sangre a donar:</label>
                 <select asp-for="PossibleBloodTypesId" id="BloodTypeId_Required" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
+                    <option value="" disabled selected hidden>Seleccionar</option>
+                    @*<option value="1">A+</option>
+                    <option value="2">A-</option>
+                    <option value="3">B+</option>
+                    <option value="4">B-</option>
+                    <option value="5">AB+</option>
+                    <option value="6">AB-</option>
+                    <option value="7">O+</option>
+                    <option value="8">O-</option>*@
                 </select>
                 <div class="text-center">
                     <span class="text-danger" data-valmsg-replace="true" />
@@ -84,32 +93,9 @@
     </div>
 </div>
 <script type="text/javascript">
-    var userName = localStorage.getItem("userKey");
-    var jsonObj = JSON.parse(userName);
-    alert(jsonObj.token);
-
-    function selBox() {
-        var locations = {
-            'O+': ['O+', 'O-'],
-            'O-': ['O-'],
-            'A+': ['O+', 'O-', 'A+', 'A-'],
-            'A-': ['O-', 'A-'],
-            'B+': ['O+', 'O-', 'B+', 'B-'],
-            'B-': ['O-', 'B-'],
-            'AB+': ['O+', 'O-', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-'],
-            'AB-': ['O-', 'A-', 'B-', 'AB-'],
-        }
-
-        var $locations = $('#BloodTypeId_Required');
-        $('#BloodTypeId').change(function () {
-            var blood = $(this).val(), lcns = locations[blood] || [];
-
-            var html = $.map(lcns, function (lcn) {
-                return '<option value="' + lcn + '">' + lcn + '</option>'
-            }).join('');
-            $locations.html(html)
-        });
-    }
+    //var userName = localStorage.getItem("userKey");
+    //var jsonObj = JSON.parse(userName);
+    //alert(jsonObj.token);    
 
     function hideFields() {
         if ($('#forMeCheck').prop('checked')) {
