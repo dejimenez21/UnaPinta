@@ -21,7 +21,7 @@ namespace UnaPinta.Core.Profiles
             CreateMap<UserSignUp, User>();
 
             //From Entity to DTO
-
+            CreateMap<Role, RoleCreateResponseDto>();
         }
     }
     

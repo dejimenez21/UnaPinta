@@ -10,5 +10,7 @@ namespace UnaPinta.Core.Contracts
     {
         Task<bool> ValidateUser(UserLogin login);
         Task<string> CreateToken();
+
+        Task<RoleCreateResponseDto> CreateRole(RoleCreate roleCreate);
     }
 }
