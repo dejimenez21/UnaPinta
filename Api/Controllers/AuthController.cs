@@ -86,18 +86,14 @@ namespace UnaPinta.Api.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<User>> Authenticate(UserLogin obj)
         {
-            if (ModelState.IsValid)
-            {
-                
-                if(!await _authManager.ValidateUser(obj))
-                {
-                    return Unauthorized();
-                }
 
-                return Ok(new { Token = await _authManager.CreateToken() });
+            if(!await _authManager.ValidateUser(obj))
+            {
+                return Unauthorized();
             }
 
-            return BadRequest(ModelState);
+            return Ok(new { Token = await _authManager.CreateToken() });
+
         }
     
         [HttpPost("roles")]
@@ -105,19 +101,8 @@ namespace UnaPinta.Api.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                var roleName = roleCreate.RoleName;
-                var newRole = new Role()
-                {
-                    Name = roleName,
-                };
-
-                var roleResult = await roleManager.CreateAsync(newRole);
-
-                if (roleResult.Succeeded)
-                    return Created(Request.Path + $"/{newRole.Name}", newRole);
-
-                return Problem(roleResult.Errors.First().Description, null, 500);
+                var newRole = await _authManager.CreateRole(roleCreate);
+                return Created(Request.Path + $"/{newRole.Name}", newRole);
             }
             else
             {
