@@ -7,7 +7,7 @@ using UnaPinta.Data.Entities;
 
 namespace UnaPinta.Core.Contracts
 {
-    interface IProvinceService
+    public interface IProvinceService
     {
         Task<IEnumerable<Province>> GetAllProvinces();
     }

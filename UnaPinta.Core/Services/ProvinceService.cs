@@ -20,7 +20,7 @@ namespace UnaPinta.Core.Services
 
         public async Task<IEnumerable<Province>> GetAllProvinces()
         {
-            return await GetAllProvinces();
+            return await _repo.SelectAllProvinces();
         }
     }
 }
