@@ -16,10 +16,12 @@ namespace Una_Pinta.Controllers
     public class UserController : Controller
     {
         readonly IUserRepository _userRepository;
+        readonly IProvincesRepository _provincesRepository;
 
-        public UserController(IUserRepository userRepository)
+        public UserController(IUserRepository userRepository, IProvincesRepository provincesRepository)
         {
             _userRepository = userRepository;
+            _provincesRepository = provincesRepository;
         }
 
         public IActionResult UserLoginPage()
@@ -67,15 +69,9 @@ namespace Una_Pinta.Controllers
 
         public List<Provinces> GetProvinces()
         {
-            var client = new RestClient(ApiRequests.HostUrlLocations);
-            var request = new RestRequest(ApiRequests.GetProvinces, Method.GET);
-            request.RequestFormat = DataFormat.Json;
-            request.AddHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJfZW1haWwiOiJhYnJhaGFtbW9yaWxsbzc3N0BnbWFpbC5jb20iLCJhcGlfdG9rZW4iOiJiekhqMkpUQmUydi12SjF3cG9oTGNKaXVVcDd4SkVzRmdxUllQTi0yZE9DS2dKTlpraFhQRDhsSXBEYWRpelAwcmZNIn0sImV4cCI6MTYyODk5NzY3MH0.9T2tW_99SMepM6RC0X4PmjVp_iHUOuPNQkDEaMhiSAg");
-            request.AddHeader("Accept", "application/json");
-            var response = client.ExecuteAsync(request).Result.Content;
-            var content = JsonConvert.DeserializeObject<List<Provinces>>(response);
-            ViewBag.Provinces = new SelectList(content, "state_name", "state_name");
-            return content;
+            var listProvinces = _provincesRepository.GetProvinces().Result;
+            ViewBag.Provinces = new SelectList(listProvinces, "state_name", "state_name");
+            return listProvinces;
         }
     }
 }
