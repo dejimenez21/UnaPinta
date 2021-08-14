@@ -60,10 +60,9 @@
                     </div>
                     <div class="col-sm-6">
                         <label style="font-family: 'Roboto', sans-serif;">Provincia</label>
-                        <input type="text" data-val-required="La provincia es un campo obligatorio" asp-for="Location" data-val="true" class="form-control">
-                        <div class="text-center">
-                            <span data-valmsg-for="Location" class="text-danger" data-valmsg-replace="true" />
-                        </div>
+                        @Html.DropDownListFor(model => model.Location, ViewBag.Provinces as SelectList,
+                        "Selecciona la provincia", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
                     </div>
                     <div class="col-sm-6">
                         <label style="font-family: 'Roboto', sans-serif;">Email</label>
