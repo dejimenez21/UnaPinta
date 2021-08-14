@@ -7,6 +7,8 @@ namespace Una_Pinta.Models
 {
     public class Provinces
     {
-        public string state_name { get; set; }
+        public int id { get; set; }
+        public string code { get; set; }
+        public string name { get; set; }
     }
 }

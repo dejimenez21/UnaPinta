@@ -70,7 +70,7 @@ namespace Una_Pinta.Controllers
         public List<Provinces> GetProvinces()
         {
             var listProvinces = _provincesRepository.GetProvinces().Result;
-            ViewBag.Provinces = new SelectList(listProvinces, "state_name", "state_name");
+            ViewBag.Provinces = new SelectList(listProvinces, "id", "name");
             return listProvinces;
         }
     }
