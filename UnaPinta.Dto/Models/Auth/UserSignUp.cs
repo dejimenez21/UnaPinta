@@ -40,7 +40,8 @@ namespace UnaPinta.Dto.Models
         public string Role { get; set; }
         [Range(1, 8)]
         public int? BloodTypeId { get; set; }
-
+        [Required]
+        public string ProvinceCode { get; set; }
         public double? Weight { get; set; }
     }
 }
