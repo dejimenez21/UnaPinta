@@ -133,5 +133,10 @@ namespace UnaPinta.Data
         {
             return await _context.Provinces.ToListAsync();
         }
+
+        public async Task<Province> SelectProvinceByCode(string code)
+        {
+            return await _context.Provinces.FirstOrDefaultAsync(p => p.Code == code);
+        }
     }
 }

@@ -23,57 +23,64 @@ namespace UnaPinta.Api.Controllers
         private readonly RoleManager<Role> roleManager;
         private readonly IMapper mapper;
         private readonly IAuthenticationService _authManager;
+        private readonly IProvinceService _provinceService;
 
-        public AuthController(IAuthenticationService authManager, UserManager<User> userManager, SignInManager<User> loginManager, RoleManager<Role> roleManager, IMapper mapper)
+        public AuthController(IAuthenticationService authManager, UserManager<User> userManager, 
+            SignInManager<User> loginManager, RoleManager<Role> roleManager, IProvinceService provinceService, 
+            IMapper mapper)
         {
             this.userManager = userManager;
             this.loginManager = loginManager;
             this.roleManager = roleManager;
             this.mapper = mapper;
             _authManager = authManager;
+            _provinceService = provinceService;
         }
 
 
         [HttpPost("signup")]
         public async Task <ActionResult<User>> SignUp(UserSignUp obj)
         {
-            if(ModelState.IsValid)
+            
+            User user = mapper.Map<UserSignUp, User>(obj);
+            // Valida si la provincia existe
+            var province = await _provinceService.RetrieveProvinceByCode(obj.ProvinceCode);
+
+            if (province == null)
+                return BadRequest("La provincia especificada no existe");
+
+            user.ProvinceId = province.Id;
+            
+            var userCreationResult = await userManager.CreateAsync(user, obj.Password);
+                
+            if (userCreationResult.Succeeded)
             {
-                User user = mapper.Map<UserSignUp, User>(obj);
-                var userCreationResult = await userManager.CreateAsync(user, obj.Password);
-                
-                if (userCreationResult.Succeeded)
-                {
 
-                    IdentityResult userRoleResult = new IdentityResult();
-                    try
-                    {
-                        userRoleResult = await userManager.AddToRoleAsync(user, obj.Role);
-                    }
-                    catch(Exception e)
-                    {
-                        await userManager.DeleteAsync(user);
-                        return BadRequest(e.Message);
-                    }
+                IdentityResult userRoleResult = new IdentityResult();
+                try
+                {
+                    userRoleResult = await userManager.AddToRoleAsync(user, obj.Role);
+                }
+                catch(Exception e)
+                {
+                    await userManager.DeleteAsync(user);
+                    return BadRequest(e.Message);
+                }
                     
-                    if(!userRoleResult.Succeeded)
-                    {
-                        await userManager.DeleteAsync(user);
-                        return Problem(userRoleResult.Errors.First().Description, null, 400);
-                    }
-                       
-                }
-                else
+                if(!userRoleResult.Succeeded)
                 {
-                    return Problem(userCreationResult.Errors.First().Description, null, 400);
+                    await userManager.DeleteAsync(user);
+                    return Problem(userRoleResult.Errors.First().Description, null, 400);
                 }
-
-                return Created(Request.Path + $"/{user.UserName}", obj);
-
-                
+                       
+            }
+            else
+            {
+                return Problem(userCreationResult.Errors.First().Description, null, 400);
             }
 
-            return BadRequest(ModelState);  
+            return Created(Request.Path + $"/{user.UserName}", obj);
+
         }
 
         [HttpPost("login")]
