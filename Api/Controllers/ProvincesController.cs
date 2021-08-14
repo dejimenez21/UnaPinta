@@ -20,6 +20,7 @@ namespace UnaPinta.Api.Controllers
             _provinceService = provinceService;
         }
 
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<Province>>> GetAllProvinces()
         {
             var provinces = await _provinceService.GetAllProvinces();
