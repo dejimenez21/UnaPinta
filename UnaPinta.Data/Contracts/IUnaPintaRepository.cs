@@ -40,5 +40,8 @@ namespace UnaPinta.Data.Contracts
 
         //Condition table methods
         Task<Condition> GetConditionById(ConditionEnum id);
+
+        //Province table methods
+        Task<IEnumerable<Province>> SelectAllProvinces();
     }
 }

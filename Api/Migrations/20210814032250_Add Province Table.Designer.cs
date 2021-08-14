@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UnaPinta.Data.Entities;
 
 namespace UnaPinta.Api.Migrations
 {
     [DbContext(typeof(UnaPintaDBContext))]
-    partial class UnaPintaDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210814032250_Add Province Table")]
+    partial class AddProvinceTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -361,9 +363,6 @@ namespace UnaPinta.Api.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("ProvinceId")
-                        .HasColumnType("int");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -391,8 +390,6 @@ namespace UnaPinta.Api.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("ProvinceId");
 
                     b.ToTable("Users");
                 });
@@ -525,13 +522,7 @@ namespace UnaPinta.Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UnaPinta.Data.Entities.Province", "ProvinceNav")
-                        .WithMany()
-                        .HasForeignKey("ProvinceId");
-
                     b.Navigation("BloodTypeNav");
-
-                    b.Navigation("ProvinceNav");
                 });
 
             modelBuilder.Entity("UnaPinta.Data.Entities.WaitList", b =>
