@@ -21,7 +21,7 @@ namespace Una_Pinta.Services
         /// </summary>
         /// <returns>HttpResponseMessage</returns>
         /// <exception cref="System.WebException">Thrown when status code of response are different to 200 (OK)</exception>
-        public Task<int> GetUser(UserSignUp userSignUp)
+        public Task<IRestResponse> GetUser(UserSignUp userSignUp)
         {
             var client = new RestClient(ApiRequests.HostUrl);
             var request = new RestRequest(ApiRequests.GetUserLogin, Method.POST);
@@ -31,8 +31,8 @@ namespace Una_Pinta.Services
             request.AddJsonBody(userSignUp);
             try
             {
-                var queryResult = client.ExecuteAsync(request).Result.StatusCode;
-                return Task.FromResult(((int)queryResult));
+                var queryResult = client.ExecuteAsync(request).Result;
+                return Task.FromResult(queryResult);
             }
             catch (WebException ex)
             {

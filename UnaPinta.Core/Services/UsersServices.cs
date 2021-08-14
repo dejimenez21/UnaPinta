@@ -5,6 +5,7 @@ using UnaPinta.Data.Entities;
 using UnaPinta.Dto.Models;
 using UnaPinta.Data.Contracts;
 using UnaPinta.Core.Contracts;
+using UnaPinta.Dto.Models;
 
 namespace UnaPinta.Core.Services
 {

@@ -59,6 +59,13 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
+                        <label style="font-family: 'Roboto', sans-serif;">Provincia</label>
+                        <input type="text" data-val-required="La provincia es un campo obligatorio" asp-for="Location" data-val="true" class="form-control">
+                        <div class="text-center">
+                            <span data-valmsg-for="Location" class="text-danger" data-valmsg-replace="true" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
                         <label style="font-family: 'Roboto', sans-serif;">Email</label>
                         <input type="email" data-val-required="El email es un campo obligatorio" asp-for="Email" data-val="true" class="form-control">
                         <div class="text-center">

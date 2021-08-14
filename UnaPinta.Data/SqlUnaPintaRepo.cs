@@ -128,5 +128,15 @@ namespace UnaPinta.Data
             if(!items.Any()) return DateTime.Now.Subtract(new TimeSpan(5,5,5));
             return items.Max(x=>x.AvailableAt);
         }
+
+        public async Task<IEnumerable<Province>> SelectAllProvinces()
+        {
+            return await _context.Provinces.ToListAsync();
+        }
+
+        public async Task<Province> SelectProvinceByCode(string code)
+        {
+            return await _context.Provinces.FirstOrDefaultAsync(p => p.Code == code);
+        }
     }
 }

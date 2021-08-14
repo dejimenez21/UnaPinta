@@ -9,6 +9,7 @@ using AutoMapper;
 using UnaPinta.Data.Contracts;
 using UnaPinta.Core.Contracts;
 using UnaPinta.Data.Entities;
+using UnaPinta.Dto.Models;
 
 namespace UnaPinta.Api.Controllers
 {

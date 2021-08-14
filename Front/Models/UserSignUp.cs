@@ -36,6 +36,9 @@ namespace Una_Pinta.Models
         [Required]
         public string Role { get; set; }
 
+        [Required]
+        public string Location { get; set; }
+
         public int? BloodTypeId { get; set; }
 
         public double? Weight { get; set; }

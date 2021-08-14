@@ -53,7 +53,7 @@
 <script type="text/javascript">
     function OnSuccess(response) {
         var userName = document.getElementById("userNametxt").value;
-        if (response != 200) {
+        if (response.code != 200) {
             swal({
                 title: "Advertencia",
                 text: "Este usuario no existe",
@@ -65,7 +65,7 @@
             });
         }
         else {
-            window.localStorage.setItem("userKey", userName);
+            window.localStorage.setItem("userKey", response.responseText);
             window.location.href = "/BloodRequest/BloodRequestPage"
         }
     }
