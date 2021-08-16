@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnaPinta.Core.Errors.Role;
 using UnaPinta.Core.Errors;
+using UnaPinta.Api.Filters;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -101,16 +102,8 @@ namespace UnaPinta.Api.Controllers
         [HttpPost("roles")]
         public async Task<ActionResult<Role>> CreateRole(RoleCreate roleCreate)
         {
-            try
-            {
-                var newRole = await _authService.CreateRole(roleCreate);
-                return Created(Request.Path + $"/{newRole.Name}", newRole);
-            }
-            catch(BaseDomainException ex)
-            {
-                Response.StatusCode = ex.StatusCode;
-                return new JsonResult(ex.ToResponseObject());
-            }
+            var newRole = await _authService.CreateRole(roleCreate);
+            return Created(Request.Path + $"/{newRole.Name}", newRole);
         }
 
         [HttpPost("{username}/roles")]

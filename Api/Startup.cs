@@ -16,6 +16,8 @@ using UnaPinta.Api.Extensions;
 using UnaPinta.Data;
 using NLog;
 using System.IO;
+using Microsoft.AspNetCore.Mvc.Filters;
+using UnaPinta.Api.Filters;
 
 namespace UnaPinta.Api
 {
@@ -34,18 +36,14 @@ namespace UnaPinta.Api
         {
             services.ConfigureLoggerService();
 
-            //Controllers and ignoring reference loop
-            services.AddControllers()
+            //Controllers with domainExceptionFilter and ignoring reference loop
+            services.AddControllers( options => options.Filters.Add<DomainExceptionFilter>())
                 .AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling 
-                = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                    options.SerializerSettings.ReferenceLoopHandling 
+                        = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 );
 
             //DbContext
-            //services.AddDbContext<UnaPintaDBContext>(
-            //    //Para cambiar a SQL Server reemplazar metodo "UseSqlite" por "UseSqlServer" y cambiar el connection string.
-            //    options => options.UseSqlite(Configuration.GetConnectionString("SQLiteConnection"))
-            //);
             services.ConfigureDbContext(Configuration);
 
             //Identity and authentication

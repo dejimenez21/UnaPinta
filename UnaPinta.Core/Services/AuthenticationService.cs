@@ -11,8 +11,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using UnaPinta.Dto.Models;
 using AutoMapper;
+using UnaPinta.Core.Errors.Role;
 
 namespace UnaPinta.Core.Services
 {
@@ -45,6 +45,8 @@ namespace UnaPinta.Core.Services
 
             if (roleResult.Succeeded)
                 return _mapper.Map<RoleCreateResponseDto>(newRole);
+            else if (roleResult.Errors.Any(e => e.Code == "DuplicateRoleName"))
+                throw new AlreadyExistsRoleException(roleResult.Errors.First().Description);
             else
                 throw new Exception(roleResult.Errors.First().Description);
         }
