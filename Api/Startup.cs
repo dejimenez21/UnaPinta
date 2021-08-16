@@ -88,7 +88,7 @@ namespace UnaPinta.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.ConfigureExceptionHandler(logger);
+            app.ConfigureExceptionHandler(logger, env);
 
             //app.UseHttpsRedirection();
 

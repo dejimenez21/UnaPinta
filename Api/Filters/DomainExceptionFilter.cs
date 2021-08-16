@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using UnaPinta.Core.Errors;
+using UnaPinta.Core.Exceptions;
 
 namespace UnaPinta.Api.Filters
 {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UnaPinta.Core.Errors.Role
+namespace UnaPinta.Core.Exceptions.Role
 {
     public class AlreadyExistsRoleException : BaseDomainException
     {

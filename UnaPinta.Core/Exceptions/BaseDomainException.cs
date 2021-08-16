@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UnaPinta.Core.Errors
+namespace UnaPinta.Core.Exceptions
 {
     public class BaseDomainException : Exception
     {

@@ -12,7 +12,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using UnaPinta.Core.Errors.Role;
+using UnaPinta.Core.Exceptions.Role;
 
 namespace UnaPinta.Core.Services
 {
