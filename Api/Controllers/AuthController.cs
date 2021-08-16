@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UnaPinta.Core.Errors.Role;
+using UnaPinta.Core.Errors;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,7 +24,7 @@ namespace UnaPinta.Api.Controllers
         private readonly SignInManager<User> loginManager;
         private readonly RoleManager<Role> roleManager;
         private readonly IMapper mapper;
-        private readonly IAuthenticationService _authManager;
+        private readonly IAuthenticationService _authService;
         private readonly IProvinceService _provinceService;
 
         public AuthController(IAuthenticationService authManager, UserManager<User> userManager, 
@@ -33,7 +35,7 @@ namespace UnaPinta.Api.Controllers
             this.loginManager = loginManager;
             this.roleManager = roleManager;
             this.mapper = mapper;
-            _authManager = authManager;
+            _authService = authManager;
             _provinceService = provinceService;
         }
 
@@ -87,26 +89,27 @@ namespace UnaPinta.Api.Controllers
         public async Task<ActionResult<User>> Authenticate(UserLogin obj)
         {
 
-            if(!await _authManager.ValidateUser(obj))
+            if(!await _authService.ValidateUser(obj))
             {
                 return Unauthorized();
             }
 
-            return Ok(new { Token = await _authManager.CreateToken() });
+            return Ok(new { Token = await _authService.CreateToken() });
 
         }
-    
+
         [HttpPost("roles")]
         public async Task<ActionResult<Role>> CreateRole(RoleCreate roleCreate)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var newRole = await _authManager.CreateRole(roleCreate);
+                var newRole = await _authService.CreateRole(roleCreate);
                 return Created(Request.Path + $"/{newRole.Name}", newRole);
             }
-            else
+            catch(BaseDomainException ex)
             {
-                return BadRequest(ModelState);
+                Response.StatusCode = ex.StatusCode;
+                return new JsonResult(ex.ToResponseObject());
             }
         }
 
