@@ -28,6 +28,7 @@ namespace Una_Pinta
             services.AddSession();
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<IProvincesRepository, ProvincesRepository>();
+            services.AddSingleton<IBloodTypesRepository, BloodTypesRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

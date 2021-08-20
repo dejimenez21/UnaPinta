@@ -11,5 +11,10 @@ namespace Una_Pinta.Helpers.Requests
         public static string PostUserSignup = "api/Auth/signup";
         public static string GetUserLogin = "api/Auth/login";
         public static string GetProvinces = "api/provinces";
+
+        public static string GetBloodTypesPossibles(int idBlood)
+        {
+            return $"api/BloodTypes/compatible/{idBlood}";
+        }
     }
 }

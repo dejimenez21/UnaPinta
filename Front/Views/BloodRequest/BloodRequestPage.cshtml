@@ -28,7 +28,8 @@
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Tipo de sangre</label>
-                <select asp-for="BloodTypeId" id="BloodTypeId" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
+                @Html.DropDownListFor(Model => Model.BloodTypeId, ViewData["bloodTypesList"] as List<SelectListItem>, "Tipo de sangre", new { @class = "form-control", @id = "bloodtypelist" })
+                @*<select asp-for="BloodTypeId" id="bloodtypelist" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
                     <option value="" disabled selected hidden>Seleccionar</option>
                     <option value="1">A+</option>
                     <option value="2">A-</option>
@@ -38,7 +39,7 @@
                     <option value="6">AB-</option>
                     <option value="7">O+</option>
                     <option value="8">O-</option>
-                </select>
+                </select>*@
                 <div class="text-center">
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
@@ -58,8 +59,10 @@
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Tipos de sangre a donar:</label>
-                <select asp-for="PossibleBloodTypes" id="BloodTypeId_Required" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
-                </select>
+                @*@Html.DropDownListFor(Model => Model.PossibleBloodTypes, ViewData["bloodTypesListCompatible"] as List<SelectListItem>, "Tipo de sangre compatible", new { @class = "form-control", @id = "possiblebloodtype" })*@
+            @*<select asp-for="PossibleBloodTypes" id="possiblebloodtype" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
+                <option value="" disabled selected hidden>Seleccionar</option>
+            </select>*@
                 <div class="text-center">
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
@@ -86,7 +89,26 @@
 <script type="text/javascript">
     //var userName = localStorage.getItem("userKey");
     //var jsonObj = JSON.parse(userName);
-    //alert(jsonObj.token);    
+    //alert(jsonObj.token);
+    $(document).ready(function () {
+        $("#bloodtypelist").change(function () {
+            var strSelected = "";
+            $("#bloodtypelist option:selected").each(function () {
+                strSelected += $(this)[0].value;
+            });
+            alert(strSelected)
+            var url = "/BloodRequest/GetBloodTypes/" + strSelected;
+
+            $.post(url, function (data) {
+                alert(data)
+                // do something if necessary
+            });
+            $.OnSuccess(function (response) {
+                alert(response.id);
+                alert(response.text);
+            });
+        });
+    });
 
     function hideFields() {
         if ($('#forMeCheck').prop('checked')) {
@@ -133,10 +155,10 @@
 
     function OnSuccess(response) {
         if (response != 200) {
-            
+
         }
         else {
-            
+
         }
     }
 </script>
