@@ -47,7 +47,6 @@ namespace Una_Pinta.Controllers
                 var searchtype = bloodTypes.Find(elem => elem.Value == item.ToString());
                 selectedTypes.Add(new SelectListItem { Text = searchtype.Text, Value = searchtype.Value});
             }
-            ViewData["bloodTypesListCompatible"] = selectedTypes;
             var types = selectedTypes.Select(elem => new { id = elem.Value, text = elem.Text });
             return Json(new { content = types });
         }
