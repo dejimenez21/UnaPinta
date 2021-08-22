@@ -74,9 +74,9 @@
     </div>
 </div>
 <script type="text/javascript">
-    //var userName = localStorage.getItem("userKey");
-    //var jsonObj = JSON.parse(userName);
-    //alert(jsonObj.token);
+    var userName = localStorage.getItem("userKey");
+    var jsonObj = JSON.parse(userName);
+    alert(jsonObj.token);
 
     let dropdown = $('#possiblebloodtype');
     
@@ -93,7 +93,6 @@
 
             $.post(url, function (data) {
                 var result = JSON.stringify(data.content)
-                alert(result);
                 $.each(data.content, function (key, entry) {
                     dropdown.append($('<option></option>').attr('value', entry.id).text(entry.text));
                 })
@@ -124,11 +123,13 @@
             document: null,
             birthDate: $("#BirthDate").val(),
             prescriptionBase64: $("#PrescriptionBase64").val(),
-            possibleBloodTypesId: $("#PossibleBloodTypesId").val(),
+            possibleBloodTypesId: $("#possiblebloodtype").val(),
             patientStory: $("#PatientStory").val(),
             responseDueDate: $("#ResponseDueDate").val(),
             forMe: false
         });
+        var object = JSON.stringify(obj)
+        alert(object);
 
         $.ajax({
             url: 'https://localhost:44393/api/Requests',

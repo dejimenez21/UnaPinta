@@ -31,7 +31,6 @@ namespace Una_Pinta.Controllers
 
         public IActionResult UserRegisterPage()
         {
-            GetProvinces();
             return View();
         }
 
@@ -67,11 +66,16 @@ namespace Una_Pinta.Controllers
             }
         }
 
-        public List<Provinces> GetProvinces()
+        public IActionResult GetProvinces()
         {
             var listProvinces = _provincesRepository.GetProvinces().Result;
-            ViewBag.Provinces = new SelectList(listProvinces, "id", "name");
-            return listProvinces;
+            var selectList = new List<SelectListItem>();
+            foreach (var item in listProvinces)
+            {
+                selectList.Add(new SelectListItem { Text = item.name, Value = item.id.ToString() });
+            }
+            var provinces = selectList.Select(elem => new { id = Convert.ToInt32(elem.Value), name = elem.Text });
+            return Json(new { content = provinces });
         }
     }
 }

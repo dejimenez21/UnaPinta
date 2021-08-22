@@ -60,9 +60,8 @@
                     </div>
                     <div class="col-sm-6">
                         <label style="font-family: 'Roboto', sans-serif;">Provincia</label>
-                        @Html.DropDownListFor(model => model.Location, ViewBag.Provinces as SelectList,
-                        "Selecciona la provincia", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+                        <select data-val-required="El tipo de sangre es un campo obligatorio" asp-for="ProvinceId" id="provincesDropdown" data-val="true" class="form-control">
+                        </select>
                     </div>
                     <div class="col-sm-6">
                         <label style="font-family: 'Roboto', sans-serif;">Email</label>
@@ -110,6 +109,22 @@
     </div>
 </div>
 <script type="text/javascript">
+    $(document).ready(function () {
+        let dropdown = $('#provincesDropdown');
+        dropdown.empty();
+        dropdown.append('<option selected="true" disabled>Provincia</option>');
+        dropdown.prop('selectedIndex', 0);
+        
+        var url = "/User/GetProvinces/";
+
+        $.get(url, function (data) {
+            var result = JSON.stringify(data.content)
+            $.each(data.content, function (key, entry) {
+                dropdown.append($('<option></option>').attr('value', entry.id).text(entry.name));
+            })
+            // do something if necessary
+        });
+    });
     function Validate() {
         var password = document.getElementById("passwordtxt").value;
         var confirmPassword = document.getElementById("confirmpasswordtxt").value;
