@@ -64,5 +64,10 @@ namespace Una_Pinta.Controllers
             return Json(new { content = types });
         }
 
+        public IActionResult BloodRequestDetail()
+        {
+            return View();
+        }
+
     }
 }
