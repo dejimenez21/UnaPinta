@@ -1,20 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Una_Pinta.Services;
+using UnaPinta.Dto.Models;
 
 namespace Una_Pinta.Controllers
 {
     public class BloodRequestController : Controller
     {
         readonly IBloodTypesRepository _bloodTypesRepository;
+        readonly IBloodRequestRepository _bloodRequestRepository;
         List<SelectListItem> bloodTypes = new List<SelectListItem>();
-        public BloodRequestController(IBloodTypesRepository bloodTypesRepository)
+        public BloodRequestController(IBloodTypesRepository bloodTypesRepository, IBloodRequestRepository bloodRequestRepository)
         {
             _bloodTypesRepository = bloodTypesRepository;
+            _bloodRequestRepository = bloodRequestRepository;
         }
 
         public IActionResult BloodRequestPage()
@@ -37,6 +41,15 @@ namespace Una_Pinta.Controllers
         }
 
         [HttpPost]
+        public IActionResult TapBloodRequestCreate(RequestCreate requestCreate)
+        {
+            requestCreate.PrescriptionBase64 = "something";
+            var cookie = TempData.Peek("tokenval");
+            var result = _bloodRequestRepository.PostBloodRequest(requestCreate, cookie.ToString()).Result;
+            return Json(new { code = (int)result.StatusCode, responseText = result.Content });
+        }
+
+        [HttpPost]
         public IActionResult GetBloodTypes(int id)
         {
             LoadBloodTypes();
@@ -50,5 +63,6 @@ namespace Una_Pinta.Controllers
             var types = selectedTypes.Select(elem => new { id = elem.Value, text = elem.Text });
             return Json(new { content = types });
         }
+
     }
 }

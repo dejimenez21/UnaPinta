@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Una_Pinta.Helpers.Requests;
 using Una_Pinta.Models;
 using Una_Pinta.Services;
@@ -47,23 +47,18 @@ namespace Una_Pinta.Controllers
             var result = _userRepository.GetUser(userSignUp).Result;
             if (((int)result.StatusCode) == 200)
             {
-                SetUserCookies(userSignUp);
+                SetUserCookies(result);
             }
             return Json(new { code = (int)result.StatusCode, responseText = result.Content });
         }
 
-        public void SetUserCookies(UserSignUp userSignUp)
+        public void SetUserCookies(IRestResponse restResponse)
         {
             var option = new CookieOptions();
             option.Expires = DateTime.Now.AddMinutes(50);
-            var username = "";
-
-            if (userSignUp.UserName is not null && userSignUp.Password is not null)
-            {
-                HttpContext.Session.SetString(username, userSignUp.UserName);
-                ViewBag.UserKeyName = HttpContext.Session.GetString(username);
-                Response.Cookies.Append("id_user_key", $"{username}", option);
-            }
+            var obj = JObject.Parse(restResponse.Content);
+            var gettoken = obj["token"].ToString();
+            TempData["tokenval"] = gettoken;
         }
 
         public IActionResult GetProvinces()

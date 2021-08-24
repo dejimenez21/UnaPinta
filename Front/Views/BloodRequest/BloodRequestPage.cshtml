@@ -11,9 +11,9 @@
         <div class="card-body">
             <form data-ajax="true"
                   data-ajax-method="POST"
-                  data-ajax-success="OnSuccess" class="container">
+                  data-ajax-success="OnSuccess" class="container" asp-action="TapBloodRequestCreate" asp-controller="BloodRequest">
                 <label style="font-family: 'Roboto', sans-serif;" id="nameLabel">Nombre:</label>
-                <input type="text" asp-for="Name" autocomplete="on" id="Name" data-val-required="El nombre es un campo obligatorio" placeholder="Calle B esquina..." class="form-control" />
+                <input type="text" asp-for="Name" autocomplete="on" id="Name" data-val-required="El nombre es un campo obligatorio" placeholder="Nombre" class="form-control" />
                 <div class="text-center">
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
@@ -47,7 +47,7 @@
                 <div class="text-center">
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
-                <label style="font-family: 'Roboto', sans-serif;">Tipos de sangre a donar:</label>                
+                <label style="font-family: 'Roboto', sans-serif;">Tipos de sangre a donar:</label>
                 <select asp-for="PossibleBloodTypes" id="possiblebloodtype" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
                 </select>
                 <div class="text-center">
@@ -66,7 +66,8 @@
                 <br />
                 <div class="justify-end">
                     <div>
-                        <button onclick="btnRequestBlood()" class="btn btn-success float-right">Crear</button>
+                        @*<button onclick="btnRequestBlood()" class="btn btn-success float-right">Crear</button>*@
+                        <button type="submit" class="btn btn-success float-right">Crear</button>
                     </div>
                 </div>
             </form>
@@ -77,6 +78,8 @@
     var userName = localStorage.getItem("userKey");
     var jsonObj = JSON.parse(userName);
     alert(jsonObj.token);
+    //var hideToken = document.getElementById('tokenid');
+    //hideToken.innerHTML = jsonObj.token;
 
     let dropdown = $('#possiblebloodtype');
     
@@ -111,47 +114,61 @@
         }
     }
 
-    function btnRequestBlood() {
-        var obj = {};
-        obj.bloodRequests = [];
-        obj.bloodRequests.push({
-            bloodComponentId: $("#BloodComponentId").val(),
-            amount: $("#Amount").val(),
-            name: $("#Name").val(),
-            centerAddress: $("#CenterAddress").val(),
-            bloodTypeId: $("#BloodTypeId").val(),
-            document: null,
-            birthDate: $("#BirthDate").val(),
-            prescriptionBase64: $("#PrescriptionBase64").val(),
-            possibleBloodTypesId: $("#possiblebloodtype").val(),
-            patientStory: $("#PatientStory").val(),
-            responseDueDate: $("#ResponseDueDate").val(),
-            forMe: false
-        });
-        var object = JSON.stringify(obj)
-        alert(object);
+    //function btnRequestBlood() {
+    //    var obj = {};
+    //    obj.bloodRequests = [];
+    //    obj.bloodRequests.push({
+    //        bloodComponentId: $("#BloodComponentId").val(),
+    //        amount: $("#Amount").val(),
+    //        name: $("#Name").val(),
+    //        centerAddress: $("#CenterAddress").val(),
+    //        bloodTypeId: $("#BloodTypeId").val(),
+    //        document: null,
+    //        birthDate: $("#BirthDate").val(),
+    //        prescriptionBase64: $("#PrescriptionBase64").val(),
+    //        possibleBloodTypesId: $("#possiblebloodtype").val(),
+    //        patientStory: $("#PatientStory").val(),
+    //        responseDueDate: $("#ResponseDueDate").val(),
+    //        forMe: false
+    //    });
+    //    var object = JSON.stringify(obj)
+    //    alert(object);
 
-        $.ajax({
-            url: 'https://localhost:44393/api/Requests',
-            method: "POST",
-            data: JSON.stringify(obj),
-            dataType: "json",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${jsonObj.token}`
-            }
-        }).done(onSuccess)
-            .fail(onError)
-            .always(always);
-    }
+    //    $.ajax({
+    //        url: 'https://localhost:44393/api/Requests',
+    //        method: "POST",
+    //        data: JSON.stringify(obj),
+    //        dataType: "json",
+    //        headers: {
+    //            'Accept': 'application/json',
+    //            'Content-Type': 'application/json',
+    //            'Authorization': `Bearer ${jsonObj.token}`
+    //        }
+    //    }).done(onSuccess)
+    //        .fail(onError)
+    //        .always(always);
+    //}
 
     function OnSuccess(response) {
-        if (response != 200) {
-
+        if (response.code != 201) {
+            swal({
+                title: "Error",
+                text: response.responseText,
+                icon: "error",
+                showCancelButton: true,
+                closeOnConfirm: true,
+                closeOnCancel: true
+            });
         }
         else {
-
+            swal({
+                title: "Correcto",
+                text: "Solicitud creada correctamente",
+                icon: "success",
+                showCancelButton: true,
+                closeOnConfirm: true,
+                closeOnCancel: true
+            });            
         }
     }
 </script>
