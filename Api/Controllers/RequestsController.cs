@@ -22,22 +22,6 @@ namespace UnaPinta.Api.Controllers
             _service = service;
         }
 
-        // [HttpGet("")]
-        // public async Task<ActionResult<IEnumerable<TModel>>> GetTModels()
-        // {
-        //     await Task.Yield();
-
-        //     return new List<TModel> { };
-        // }
-
-        // [HttpGet("{id}")]
-        // public async Task<ActionResult<TModel>> GetTModelById(int id)
-        // {
-        //     await Task.Yield();
-
-        //     return null;
-        // }
-
         [HttpPost("")]
         public async Task<ActionResult<Request>> CreateRequest(RequestCreate requestCreate)
         {
@@ -60,20 +44,5 @@ namespace UnaPinta.Api.Controllers
             return Created("api/requests", request);
         }
 
-        // [HttpPut("{id}")]
-        // public async Task<IActionResult> PutTModel(int id, TModel model)
-        // {
-        //     await Task.Yield();
-
-        //     return NoContent();
-        // }
-
-        // [HttpDelete("{id}")]
-        // public async Task<ActionResult<TModel>> DeleteTModelById(int id)
-        // {
-        //     await Task.Yield();
-
-        //     return null;
-        // }
     }
 }
