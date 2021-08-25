@@ -11,9 +11,9 @@
         <div class="card-body">
             <form data-ajax="true"
                   data-ajax-method="POST"
-                  data-ajax-success="OnSuccess" class="container">
+                  data-ajax-success="OnSuccess" class="container" asp-action="TapBloodRequestCreate" asp-controller="BloodRequest">
                 <label style="font-family: 'Roboto', sans-serif;" id="nameLabel">Nombre:</label>
-                <input type="text" asp-for="Name" autocomplete="on" id="Name" data-val-required="El nombre es un campo obligatorio" placeholder="Calle B esquina..." class="form-control" />
+                <input type="text" asp-for="Name" autocomplete="on" id="Name" data-val-required="El nombre es un campo obligatorio" placeholder="Nombre" class="form-control" />
                 <div class="text-center">
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
@@ -28,17 +28,7 @@
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Tipo de sangre</label>
-                <select asp-for="BloodTypeId" id="BloodTypeId" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
-                    <option value="" disabled selected hidden>Seleccionar</option>
-                    <option value="1">A+</option>
-                    <option value="2">A-</option>
-                    <option value="3">B+</option>
-                    <option value="4">B-</option>
-                    <option value="5">AB+</option>
-                    <option value="6">AB-</option>
-                    <option value="7">O+</option>
-                    <option value="8">O-</option>
-                </select>
+                @Html.DropDownListFor(Model => Model.BloodTypeId, ViewData["bloodTypesList"] as List<SelectListItem>, "Tipo de sangre", new { @class = "form-control", @id = "bloodtypelist" })
                 <div class="text-center">
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
@@ -58,7 +48,7 @@
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Tipos de sangre a donar:</label>
-                <select asp-for="PossibleBloodTypes" id="BloodTypeId_Required" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
+                <select asp-for="PossibleBloodTypes" id="possiblebloodtype" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
                 </select>
                 <div class="text-center">
                     <span class="text-danger" data-valmsg-replace="true" />
@@ -76,7 +66,8 @@
                 <br />
                 <div class="justify-end">
                     <div>
-                        <button onclick="btnRequestBlood()" class="btn btn-success float-right">Crear</button>
+                        @*<button onclick="btnRequestBlood()" class="btn btn-success float-right">Crear</button>*@
+                        <button type="submit" class="btn btn-success float-right">Crear</button>
                     </div>
                 </div>
             </form>
@@ -84,10 +75,35 @@
     </div>
 </div>
 <script type="text/javascript">
-    //var userName = localStorage.getItem("userKey");
-    //var jsonObj = JSON.parse(userName);
-    //alert(jsonObj.token);    
+    var userName = localStorage.getItem("userKey");
+    var jsonObj = JSON.parse(userName);
+    alert(jsonObj.token);
+    //var hideToken = document.getElementById('tokenid');
+    //hideToken.innerHTML = jsonObj.token;
 
+    let dropdown = $('#possiblebloodtype');
+    
+    $(document).ready(function () {
+        $("#bloodtypelist").change(function () {
+            dropdown.empty();
+            dropdown.append('<option selected="true" disabled>Tipo de sangre compatible</option>');
+            dropdown.prop('selectedIndex', 0);
+            var strSelected = "";
+            $("#bloodtypelist option:selected").each(function () {
+                strSelected += $(this)[0].value;
+            });
+            var url = "/BloodRequest/GetBloodTypes/" + strSelected;
+
+            $.post(url, function (data) {
+                var result = JSON.stringify(data.content)
+                $.each(data.content, function (key, entry) {
+                    dropdown.append($('<option></option>').attr('value', entry.id).text(entry.text));
+                })
+                // do something if necessary
+            });
+        });
+    });
+    
     function hideFields() {
         if ($('#forMeCheck').prop('checked')) {
                 $("#Name").hide();
@@ -98,45 +114,61 @@
         }
     }
 
-    function btnRequestBlood() {
-        var obj = {};
-        obj.bloodRequests = [];
-        obj.bloodRequests.push({
-            bloodComponentId: $("#BloodComponentId").val(),
-            amount: $("#Amount").val(),
-            name: $("#Name").val(),
-            centerAddress: $("#CenterAddress").val(),
-            bloodTypeId: $("#BloodTypeId").val(),
-            document: null,
-            birthDate: $("#BirthDate").val(),
-            prescriptionBase64: $("#PrescriptionBase64").val(),
-            possibleBloodTypesId: $("#PossibleBloodTypesId").val(),
-            patientStory: $("#PatientStory").val(),
-            responseDueDate: $("#ResponseDueDate").val(),
-            forMe: false
-        });
+    //function btnRequestBlood() {
+    //    var obj = {};
+    //    obj.bloodRequests = [];
+    //    obj.bloodRequests.push({
+    //        bloodComponentId: $("#BloodComponentId").val(),
+    //        amount: $("#Amount").val(),
+    //        name: $("#Name").val(),
+    //        centerAddress: $("#CenterAddress").val(),
+    //        bloodTypeId: $("#BloodTypeId").val(),
+    //        document: null,
+    //        birthDate: $("#BirthDate").val(),
+    //        prescriptionBase64: $("#PrescriptionBase64").val(),
+    //        possibleBloodTypesId: $("#possiblebloodtype").val(),
+    //        patientStory: $("#PatientStory").val(),
+    //        responseDueDate: $("#ResponseDueDate").val(),
+    //        forMe: false
+    //    });
+    //    var object = JSON.stringify(obj)
+    //    alert(object);
 
-        $.ajax({
-            url: 'https://localhost:44393/api/Requests',
-            method: "POST",
-            data: JSON.stringify(obj),
-            dataType: "json",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${jsonObj.token}`
-            }
-        }).done(onSuccess)
-            .fail(onError)
-            .always(always);
-    }
+    //    $.ajax({
+    //        url: 'https://localhost:44393/api/Requests',
+    //        method: "POST",
+    //        data: JSON.stringify(obj),
+    //        dataType: "json",
+    //        headers: {
+    //            'Accept': 'application/json',
+    //            'Content-Type': 'application/json',
+    //            'Authorization': `Bearer ${jsonObj.token}`
+    //        }
+    //    }).done(onSuccess)
+    //        .fail(onError)
+    //        .always(always);
+    //}
 
     function OnSuccess(response) {
-        if (response != 200) {
-            
+        if (response.code != 201) {
+            swal({
+                title: "Error",
+                text: response.responseText,
+                icon: "error",
+                showCancelButton: true,
+                closeOnConfirm: true,
+                closeOnCancel: true
+            });
         }
         else {
-            
+            swal({
+                title: "Correcto",
+                text: "Solicitud creada correctamente",
+                icon: "success",
+                showCancelButton: true,
+                closeOnConfirm: true,
+                closeOnCancel: true
+            });            
         }
     }
 </script>

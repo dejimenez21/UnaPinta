@@ -96,12 +96,13 @@
     });
 
     $("#userCard").click(function () {
-        var userName = localStorage.getItem("userKey");
-        if (userName == null) {
-            window.location.href = "/User/UserLoginPage";
-        }
-        else {
-            window.location.href = "/BloodRequest/BloodRequestPage"
-        }
+        window.location.href = "/User/UserLoginPage";
+        //var userName = localStorage.getItem("userKey");
+        //if (userName == null) {
+        //    window.location.href = "/User/UserLoginPage";
+        //}
+        //else {
+        //    window.location.href = "/BloodRequest/BloodRequestPage"
+        //}
     });
 </script>

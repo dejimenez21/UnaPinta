@@ -25,6 +25,7 @@ namespace UnaPinta.Data.Entities
         public virtual DbSet<WaitList> WaitLists { get; set; }
         public virtual DbSet<Request> Requests { get; set; }
         public virtual DbSet<BloodType> BloodTypes { get; set; }
+        public virtual DbSet<Province> Provinces { get; set; }
         //public virtual DbSet<Role> Roles { get; set; }
         //public virtual DbSet<User> Users { get; set; }
         //public virtual DbSet<ConfirmationCode> ConfirmationCodes { get; set; }

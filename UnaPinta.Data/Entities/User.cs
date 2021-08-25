@@ -23,12 +23,15 @@ namespace UnaPinta.Data.Entities
         public BloodTypeEnum BloodTypeId { get; set; }
         public double? Weight { get; set; }
         public bool CanDonate { get; set; } = false;
+        public int? ProvinceId { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime LastUpdatedAt { get; set; }
 
 
         [ForeignKey("BloodTypeId")]
         public virtual BloodType BloodTypeNav { get; set; }
+        [ForeignKey("ProvinceId")]
+        public virtual Province ProvinceNav { get; set; }
 
         public virtual ICollection<WaitList> WaitLists { get; set; }
         public virtual ICollection<Request> Requests { get; set; }
