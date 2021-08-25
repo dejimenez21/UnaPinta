@@ -8,6 +8,8 @@ using UnaPinta.Data.Contracts;
 using UnaPinta.Core.Contracts;
 using Microsoft.AspNetCore.Identity;
 using UnaPinta.Dto.Enums;
+using UnaPinta.Dto.Models;
+using AutoMapper;
 
 namespace UnaPinta.Core.Services
 {
@@ -15,20 +17,26 @@ namespace UnaPinta.Core.Services
     {
         private readonly IUnaPintaRepository _repo;
         private readonly UserManager<User> _userManager;
+        private readonly IMapper _mapper;
 
-        public RequestsService(IUnaPintaRepository repo, UserManager<User> userManager)
+        public RequestsService(IUnaPintaRepository repo, UserManager<User> userManager, IMapper mapper)
         {
             _repo = repo;
             _userManager = userManager;
+            _mapper = mapper;
         }
 
-        public async Task CreateRequest(Request request, string userName)
+        public async Task<Func<Task>> CreateRequest(RequestCreate inputRequest, string userName)
         {
+            var request = _mapper.Map<Request>(inputRequest);
+
             var user = await _userManager.FindByNameAsync(userName);
             request.RequesterId = user.Id;
 
             _repo.CreateRequest(request);
             await _repo.SaveChangesAsync();
+
+            return async () => await this.SendRequestNotification(request);
         }
 
 
