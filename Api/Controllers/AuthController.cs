@@ -46,7 +46,6 @@ namespace UnaPinta.Api.Controllers
         {
             
             User user = mapper.Map<UserSignUp, User>(obj);
-            // Valida si la provincia existe
             var province = await _provinceService.RetrieveProvinceByCode(obj.ProvinceCode);
 
             if (province == null)
