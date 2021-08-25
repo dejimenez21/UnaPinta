@@ -43,5 +43,6 @@ namespace UnaPinta.Data.Contracts
 
         //Province table methods
         Task<IEnumerable<Province>> SelectAllProvinces();
+        Task<Province> SelectProvinceByCode(string code);
     }
 }

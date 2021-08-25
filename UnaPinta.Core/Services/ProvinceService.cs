@@ -22,5 +22,10 @@ namespace UnaPinta.Core.Services
         {
             return await _repo.SelectAllProvinces();
         }
+
+        public async Task<Province> RetrieveProvinceByCode(string code)
+        {
+            return await _repo.SelectProvinceByCode(code);
+        }
     }
 }

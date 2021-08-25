@@ -10,5 +10,6 @@ namespace UnaPinta.Core.Contracts
     public interface IProvinceService
     {
         Task<IEnumerable<Province>> GetAllProvinces();
+        Task<Province> RetrieveProvinceByCode(string code);
     }
 }
