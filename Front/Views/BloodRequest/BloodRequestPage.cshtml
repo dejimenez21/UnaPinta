@@ -23,7 +23,7 @@
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Hemocomponentes:</label>
-                <input type="number" asp-for="BloodComponentId" id="BloodComponentId" data-val-required="Hemocomponentes es un campo obligatorio" placeholder="Plaquetas, plasma" class="form-control" />
+                @Html.DropDownListFor(Model => Model.BloodComponentId, ViewData["bloodComponentList"] as List<SelectListItem>, "Hemocomponente", new { @class = "form-control" })
                 <div class="text-center">
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
@@ -75,12 +75,6 @@
     </div>
 </div>
 <script type="text/javascript">
-    var userName = localStorage.getItem("userKey");
-    var jsonObj = JSON.parse(userName);
-    alert(jsonObj.token);
-    //var hideToken = document.getElementById('tokenid');
-    //hideToken.innerHTML = jsonObj.token;
-
     let dropdown = $('#possiblebloodtype');
     
     $(document).ready(function () {
@@ -113,41 +107,6 @@
             $("#nameLabel").fadeIn();
         }
     }
-
-    //function btnRequestBlood() {
-    //    var obj = {};
-    //    obj.bloodRequests = [];
-    //    obj.bloodRequests.push({
-    //        bloodComponentId: $("#BloodComponentId").val(),
-    //        amount: $("#Amount").val(),
-    //        name: $("#Name").val(),
-    //        centerAddress: $("#CenterAddress").val(),
-    //        bloodTypeId: $("#BloodTypeId").val(),
-    //        document: null,
-    //        birthDate: $("#BirthDate").val(),
-    //        prescriptionBase64: $("#PrescriptionBase64").val(),
-    //        possibleBloodTypesId: $("#possiblebloodtype").val(),
-    //        patientStory: $("#PatientStory").val(),
-    //        responseDueDate: $("#ResponseDueDate").val(),
-    //        forMe: false
-    //    });
-    //    var object = JSON.stringify(obj)
-    //    alert(object);
-
-    //    $.ajax({
-    //        url: 'https://localhost:44393/api/Requests',
-    //        method: "POST",
-    //        data: JSON.stringify(obj),
-    //        dataType: "json",
-    //        headers: {
-    //            'Accept': 'application/json',
-    //            'Content-Type': 'application/json',
-    //            'Authorization': `Bearer ${jsonObj.token}`
-    //        }
-    //    }).done(onSuccess)
-    //        .fail(onError)
-    //        .always(always);
-    //}
 
     function OnSuccess(response) {
         if (response.code != 201) {

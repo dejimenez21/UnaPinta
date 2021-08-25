@@ -9,5 +9,6 @@ namespace Una_Pinta.Services
     public interface IBloodTypesRepository
     {
         Task<List<int>> GetBloodTypes(int id);
+        Task<List<Component>> GetBloodComponent();
     }
 }

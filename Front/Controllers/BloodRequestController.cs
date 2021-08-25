@@ -15,6 +15,7 @@ namespace Una_Pinta.Controllers
         readonly IBloodTypesRepository _bloodTypesRepository;
         readonly IBloodRequestRepository _bloodRequestRepository;
         List<SelectListItem> bloodTypes = new List<SelectListItem>();
+        List<SelectListItem> bloodComponent = new List<SelectListItem>();
         public BloodRequestController(IBloodTypesRepository bloodTypesRepository, IBloodRequestRepository bloodRequestRepository)
         {
             _bloodTypesRepository = bloodTypesRepository;
@@ -23,6 +24,7 @@ namespace Una_Pinta.Controllers
 
         public IActionResult BloodRequestPage()
         {
+            LoadBloodComponents();
             LoadBloodTypes();
             return View();
         }
@@ -38,6 +40,15 @@ namespace Una_Pinta.Controllers
             bloodTypes.Add(new SelectListItem { Text = "O+", Value = "7" });
             bloodTypes.Add(new SelectListItem { Text = "O-", Value = "8" });
             ViewData["bloodTypesList"] = bloodTypes;
+        }
+
+        public void LoadBloodComponents()
+        {
+            bloodComponent.Add(new SelectListItem { Text = "Plasma", Value = "1" });
+            bloodComponent.Add(new SelectListItem { Text = "Plaquetas", Value = "2" });
+            bloodComponent.Add(new SelectListItem { Text = "Globulos Blancos", Value = "3" });
+            bloodComponent.Add(new SelectListItem { Text = "Globulos Rojos", Value = "4" });
+            ViewData["bloodComponentList"] = bloodComponent;
         }
 
         [HttpPost]

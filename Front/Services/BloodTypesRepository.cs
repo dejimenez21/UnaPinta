@@ -13,6 +13,26 @@ namespace Una_Pinta.Services
 {
     public class BloodTypesRepository : IBloodTypesRepository
     {
+        public Task<List<Component>> GetBloodComponent()
+        {
+            try
+            {
+                var client = new RestClient(ApiRequests.HostUrl);
+                var request = new RestRequest(ApiRequests.GetBloodComponent, Method.GET);
+                request.RequestFormat = DataFormat.Json;
+                request.AddHeader("Content-Type", "application/json");
+                request.AddHeader("Cache-Control", "no-cache");
+                var response = client.ExecuteAsync(request).Result.Content;
+                var content = JsonConvert.DeserializeObject<List<Component>>(response);
+                return Task.FromResult(content);
+            }
+            catch (WebException ex)
+            {
+                Debug.WriteLine(ex.Response);
+                return null;
+            }
+        }
+
         public Task<List<int>> GetBloodTypes(int id)
         {
             try

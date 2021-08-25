@@ -12,6 +12,7 @@ namespace Una_Pinta.Helpers.Requests
         public static string PostBloodRequest = "api/Requests";
         public static string GetUserLogin = "api/Auth/login";
         public static string GetProvinces = "api/provinces";
+        public static string GetBloodComponent = "api/BloodComponent";
 
         public static string GetBloodTypesPossibles(int idBlood)
         {
