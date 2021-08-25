@@ -10,7 +10,7 @@ namespace UnaPinta.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Solicitante")]
+    [Authorize(Roles = "solicitante")]
     public class RequestsController : ControllerBase
     {
         private readonly IMapper _mapper;

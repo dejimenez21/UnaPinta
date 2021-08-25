@@ -1,0 +1,115 @@
+﻿<div class="container">
+    <div class="text-center">
+        <p style="font-family: 'Roboto', sans-serif; font-size:30px; font-weight:bold">Detalles de Solicitud</p>
+    </div>
+    <div class="main-body">
+        <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                            <img id="avatar" alt="Admin" class="rounded-circle" width="150">
+                            <div class="mt-3">
+                                <h4>John Doe</h4>
+                                <p class="text-secondary mb-1">Full Stack Developer</p>
+                                <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
+                                @*<button class="btn btn-primary">Follow</button>
+                                    <button class="btn btn-outline-primary">Message</button>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Nombre</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                Kenneth Valdez
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Correo Electrónico</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                fip@jukmuh.al
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Teléfono</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                (239) 816-9029
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Dirección</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                Bay Area, San Francisco, CA
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Solicitud</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                Hemocomponente
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Tipo de Hemocomponente</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                A+
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            @*<div class="col-sm-12">
+                                    <a class="btn btn-info " target="__blank" href="https://www.bootdey.com/snippets/view/profile-edit-data-and-skills">Edit</a>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    document.getElementById("avatar").src = generateAvatar("JD", "white", "#009578");
+
+    function generateAvatar(text, foregroundColor, backgroundColor) {
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+
+        canvas.width = 200;
+        canvas.height = 200;
+
+        // Draw background
+        context.fillStyle = backgroundColor;
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw text
+        context.font = "bold 100px Assistant";
+        context.fillStyle = foregroundColor;
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+        context.fillText(text, canvas.width / 2, canvas.height / 2);
+
+        return canvas.toDataURL("image/png");
+    }
+</script>
