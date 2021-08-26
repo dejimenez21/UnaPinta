@@ -25,6 +25,14 @@ namespace UnaPinta.Core.Profiles
 
             //From Entity to DTO
             CreateMap<Role, RoleCreateResponseDto>();
+            CreateMap<Request, RequestDetailsDto>()
+                .ForMember(d => d.PatientName, opt => opt.MapFrom(x => x.Name))
+                .ForMember(d => d.PatientPhone, opt => opt.MapFrom(x => x.RequesterNav.PhoneNumber))
+                .ForMember(d => d.Prescription, opt => opt.MapFrom(x => x.PrescriptionBase64))
+                .ForMember(d => d.BloodComponent, opt => opt.MapFrom(x => x.BloodComponentNav.Description));
+
+
+
         }
     }
     

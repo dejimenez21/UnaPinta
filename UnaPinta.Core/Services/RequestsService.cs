@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using UnaPinta.Dto.Enums;
 using UnaPinta.Dto.Models;
 using AutoMapper;
+using UnaPinta.Core.Exceptions.Request;
 
 namespace UnaPinta.Core.Services
 {
@@ -20,7 +21,8 @@ namespace UnaPinta.Core.Services
         private readonly IRequestRepository _requestRepository;
         private readonly IMapper _mapper;
 
-        public RequestsService(IUnaPintaRepository repo, UserManager<User> userManager, IRequestRepository requestRepository)
+        public RequestsService(IUnaPintaRepository repo, UserManager<User> userManager, 
+            IRequestRepository requestRepository, IMapper mapper)
         {
             _repo = repo;
             _userManager = userManager;
@@ -41,9 +43,14 @@ namespace UnaPinta.Core.Services
             return async () => await this.SendRequestNotification(request);
         }
 
-        public Task<RequestDetailsDto> RetrieveRequestDetailsById(int id)
+        public async Task<RequestDetailsDto> RetrieveRequestDetailsById(int id)
         {
-            throw new NotImplementedException();
+            var request = await _requestRepository.SelectRequestById(id);
+            if (request == null) throw new RequestNotFoundException(id);
+
+            var details = _mapper.Map<RequestDetailsDto>(request);
+
+            return details;
         }
 
         public async Task SendRequestNotification(Request request)
