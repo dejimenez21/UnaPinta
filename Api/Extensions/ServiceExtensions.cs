@@ -1,4 +1,4 @@
-﻿using UnaPinta.Data.Entities;
+﻿using UnaPinta.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

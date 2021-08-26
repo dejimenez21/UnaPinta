@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using UnaPinta.Data.Configuration;
+using UnaPinta.Data.Entities;
 
 #nullable disable
 
-namespace UnaPinta.Data.Entities
+namespace UnaPinta.Data
 {
     public partial class UnaPintaDBContext : IdentityDbContext<User, Role, long>
     {
