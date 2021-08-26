@@ -23,7 +23,7 @@ namespace UnaPinta.Api.Controllers
         }
 
         [HttpPost("")]
-        public async Task<ActionResult<Request>> CreateRequest(RequestCreate requestCreate)
+        public async Task<ActionResult<RequestCreate>> CreateRequest(RequestCreate requestCreate)
         {
 
             try
