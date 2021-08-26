@@ -8,6 +8,7 @@ using UnaPinta.Data.Contracts;
 using UnaPinta.Core.Contracts;
 using Microsoft.AspNetCore.Identity;
 using UnaPinta.Dto.Enums;
+using UnaPinta.Dto.Models;
 
 namespace UnaPinta.Core.Services
 {
@@ -15,11 +16,13 @@ namespace UnaPinta.Core.Services
     {
         private readonly IUnaPintaRepository _repo;
         private readonly UserManager<User> _userManager;
+        private readonly IRequestRepository _requestRepository;
 
-        public RequestsService(IUnaPintaRepository repo, UserManager<User> userManager)
+        public RequestsService(IUnaPintaRepository repo, UserManager<User> userManager, IRequestRepository requestRepository)
         {
             _repo = repo;
             _userManager = userManager;
+            _requestRepository = requestRepository;
         }
 
         public async Task CreateRequest(Request request, string userName)
@@ -31,6 +34,10 @@ namespace UnaPinta.Core.Services
             await _repo.SaveChangesAsync();
         }
 
+        public Task<RequestDetailsDto> RetrieveRequestDetailsById(int id)
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task SendRequestNotification(Request request)
         {  

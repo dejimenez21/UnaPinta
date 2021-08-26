@@ -60,6 +60,13 @@ namespace UnaPinta.Api.Controllers
             return Created("api/requests", request);
         }
 
+
+        [HttpGet("{id}/details")]
+        public async Task<ActionResult<RequestDetailsDto>> GetRequestDetails()
+        {
+            return Ok();
+        }
+
         // [HttpPut("{id}")]
         // public async Task<IActionResult> PutTModel(int id, TModel model)
         // {
