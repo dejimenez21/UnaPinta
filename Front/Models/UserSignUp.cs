@@ -40,7 +40,7 @@ namespace Una_Pinta.Models
         public string Location { get; set; }
 
         [Required]
-        public int ProvinceId { get; set; }
+        public string ProvinceCode { get; set; }
 
         public int? BloodTypeId { get; set; }
 
