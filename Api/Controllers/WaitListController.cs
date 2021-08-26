@@ -40,6 +40,7 @@ namespace UnaPinta.Api.Controllers
                 System.Console.WriteLine(item.ConditionId);
                 System.Console.WriteLine(item.UserId);
                 var months = waitList.Conditions.Single(x=>x.ConditionId==item.ConditionId).Months;
+                if (months == null) months = 0;
                 item.AvailableAt = await _services.CalculateAvailableAtDate(item, (int)months);
                 _repo.AddWaitListItem(item);
             }

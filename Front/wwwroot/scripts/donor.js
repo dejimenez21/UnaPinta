@@ -15,7 +15,7 @@ function btnRegister_Click() {
     //alert("");
     var obj = {};
 
-    obj.userId = 1;
+    obj.userId = 18;
     obj.conditions = [];
 
     obj.conditions.push({conditionId: $("#tattooQuestion").val(), months: $("#tattooCondition").val()});
