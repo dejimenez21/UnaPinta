@@ -11,6 +11,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using UnaPinta.Core.Exceptions.Role;
 
 namespace UnaPinta.Core.Services
 {
@@ -18,14 +20,37 @@ namespace UnaPinta.Core.Services
     {
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly RoleManager<Role> _roleManager;
+        private readonly IMapper _mapper;
 
         private User _user;
-
-        public AuthenticationService(UserManager<User> userManager, IConfiguration configuration)
+        public AuthenticationService(UserManager<User> userManager, IConfiguration configuration, 
+             RoleManager<Role> roleManager, IMapper mapper)
         {
             _userManager = userManager;
             _configuration = configuration;
+            _roleManager = roleManager;
+            _mapper = mapper;
         }
+
+        public async Task<RoleCreateResponseDto> CreateRole(RoleCreate roleCreate)
+        {
+            var roleName = roleCreate.RoleName;
+            var newRole = new Role()
+            {
+                Name = roleName,
+            };
+
+            var roleResult = await _roleManager.CreateAsync(newRole);
+
+            if (roleResult.Succeeded)
+                return _mapper.Map<RoleCreateResponseDto>(newRole);
+            else if (roleResult.Errors.Any(e => e.Code == "DuplicateRoleName"))
+                throw new AlreadyExistsRoleException(roleResult.Errors.First().Description);
+            else
+                throw new Exception(roleResult.Errors.First().Description);
+        }
+
         public async Task<string> CreateToken()
         {
             var signinCredentials = GetSigningCredentials();

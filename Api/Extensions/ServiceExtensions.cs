@@ -10,6 +10,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using UnaPinta.Core.Contracts;
+using UnaPinta.Core;
 
 namespace UnaPinta.Api.Extensions
 {
@@ -75,5 +77,8 @@ namespace UnaPinta.Api.Extensions
                 )
             );
         }
+
+        public static void ConfigureLoggerService(this IServiceCollection services) => 
+            services.AddScoped<ILoggerManager, LoggerManager>();
     }
 }

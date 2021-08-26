@@ -22,42 +22,22 @@ namespace UnaPinta.Api.Controllers
             _service = service;
         }
 
-        // [HttpGet("")]
-        // public async Task<ActionResult<IEnumerable<TModel>>> GetTModels()
-        // {
-        //     await Task.Yield();
-
-        //     return new List<TModel> { };
-        // }
-
-        // [HttpGet("{id}")]
-        // public async Task<ActionResult<TModel>> GetTModelById(int id)
-        // {
-        //     await Task.Yield();
-
-        //     return null;
-        // }
-
         [HttpPost("")]
-        public async Task<ActionResult<Request>> CreateRequest(RequestCreate requestCreate)
+        public async Task<ActionResult<RequestCreate>> CreateRequest(RequestCreate requestCreate)
         {
-            var request = _mapper.Map<Request>(requestCreate);
 
             try
             {
-                await _service.CreateRequest(request, HttpContext.User.FindFirst("UserName").Value);
+                var callback = await _service.CreateRequest(requestCreate, HttpContext.User.FindFirst("UserName").Value);
+                Response.OnCompleted(callback);
+
+                return Created("api/requests", requestCreate);
             }
             catch
             {
                 return BadRequest();
             }
-
-
-            Response.OnCompleted(async () => 
-                await _service.SendRequestNotification(request)
-            );
-
-            return Created("api/requests", request);
+            
         }
 
 

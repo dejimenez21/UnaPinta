@@ -9,6 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UnaPinta.Core.Exceptions.Role;
+using UnaPinta.Core.Exceptions;
+using UnaPinta.Api.Filters;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,7 +25,7 @@ namespace UnaPinta.Api.Controllers
         private readonly SignInManager<User> loginManager;
         private readonly RoleManager<Role> roleManager;
         private readonly IMapper mapper;
-        private readonly IAuthenticationService _authManager;
+        private readonly IAuthenticationService _authService;
         private readonly IProvinceService _provinceService;
 
         public AuthController(IAuthenticationService authManager, UserManager<User> userManager, 
@@ -33,7 +36,7 @@ namespace UnaPinta.Api.Controllers
             this.loginManager = loginManager;
             this.roleManager = roleManager;
             this.mapper = mapper;
-            _authManager = authManager;
+            _authService = authManager;
             _provinceService = provinceService;
         }
 
@@ -43,7 +46,6 @@ namespace UnaPinta.Api.Controllers
         {
             
             User user = mapper.Map<UserSignUp, User>(obj);
-            // Valida si la provincia existe
             var province = await _provinceService.RetrieveProvinceByCode(obj.ProvinceCode);
 
             if (province == null)
@@ -86,43 +88,21 @@ namespace UnaPinta.Api.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<User>> Authenticate(UserLogin obj)
         {
-            if (ModelState.IsValid)
-            {
-                
-                if(!await _authManager.ValidateUser(obj))
-                {
-                    return Unauthorized();
-                }
 
-                return Ok(new { Token = await _authManager.CreateToken() });
+            if(!await _authService.ValidateUser(obj))
+            {
+                return Unauthorized();
             }
 
-            return BadRequest(ModelState);
+            return Ok(new { Token = await _authService.CreateToken() });
+
         }
-    
+
         [HttpPost("roles")]
         public async Task<ActionResult<Role>> CreateRole(RoleCreate roleCreate)
         {
-            if (ModelState.IsValid)
-            {
-
-                var roleName = roleCreate.RoleName;
-                var newRole = new Role()
-                {
-                    Name = roleName,
-                };
-
-                var roleResult = await roleManager.CreateAsync(newRole);
-
-                if (roleResult.Succeeded)
-                    return Created(Request.Path + $"/{newRole.Name}", newRole);
-
-                return Problem(roleResult.Errors.First().Description, null, 500);
-            }
-            else
-            {
-                return BadRequest(ModelState);
-            }
+            var newRole = await _authService.CreateRole(roleCreate);
+            return Created(Request.Path + $"/{newRole.Name}", newRole);
         }
 
         [HttpPost("{username}/roles")]
