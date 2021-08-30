@@ -10,6 +10,6 @@ namespace Una_Pinta.Services
     public interface IBloodRequestRepository
     {
         Task<IRestResponse> PostBloodRequest(RequestCreate requestCreate, string token);
-        Task<List<RequestDetailsDto>> GetRequestDetails(int id, string token);
+        Task<RequestDetailsDto> GetRequestDetails(int id, string token);
     }
 }

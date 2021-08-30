@@ -10,7 +10,7 @@ namespace UnaPinta.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "solicitante")]
+    
     public class RequestsController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -23,6 +23,7 @@ namespace UnaPinta.Api.Controllers
         }
 
         [HttpPost("")]
+        [Authorize(Roles = "solicitante")]
         public async Task<ActionResult<RequestCreate>> CreateRequest(RequestCreate requestCreate)
         {
 
@@ -42,9 +43,11 @@ namespace UnaPinta.Api.Controllers
 
 
         [HttpGet("{id}/details")]
-        public async Task<ActionResult<RequestDetailsDto>> GetRequestDetails()
+        [Authorize(Roles = "donante")]
+        public async Task<ActionResult<RequestDetailsDto>> GetRequestDetails(int id)
         {
-            return Ok();
+            var details = await _service.RetrieveRequestDetailsById(id);
+            return Ok(details);
         }
 
         // [HttpPut("{id}")]
