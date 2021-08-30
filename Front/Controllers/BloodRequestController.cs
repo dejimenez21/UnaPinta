@@ -77,6 +77,8 @@ namespace Una_Pinta.Controllers
 
         public IActionResult BloodRequestDetail()
         {
+            var cookie = TempData.Peek("tokenval");
+            var result = _bloodRequestRepository.GetRequestDetails(12, cookie.ToString()).Result;
             return View();
         }
 

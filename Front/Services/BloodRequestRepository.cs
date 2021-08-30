@@ -1,4 +1,5 @@
-﻿using RestSharp;
+﻿using Newtonsoft.Json;
+using RestSharp;
 using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,27 @@ namespace Una_Pinta.Services
 {
     public class BloodRequestRepository : IBloodRequestRepository
     {
+        public Task<List<RequestDetailsDto>> GetRequestDetails(int id, string token)
+        {
+            try
+            {
+                var client = new RestClient(ApiRequests.HostUrl);
+                client.Authenticator = new JwtAuthenticator(token);
+                var request = new RestRequest(ApiRequests.GetRequestDetails(id), Method.GET);
+                request.RequestFormat = DataFormat.Json;
+                request.AddHeader("Content-Type", "application/json");
+                request.AddHeader("Cache-Control", "no-cache");
+                var response = client.ExecuteAsync(request).Result.Content;
+                var content = JsonConvert.DeserializeObject<List<RequestDetailsDto>>(response);
+                return Task.FromResult(content);
+            }
+            catch (WebException ex)
+            {
+                Debug.WriteLine(ex.Response);
+                return null;
+            }
+        }
+
         /// <summary>
         /// Post Request to API
         /// <param name="requestCreate">Request model</param>

@@ -18,5 +18,10 @@ namespace Una_Pinta.Helpers.Requests
         {
             return $"api/BloodTypes/compatible/{idBlood}";
         }
+
+        public static string GetRequestDetails(int idRequest)
+        {
+            return $"api/Requests/{idRequest}/details";
+        }
     }
 }
