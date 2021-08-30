@@ -18,6 +18,7 @@ using NLog;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.Filters;
 using UnaPinta.Api.Filters;
+using UnaPinta.Data.Repositories;
 
 namespace UnaPinta.Api
 {
@@ -70,6 +71,7 @@ namespace UnaPinta.Api
             services.AddScoped<IWaitListServices, WaitListServices>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IProvinceService, ProvinceService>();
+            services.AddScoped<IRequestRepository, RequestRepository>();
 
             //CORS
             services.AddCors(options =>
