@@ -1,6 +1,6 @@
-﻿@using Una_Pinta.Models;
+﻿@using Una_Pinta.Models
 @{ 
-    var data = TempData["requestDetail"] as RequestDetails;
+    var listData = @TempData["resultRequest"] as RequestDetails;
 }
 <div class="container">
     <div class="text-center">
@@ -30,7 +30,7 @@
                                 <h6 class="mb-0">Nombre</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                               @data.RequesterName
+                                 <label id="Name">@listData.PatientName</label>
                             </div>
                         </div>
                         <hr>
@@ -39,7 +39,7 @@
                                 <h6 class="mb-0">Correo Electrónico</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                               @data.RequesterEmail
+                                <label id="Email">@listData.RequesterEmail</label>
                             </div>
                         </div>
                         <hr>
@@ -48,7 +48,7 @@
                                 <h6 class="mb-0">Teléfono</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                @data.RequesterPhone
+                                <label id="Phone">@listData.PatientPhone</label>
                             </div>
                         </div>
                         <hr>
@@ -57,7 +57,7 @@
                                 <h6 class="mb-0">Dirección</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                @data.CenterAddress
+                                <label id="CenterAddress">@listData.CenterAddress</label>
                             </div>
                         </div>
                         <hr>
@@ -66,7 +66,7 @@
                                 <h6 class="mb-0">Solicitud</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                               @data.BloodComponent
+                                <label id="BloodComponent">@listData.BloodComponent</label>
                             </div>
                         </div>
                         <hr>
@@ -75,7 +75,7 @@
                                 <h6 class="mb-0">Tipo de Hemocomponente</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                @data.BloodType
+                                <label id="BloodType">@listData.BloodType</label>
                             </div>
                         </div>
                         <hr>
@@ -90,6 +90,26 @@
 
 <script type="text/javascript">
     document.getElementById("avatar").src = generateAvatar("JD", "white", "#009578");
+
+    //$(document).ready(function () {
+    //    let dropdown = $('#provincesDropdown');
+    //    let inputName = $('#Name');
+    //    let inputEmail = $('#Email');
+    //    let inputPhone = $('#Phone');
+    //    let inputAddress = $('#CenterAddress');
+    //    let inputBloodComponent = $('#BloodComponent');
+    //    let inputBloodType = $('#BloodType');
+
+    //    var url = "/BloodRequest/BloodRequestDetail/";
+
+    //    $.get(url, function (data) {
+    //        var result = JSON.stringify(data.content)
+    //        //$.each(data.content, function (key, entry) {
+    //        //    dropdown.append($('<option></option>').attr('value', entry.code).text(entry.name));
+    //        //})
+    //        // do something if necessary
+    //    });
+    //});
 
     function generateAvatar(text, foregroundColor, backgroundColor) {
         const canvas = document.createElement("canvas");
