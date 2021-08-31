@@ -43,7 +43,7 @@ namespace UnaPinta.Api.Controllers
 
 
         [HttpGet("{id}/details")]
-        [Authorize(Roles = "donante")]
+        [Authorize(Roles = "donante, solicitante")]
         public async Task<ActionResult<RequestDetailsDto>> GetRequestDetails(int id)
         {
             var details = await _service.RetrieveRequestDetailsById(id);

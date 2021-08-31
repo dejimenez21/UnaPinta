@@ -8,13 +8,21 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Una_Pinta.Helpers.Requests;
+using Una_Pinta.Models;
 using UnaPinta.Dto.Models;
 
 namespace Una_Pinta.Services
 {
     public class BloodRequestRepository : IBloodRequestRepository
     {
-        public Task<RequestDetailsDto> GetRequestDetails(int id, string token)
+        /// <summary>
+        /// Post Request to API
+        /// <param name="id">Id of request</param>
+        /// <param name="token">JWT parameter</param>
+        /// </summary>
+        /// <returns>RequestDetails object</returns>
+        /// <exception cref="System.WebException">Thrown when status code of response are different to 200 (OK)</exception>
+        public Task<RequestDetails> GetRequestDetails(int id, string token)
         {
             try
             {
@@ -25,7 +33,7 @@ namespace Una_Pinta.Services
                 request.AddHeader("Content-Type", "application/json");
                 request.AddHeader("Cache-Control", "no-cache");
                 var response = client.ExecuteAsync(request).Result.Content;
-                var content = JsonConvert.DeserializeObject<RequestDetailsDto>(response);
+                var content = JsonConvert.DeserializeObject<RequestDetails>(response);
                 return Task.FromResult(content);
             }
             catch (WebException ex)
@@ -38,6 +46,7 @@ namespace Una_Pinta.Services
         /// <summary>
         /// Post Request to API
         /// <param name="requestCreate">Request model</param>
+        /// <param name="token">JWT parameter</param>
         /// </summary>
         /// <returns>HttpResponseMessage</returns>
         /// <exception cref="System.WebException">Thrown when status code of response are different to 200 (OK)</exception>

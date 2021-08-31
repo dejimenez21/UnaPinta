@@ -1,4 +1,8 @@
-﻿<div class="container">
+﻿@using Una_Pinta.Models;
+@{ 
+    var data = TempData["requestDetail"] as RequestDetails;
+}
+<div class="container">
     <div class="text-center">
         <p style="font-family: 'Roboto', sans-serif; font-size:30px; font-weight:bold">Detalles de Solicitud</p>
     </div>
@@ -13,8 +17,6 @@
                                 <h4>John Doe</h4>
                                 <p class="text-secondary mb-1">Full Stack Developer</p>
                                 <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
-                                @*<button class="btn btn-primary">Follow</button>
-                                    <button class="btn btn-outline-primary">Message</button>*@
                             </div>
                         </div>
                     </div>
@@ -28,7 +30,7 @@
                                 <h6 class="mb-0">Nombre</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                Kenneth Valdez
+                               @data.RequesterName
                             </div>
                         </div>
                         <hr>
@@ -37,7 +39,7 @@
                                 <h6 class="mb-0">Correo Electrónico</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                fip@jukmuh.al
+                               @data.RequesterEmail
                             </div>
                         </div>
                         <hr>
@@ -46,7 +48,7 @@
                                 <h6 class="mb-0">Teléfono</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                (239) 816-9029
+                                @data.RequesterPhone
                             </div>
                         </div>
                         <hr>
@@ -55,7 +57,7 @@
                                 <h6 class="mb-0">Dirección</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                Bay Area, San Francisco, CA
+                                @data.CenterAddress
                             </div>
                         </div>
                         <hr>
@@ -64,7 +66,7 @@
                                 <h6 class="mb-0">Solicitud</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                Hemocomponente
+                               @data.BloodComponent
                             </div>
                         </div>
                         <hr>
@@ -73,14 +75,11 @@
                                 <h6 class="mb-0">Tipo de Hemocomponente</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                A+
+                                @data.BloodType
                             </div>
                         </div>
                         <hr>
                         <div class="row">
-                            @*<div class="col-sm-12">
-                                    <a class="btn btn-info " target="__blank" href="https://www.bootdey.com/snippets/view/profile-edit-data-and-skills">Edit</a>
-                                </div>*@
                         </div>
                     </div>
                 </div>

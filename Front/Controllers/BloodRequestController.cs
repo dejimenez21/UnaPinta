@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Una_Pinta.Models;
 using Una_Pinta.Services;
 using UnaPinta.Dto.Models;
 
@@ -79,6 +80,7 @@ namespace Una_Pinta.Controllers
         {
             var cookie = TempData.Peek("tokenval");
             var result = _bloodRequestRepository.GetRequestDetails(12, cookie.ToString()).Result;
+            TempData["requestDetail"] = result;
             return View();
         }
 
