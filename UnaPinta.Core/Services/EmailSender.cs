@@ -5,6 +5,7 @@ using MimeKit;
 using System.IO;
 using MimeKit.Utils;
 using UnaPinta.Data.Contracts;
+using UnaPinta.Dto.Models;
 
 namespace UnaPinta.Core.Services
 {
@@ -70,6 +71,24 @@ namespace UnaPinta.Core.Services
             // body.TextBody = $"Su codigo de confirmacion es: {confirmation.Code}";
             var preBody = await GetConfirmationBody(confirmation);
             body.HtmlBody = preBody.Replace("Images/UnaPinta.png", "cid:"+image.ContentId);
+            message.Body = body.ToMessageBody();
+
+            await client.SendAsync(message);
+
+            return true;
+        }
+
+        public async Task<bool> SendEmailConfirmation(UserSignUp user, string confirmationLink)
+        {
+            MailboxAddress to = new MailboxAddress(
+                $"{user.FirstName} {user.LastName}", user.Email);
+            message.To.Add(to);
+            message.Subject = "Confirmacion de correo";
+            BodyBuilder body = new BodyBuilder();
+            var imagePath = "../API/wwwroot/images/UnaPinta.png";
+            var image = body.LinkedResources.Add(imagePath);
+            image.ContentId = MimeUtils.GenerateMessageId();
+            body.HtmlBody = confirmationLink;
             message.Body = body.ToMessageBody();
 
             await client.SendAsync(message);
