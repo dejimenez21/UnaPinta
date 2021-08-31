@@ -12,5 +12,6 @@ namespace UnaPinta.Core.Contracts
         Task<string> CreateToken();
 
         Task<RoleCreateResponseDto> CreateRole(RoleCreate roleCreate);
+        Task<bool> SendEmailConfirmation(UserSignUp user);
     }
 }

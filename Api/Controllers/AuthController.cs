@@ -74,7 +74,8 @@ namespace UnaPinta.Api.Controllers
                     await userManager.DeleteAsync(user);
                     return Problem(userRoleResult.Errors.First().Description, null, 400);
                 }
-                       
+
+                var link = Url.Action("ConfirmEmail", "Auth");
             }
             else
             {

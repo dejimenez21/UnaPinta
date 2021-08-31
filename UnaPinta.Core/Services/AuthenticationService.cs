@@ -108,5 +108,11 @@ namespace UnaPinta.Core.Services
 
             return tokenOptions;
         }
+
+        public async Task<bool> SendEmailConfirmation(string action)
+        {
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(_user);
+            var confirmationLink = 
+        }
     }
 }
