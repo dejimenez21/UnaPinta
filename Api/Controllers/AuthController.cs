@@ -76,6 +76,8 @@ namespace UnaPinta.Api.Controllers
                 }
 
                 var link = Url.Action("ConfirmEmail", "Auth");
+
+                Response.OnCompleted(() => _authService.SendEmailConfirmationAsync(link));
             }
             else
             {

@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using UnaPinta.Core.Exceptions.Role;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace UnaPinta.Core.Services
 {
@@ -22,15 +23,16 @@ namespace UnaPinta.Core.Services
         private readonly IConfiguration _configuration;
         private readonly RoleManager<Role> _roleManager;
         private readonly IMapper _mapper;
-
+        private readonly IEmailService _emailService;
         private User _user;
         public AuthenticationService(UserManager<User> userManager, IConfiguration configuration, 
-             RoleManager<Role> roleManager, IMapper mapper)
+             RoleManager<Role> roleManager, IMapper mapper, IEmailService emailService)
         {
             _userManager = userManager;
             _configuration = configuration;
             _roleManager = roleManager;
             _mapper = mapper;
+            _emailService = emailService;
         }
 
         public async Task<RoleCreateResponseDto> CreateRole(RoleCreate roleCreate)
@@ -109,10 +111,16 @@ namespace UnaPinta.Core.Services
             return tokenOptions;
         }
 
-        public async Task<bool> SendEmailConfirmation(string action)
+        public async Task SendEmailConfirmationAsync(string action)
         {
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(_user);
-            var confirmationLink = 
+
+            var encodedToken = Encoding.UTF8.GetBytes(token);
+            var validEmailToken = WebEncoders.Base64UrlEncode(encodedToken);
+
+            var url = string.Concat(action, $"?id={_user.Id}&token={validEmailToken}");
+
+            await _emailService.SendEmailVerificationAsync(_user, url);
         }
     }
 }

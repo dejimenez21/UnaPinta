@@ -8,6 +8,7 @@ namespace UnaPinta.Core.Contracts
 {
     public interface IAuthenticationService
     {
+        Task SendEmailConfirmationAsync(string action);
         Task<bool> ValidateUser(UserLogin login);
         Task<string> CreateToken();
 

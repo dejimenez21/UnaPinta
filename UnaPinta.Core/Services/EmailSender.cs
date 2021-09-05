@@ -6,18 +6,21 @@ using System.IO;
 using MimeKit.Utils;
 using UnaPinta.Data.Contracts;
 using UnaPinta.Dto.Models;
+using UnaPinta.Core.Contracts;
 
 namespace UnaPinta.Core.Services
 {
-    public class EmailSender
+    public class EmailSender : IEmailService
     {
+        private readonly IEmailBroker _broker;
         private readonly IUnaPintaRepository _repo;
 
         public MimeMessage message { get; set; }
         SmtpClient client;
 
-        public EmailSender(IUnaPintaRepository repo)
+        public EmailSender(IUnaPintaRepository repo, IEmailBroker emailBroker)
         {
+            _broker = emailBroker;
             _repo = repo;
             message = new MimeMessage();
             
@@ -124,7 +127,12 @@ namespace UnaPinta.Core.Services
             return body;
         }
 
+        public async Task SendEmailVerificationAsync(User receiver, string link)
+        {
+            MailboxAddress to = new MailboxAddress(
+                $"{receiver.FirstName} {receiver.LastName}", receiver.Email);
 
-
+            await _broker.Send(link, to);
+        }
     }
 }
