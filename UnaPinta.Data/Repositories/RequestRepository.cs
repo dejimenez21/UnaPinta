@@ -19,7 +19,11 @@ namespace UnaPinta.Data.Repositories
         }
         public async Task<Request> SelectRequestById(int id)
         {
-            return await _dbContext.Requests.SingleOrDefaultAsync(r => r.Id == id);
+            return await _dbContext.Requests
+                .Include(x => x.RequesterNav)
+                .Include(x => x.BloodComponentNav)
+                .Include(x => x.BloodTypeNav)
+                .SingleOrDefaultAsync(r => r.Id == id);
         }
     }
 }
