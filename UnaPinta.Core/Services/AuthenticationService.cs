@@ -111,16 +111,21 @@ namespace UnaPinta.Core.Services
             return tokenOptions;
         }
 
-        public async Task SendEmailConfirmationAsync(string action)
+        public async Task<bool> ConfirmEmailAsync(string token)
         {
-            var token = await _userManager.GenerateEmailConfirmationTokenAsync(_user);
+            throw new NotImplementedException();
+        }
+
+        public async Task SendEmailConfirmationAsync(User user, string action)
+        {
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
             var encodedToken = Encoding.UTF8.GetBytes(token);
             var validEmailToken = WebEncoders.Base64UrlEncode(encodedToken);
 
-            var url = string.Concat(action, $"?id={_user.Id}&token={validEmailToken}");
+            var url = string.Concat(action, $"?id={user.Id}&token={validEmailToken}");
 
-            await _emailService.SendEmailVerificationAsync(_user, url);
+            await _emailService.SendEmailVerificationAsync(user, url);
         }
     }
 }

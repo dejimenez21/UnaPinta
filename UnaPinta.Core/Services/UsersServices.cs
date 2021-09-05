@@ -11,10 +11,12 @@ namespace UnaPinta.Core.Services
 {
     public class UsersServices : IUsersServices
     {
+        private readonly EmailSender _sender;
         private readonly IUnaPintaRepository _repo;
 
-        public UsersServices(IUnaPintaRepository repo)
+        public UsersServices(IUnaPintaRepository repo, EmailSender sender)
         {
+            _sender = sender;
             _repo = repo;
         }
 
@@ -71,9 +73,7 @@ namespace UnaPinta.Core.Services
         {
             var confirmation = await GenerateConfirmationCode(userId);
 
-            EmailSender sender = new EmailSender(_repo);
-
-            await sender.SendConfirmation(confirmation);
+            await _sender.SendConfirmation(confirmation);
         }
 
         

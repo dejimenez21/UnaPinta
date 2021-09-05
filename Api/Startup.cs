@@ -19,6 +19,7 @@ using System.IO;
 using Microsoft.AspNetCore.Mvc.Filters;
 using UnaPinta.Api.Filters;
 using UnaPinta.Data.Repositories;
+using UnaPinta.Data.Brokers;
 
 namespace UnaPinta.Api
 {
@@ -72,6 +73,11 @@ namespace UnaPinta.Api
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IProvinceService, ProvinceService>();
             services.AddScoped<IRequestRepository, RequestRepository>();
+            services.AddScoped<IEmailService, EmailSender>();
+            services.AddSingleton<IEmailBroker, EmailBroker>();
+
+            //Remove
+            services.AddScoped<EmailSender>();
 
             //CORS
             services.AddCors(options =>

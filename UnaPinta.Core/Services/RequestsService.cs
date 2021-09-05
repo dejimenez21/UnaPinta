@@ -20,14 +20,16 @@ namespace UnaPinta.Core.Services
         private readonly UserManager<User> _userManager;
         private readonly IRequestRepository _requestRepository;
         private readonly IMapper _mapper;
+        private readonly EmailSender _emailService;
 
         public RequestsService(IUnaPintaRepository repo, UserManager<User> userManager, 
-            IRequestRepository requestRepository, IMapper mapper)
+            IRequestRepository requestRepository, IMapper mapper, EmailSender emailService)
         {
             _repo = repo;
             _userManager = userManager;
             _requestRepository = requestRepository;
             _mapper = mapper;
+            _emailService = emailService;
         }
 
         public async Task<Func<Task>> CreateRequest(RequestCreate inputRequest, string userName)
@@ -62,9 +64,9 @@ namespace UnaPinta.Core.Services
             {
                 if(!(await IsAvailable(user)))
                     continue;
-                EmailSender sender = new EmailSender(_repo);
-                await sender.SendNotification(user, CompleteRequest);
-                await sender.Disconnect();
+
+                await _emailService.SendNotification(user, CompleteRequest);
+                await _emailService.Disconnect();
             }
         }
 

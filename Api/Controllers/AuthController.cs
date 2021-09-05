@@ -75,9 +75,9 @@ namespace UnaPinta.Api.Controllers
                     return Problem(userRoleResult.Errors.First().Description, null, 400);
                 }
 
-                var link = Url.Action("ConfirmEmail", "Auth");
+                var link = string.Format("{0}://{1}{2}", Request.Scheme, HttpContext.Request.Host, Url.Action("ConfirmEmail"));
 
-                Response.OnCompleted(() => _authService.SendEmailConfirmationAsync(link));
+                Response.OnCompleted(() => _authService.SendEmailConfirmationAsync(user, link));
             }
             else
             {
@@ -139,6 +139,12 @@ namespace UnaPinta.Api.Controllers
             }
 
             return Ok();
+        }
+
+        [HttpGet("confirmemail")]
+        public async Task<ActionResult> ConfirmEmail([FromQuery]long userId, [FromQuery]string token)
+        {
+            throw new NotImplementedException();
         }
     }
 }

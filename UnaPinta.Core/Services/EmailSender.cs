@@ -28,8 +28,8 @@ namespace UnaPinta.Core.Services
             message.From.Add(from);
 
             client = new SmtpClient();
-            client.Connect("smtp.gmail.com", 465, true);
-            client.Authenticate("unapintateam@gmail.com", "Unapinta1234");
+            //client.Connect("smtp.gmail.com", 465, true);
+            //client.Authenticate("unapintateam@gmail.com", "Unapinta1234");
 
         }
 
