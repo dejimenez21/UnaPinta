@@ -10,5 +10,6 @@ namespace UnaPinta.Data.Contracts
     public interface IEmailBroker
     {
         Task Send(string message, MailboxAddress to);
+        Task Send(MailboxAddress to, string subject, MimeEntity body);
     }
 }

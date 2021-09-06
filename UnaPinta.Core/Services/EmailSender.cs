@@ -76,7 +76,7 @@ namespace UnaPinta.Core.Services
             var image = body.LinkedResources.Add(imagePath);
             image.ContentId = MimeUtils.GenerateMessageId();
             // body.TextBody = $"Su codigo de confirmacion es: {confirmation.Code}";
-            var preBody = await GetConfirmationBody(confirmation);
+            var preBody = await GetConfirmationBody("confirmation");
             body.HtmlBody = preBody.Replace("Images/UnaPinta.png", "cid:"+image.ContentId);
             message.Body = body.ToMessageBody();
 
@@ -109,11 +109,11 @@ namespace UnaPinta.Core.Services
             client.Dispose();
         }
 
-        public async Task<string> GetConfirmationBody(ConfirmationCode confirmation)
+        public async Task<string> GetConfirmationBody(string url)
         {
-            string path = "../API/wwwroot/EmailTemplate.html";
+            string path = "../API/Templates/ConfirmationEmail.html";
             string body = await File.ReadAllTextAsync(path);
-            body = body.Replace("#CodigoOTP#", confirmation.Code);
+            body = body.Replace("@Url", url);
             return body;
         }
 
@@ -136,7 +136,17 @@ namespace UnaPinta.Core.Services
             MailboxAddress to = new MailboxAddress(
                 $"{receiver.FirstName} {receiver.LastName}", receiver.Email);
 
-            await _broker.Send(link, to);
+            string subject = "Verificación de correo";
+
+            BodyBuilder bodyBuilder = new BodyBuilder();
+            var imagePath = "../API/wwwroot/images/UnaPinta.png";
+            var image = bodyBuilder.LinkedResources.Add(imagePath);
+            image.ContentId = MimeUtils.GenerateMessageId();
+            var preBody = await GetConfirmationBody(link);
+            bodyBuilder.HtmlBody = preBody.Replace("Images/UnaPinta.png", "cid:" + image.ContentId);
+            var body = bodyBuilder.ToMessageBody();
+
+            await _broker.Send(to, subject, body);
         }
     }
 }
