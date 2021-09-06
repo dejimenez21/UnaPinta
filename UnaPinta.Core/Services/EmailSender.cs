@@ -28,9 +28,13 @@ namespace UnaPinta.Core.Services
             message.From.Add(from);
 
             client = new SmtpClient();
-            //client.Connect("smtp.gmail.com", 465, true);
-            //client.Authenticate("unapintateam@gmail.com", "Unapinta1234");
+            client.Connect("smtp.gmail.com", 465, true);
+            client.Authenticate("unapintateam@gmail.com", "Unapinta1234");
 
+        }
+        public EmailSender(IUnaPintaRepository repo)
+        {
+            _repo = repo;
         }
 
         public async Task<bool> SendNotification(User user, Request request)

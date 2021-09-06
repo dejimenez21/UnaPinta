@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using UnaPinta.Core.Exceptions.Role;
 using Microsoft.AspNetCore.WebUtilities;
+using UnaPinta.Core.Exceptions;
+using UnaPinta.Core.Exceptions.User;
 
 namespace UnaPinta.Core.Services
 {
@@ -111,9 +113,37 @@ namespace UnaPinta.Core.Services
             return tokenOptions;
         }
 
-        public async Task<bool> ConfirmEmailAsync(string token)
+        public async Task ConfirmEmailAsync(string id, string token)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(token))
+                throw new EmailVerificationDataMissingException();
+
+            var user = await _userManager.FindByIdAsync(id);
+            if(user == null)
+            {
+                throw new UserNotFoundException($"The user with the id {id} doesn't exist.", id);
+            }
+
+            byte[] decodedToken;
+            try
+            {
+                decodedToken = WebEncoders.Base64UrlDecode(token);
+            }
+            catch(Exception e)
+            {
+                throw new TokenBadFormatException(e.Message);
+            }
+
+            var normalToken = Encoding.UTF8.GetString(decodedToken);
+
+            var result = await _userManager.ConfirmEmailAsync(user, normalToken);
+
+            if (!result.Succeeded)
+            {
+                if(result.Errors.Any(e => e.Code == "InvalidToken"))
+                    throw new EmailVerificationTokenInvalidException();
+            }
+                
         }
 
         public async Task SendEmailConfirmationAsync(User user, string action)

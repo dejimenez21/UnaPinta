@@ -142,9 +142,10 @@ namespace UnaPinta.Api.Controllers
         }
 
         [HttpGet("confirmemail")]
-        public async Task<ActionResult> ConfirmEmail([FromQuery]long userId, [FromQuery]string token)
+        public async Task<ActionResult> ConfirmEmail([FromQuery]string userId, [FromQuery]string token)
         {
-            throw new NotImplementedException();
+            await _authService.ConfirmEmailAsync(userId, token);
+            return Ok();
         }
     }
 }
