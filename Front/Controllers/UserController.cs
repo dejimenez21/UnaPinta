@@ -67,9 +67,9 @@ namespace Una_Pinta.Controllers
             var selectList = new List<SelectListItem>();
             foreach (var item in listProvinces)
             {
-                selectList.Add(new SelectListItem { Text = item.name, Value = item.id.ToString() });
+                selectList.Add(new SelectListItem { Text = item.name, Value = item.code });
             }
-            var provinces = selectList.Select(elem => new { id = Convert.ToInt32(elem.Value), name = elem.Text });
+            var provinces = selectList.Select(elem => new { code = elem.Value, name = elem.Text });
             return Json(new { content = provinces });
         }
     }
