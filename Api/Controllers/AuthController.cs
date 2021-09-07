@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using UnaPinta.Core.Exceptions.Role;
 using UnaPinta.Core.Exceptions;
 using UnaPinta.Api.Filters;
+using UnaPinta.Dto.Models.Auth;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -42,7 +43,7 @@ namespace UnaPinta.Api.Controllers
 
 
         [HttpPost("signup")]
-        public async Task <ActionResult<User>> SignUp(UserSignUp obj)
+        public async Task <ActionResult<UserSignUpResponseDto>> SignUp(UserSignUp obj)
         {
             
             User user = mapper.Map<UserSignUp, User>(obj);
@@ -84,7 +85,9 @@ namespace UnaPinta.Api.Controllers
                 return Problem(userCreationResult.Errors.First().Description, null, 400);
             }
 
-            return Created(Request.Path + $"/{user.UserName}", obj);
+            var result = mapper.Map<UserSignUpResponseDto>(user);
+
+            return Created(Request.Path + $"/{user.UserName}", result);
 
         }
 

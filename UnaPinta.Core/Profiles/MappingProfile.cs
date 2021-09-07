@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnaPinta.Dto.Enums;
+using UnaPinta.Dto.Models.Auth;
 
 namespace UnaPinta.Core.Profiles
 {
@@ -33,6 +34,11 @@ namespace UnaPinta.Core.Profiles
                 .ForMember(d => d.RequesterEmail, opt => opt.MapFrom(x => x.RequesterNav.Email))
                 .ForMember(d => d.RequesterName, opt => opt.MapFrom(x => x.RequesterNav.FirstName + " " + x.RequesterNav.LastName))
                 .ForMember(d => d.RequesterPhone, opt => opt.MapFrom(x => x.RequesterNav.PhoneNumber));
+            CreateMap<User, UserSignUpResponseDto>()
+                .ForMember(d => d.BloodType, opt => opt.MapFrom(x => x.ProvinceNav.Code))
+                .ForMember(d => d.ProvinceCode, opt => opt.MapFrom(x => x.ProvinceNav.Code))
+                .ForMember(d => d.ProvinceName, opt => opt.MapFrom(x => x.ProvinceNav.Name))
+                .ForMember(d => d.Sex, opt => opt.MapFrom(x => x.Sex ? "M" : "F"));
         }
     }
     
