@@ -14,6 +14,11 @@ using UnaPinta.Data.Contracts;
 using UnaPinta.Core.Contracts;
 using UnaPinta.Api.Extensions;
 using UnaPinta.Data;
+using NLog;
+using System.IO;
+using Microsoft.AspNetCore.Mvc.Filters;
+using UnaPinta.Api.Filters;
+using UnaPinta.Data.Repositories;
 
 namespace UnaPinta.Api
 {
@@ -22,6 +27,7 @@ namespace UnaPinta.Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
         }
 
         public IConfiguration Configuration { get; }
@@ -29,18 +35,16 @@ namespace UnaPinta.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //Controllers and ignoring reference loop
-            services.AddControllers()
+            services.ConfigureLoggerService();
+
+            //Controllers with domainExceptionFilter and ignoring reference loop
+            services.AddControllers( options => options.Filters.Add<DomainExceptionFilter>())
                 .AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling 
-                = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                    options.SerializerSettings.ReferenceLoopHandling 
+                        = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 );
 
             //DbContext
-            //services.AddDbContext<UnaPintaDBContext>(
-            //    //Para cambiar a SQL Server reemplazar metodo "UseSqlite" por "UseSqlServer" y cambiar el connection string.
-            //    options => options.UseSqlite(Configuration.GetConnectionString("SQLiteConnection"))
-            //);
             services.ConfigureDbContext(Configuration);
 
             //Identity and authentication
@@ -65,7 +69,9 @@ namespace UnaPinta.Api
             services.AddScoped<IUsersServices, UsersServices>();
             services.AddScoped<IRequestsService, RequestsService>();
             services.AddScoped<IWaitListServices, WaitListServices>();
-            services.AddScoped<IAuthenticationManager, AuthenticationService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IProvinceService, ProvinceService>();
+            services.AddScoped<IRequestRepository, RequestRepository>();
 
             //CORS
             services.AddCors(options =>
@@ -77,12 +83,14 @@ namespace UnaPinta.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.ConfigureExceptionHandler(logger, env);
 
             //app.UseHttpsRedirection();
 

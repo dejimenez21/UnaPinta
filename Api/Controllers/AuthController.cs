@@ -9,6 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UnaPinta.Core.Exceptions.Role;
+using UnaPinta.Core.Exceptions;
+using UnaPinta.Api.Filters;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,100 +25,84 @@ namespace UnaPinta.Api.Controllers
         private readonly SignInManager<User> loginManager;
         private readonly RoleManager<Role> roleManager;
         private readonly IMapper mapper;
-        private readonly IAuthenticationManager _authManager;
+        private readonly IAuthenticationService _authService;
+        private readonly IProvinceService _provinceService;
 
-        public AuthController(IAuthenticationManager authManager, UserManager<User> userManager, SignInManager<User> loginManager, RoleManager<Role> roleManager, IMapper mapper)
+        public AuthController(IAuthenticationService authManager, UserManager<User> userManager, 
+            SignInManager<User> loginManager, RoleManager<Role> roleManager, IProvinceService provinceService, 
+            IMapper mapper)
         {
             this.userManager = userManager;
             this.loginManager = loginManager;
             this.roleManager = roleManager;
             this.mapper = mapper;
-            _authManager = authManager;
+            _authService = authManager;
+            _provinceService = provinceService;
         }
 
 
         [HttpPost("signup")]
         public async Task <ActionResult<User>> SignUp(UserSignUp obj)
         {
-            if(ModelState.IsValid)
+            
+            User user = mapper.Map<UserSignUp, User>(obj);
+            var province = await _provinceService.RetrieveProvinceByCode(obj.ProvinceCode);
+
+            if (province == null)
+                return BadRequest("La provincia especificada no existe");
+
+            user.ProvinceId = province.Id;
+            
+            var userCreationResult = await userManager.CreateAsync(user, obj.Password);
+                
+            if (userCreationResult.Succeeded)
             {
-                User user = mapper.Map<UserSignUp, User>(obj);
-                var userCreationResult = await userManager.CreateAsync(user, obj.Password);
-                
-                if (userCreationResult.Succeeded)
-                {
 
-                    IdentityResult userRoleResult = new IdentityResult();
-                    try
-                    {
-                        userRoleResult = await userManager.AddToRoleAsync(user, obj.Role);
-                    }
-                    catch(Exception e)
-                    {
-                        await userManager.DeleteAsync(user);
-                        return BadRequest(e.Message);
-                    }
+                IdentityResult userRoleResult = new IdentityResult();
+                try
+                {
+                    userRoleResult = await userManager.AddToRoleAsync(user, obj.Role);
+                }
+                catch(Exception e)
+                {
+                    await userManager.DeleteAsync(user);
+                    return BadRequest(e.Message);
+                }
                     
-                    if(!userRoleResult.Succeeded)
-                    {
-                        await userManager.DeleteAsync(user);
-                        return Problem(userRoleResult.Errors.First().Description, null, 400);
-                    }
-                       
-                }
-                else
+                if(!userRoleResult.Succeeded)
                 {
-                    return Problem(userCreationResult.Errors.First().Description, null, 400);
+                    await userManager.DeleteAsync(user);
+                    return Problem(userRoleResult.Errors.First().Description, null, 400);
                 }
-
-                return Created(Request.Path + $"/{user.UserName}", obj);
-
-                
+                       
+            }
+            else
+            {
+                return Problem(userCreationResult.Errors.First().Description, null, 400);
             }
 
-            return BadRequest(ModelState);  
+            return Created(Request.Path + $"/{user.UserName}", obj);
+
         }
 
         [HttpPost("login")]
         public async Task<ActionResult<User>> Authenticate(UserLogin obj)
         {
-            if (ModelState.IsValid)
-            {
-                
-                if(!await _authManager.ValidateUser(obj))
-                {
-                    return Unauthorized();
-                }
 
-                return Ok(new { Token = await _authManager.CreateToken() });
+            if(!await _authService.ValidateUser(obj))
+            {
+                return Unauthorized();
             }
 
-            return BadRequest(ModelState);
+            return Ok(new { Token = await _authService.CreateToken() });
+
         }
-    
+
         [HttpPost("roles")]
         public async Task<ActionResult<Role>> CreateRole(RoleCreate roleCreate)
         {
-            if (ModelState.IsValid)
-            {
-
-                var roleName = roleCreate.RoleName;
-                var newRole = new Role()
-                {
-                    Name = roleName,
-                };
-
-                var roleResult = await roleManager.CreateAsync(newRole);
-
-                if (roleResult.Succeeded)
-                    return Created(Request.Path + $"/{newRole.Name}", newRole);
-
-                return Problem(roleResult.Errors.First().Description, null, 500);
-            }
-            else
-            {
-                return BadRequest(ModelState);
-            }
+            var newRole = await _authService.CreateRole(roleCreate);
+            return Created(Request.Path + $"/{newRole.Name}", newRole);
         }
 
         [HttpPost("{username}/roles")]

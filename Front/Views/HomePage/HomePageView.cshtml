@@ -26,28 +26,28 @@
 <div class="container">
     <div class="d-flex justify-content-center text-center d-inline-block">
         <div class="float-left">
-            <div class="cards" style="background-color: #663838; width: 200px; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); transition: 0.5s;">
+            <div class="cards" id="userCard" style="background-color: #663838; width: 200px; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); transition: 0.5s;">
                 <div class="card-body">
                     <a>
                         <p style="font-size:20px; color:#FFCACA">Receptor</p>
                     </a>
                 </div>
                 <div class="card-footer">
-                    <a asp-controller="User" asp-action="UserLoginPage">
+                    <a>
                         <p style="font-size:20px; color:#FFCACA">Crear solicitud</p>
                     </a>
                 </div>
             </div>
         </div>
         <div class="float-right">
-            <div class="cards" style="background-color: #FFA7A7; width: 200px; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); transition: 0.5s;">
+            <div id="donorCard" class="cards" style="background-color: #FFA7A7; width: 200px; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); transition: 0.5s;">
                 <div class="card-body">
                     <a>
                         <p style="font-size:20px; color:#400606">Donante</p>
                     </a>
                 </div>
-                <div class="card-footer">
-                    <a asp-controller="Donor" asp-action="DonorRegisterPage">
+                <div id="donorCard" class="card-footer">
+                    <a id="donorCard">
                         <p style="font-size:20px; color:#400606">Registrarse</p>
                     </a>
                 </div>
@@ -61,6 +61,8 @@
         <br />
         <br />
         <img src="~/Pics/logo_splash.svg" id="splashIcon" />
+        <br />
+        <div class="spinner-border text-danger" style="width:200px; height:200px;" role="status"></div>
     </div>
 </div>
 
@@ -87,4 +89,20 @@
     setTimeout(function () {
         $("#overlay").fadeOut("slow");
     }, 3000);
+
+
+    $("#donorCard").click(function () {
+        window.location.href = "/Donor/DonorRegisterPage";
+    });
+
+    $("#userCard").click(function () {
+        window.location.href = "/User/UserLoginPage";
+        //var userName = localStorage.getItem("userKey");
+        //if (userName == null) {
+        //    window.location.href = "/User/UserLoginPage";
+        //}
+        //else {
+        //    window.location.href = "/BloodRequest/BloodRequestPage"
+        //}
+    });
 </script>

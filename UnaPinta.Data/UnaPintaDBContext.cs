@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using UnaPinta.Data.Configuration;
+using UnaPinta.Data.Entities;
 
 #nullable disable
 
-namespace UnaPinta.Data.Entities
+namespace UnaPinta.Data
 {
     public partial class UnaPintaDBContext : IdentityDbContext<User, Role, long>
     {
@@ -25,6 +26,7 @@ namespace UnaPinta.Data.Entities
         public virtual DbSet<WaitList> WaitLists { get; set; }
         public virtual DbSet<Request> Requests { get; set; }
         public virtual DbSet<BloodType> BloodTypes { get; set; }
+        public virtual DbSet<Province> Provinces { get; set; }
         //public virtual DbSet<Role> Roles { get; set; }
         //public virtual DbSet<User> Users { get; set; }
         //public virtual DbSet<ConfirmationCode> ConfirmationCodes { get; set; }

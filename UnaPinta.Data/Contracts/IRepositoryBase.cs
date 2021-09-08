@@ -8,6 +8,7 @@ namespace UnaPinta.Data.Contracts
 {
     interface IRepositoryBase<T>
     {
+        Task<int> SaveChangesAsync();
         IQueryable<T> FindAll(bool trackChanges); 
         IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges); 
         void Create(T entity); 

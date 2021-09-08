@@ -46,4 +46,8 @@
     <PackageReference Include="SweetAlert" Version="1.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\UnaPinta.Dto\UnaPinta.Dto.csproj" />
+  </ItemGroup>
+
 </Project>

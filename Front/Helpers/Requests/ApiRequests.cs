@@ -9,6 +9,19 @@ namespace Una_Pinta.Helpers.Requests
     {
         public static string HostUrl = "https://localhost:44393/";
         public static string PostUserSignup = "api/Auth/signup";
+        public static string PostBloodRequest = "api/Requests";
         public static string GetUserLogin = "api/Auth/login";
+        public static string GetProvinces = "api/provinces";
+        public static string GetBloodComponent = "api/BloodComponent";
+
+        public static string GetBloodTypesPossibles(int idBlood)
+        {
+            return $"api/BloodTypes/compatible/{idBlood}";
+        }
+
+        public static string GetRequestDetails(int idRequest)
+        {
+            return $"api/Requests/{idRequest}/details";
+        }
     }
 }

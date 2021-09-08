@@ -21,7 +21,7 @@ namespace UnaPinta.Data.Entities
         public string Name { get; set; }
         [Required]
         public string CenterAddress { get; set; }
-        public int BloodTypeId { get; set; }
+        public BloodTypeEnum BloodTypeId { get; set; }
         [MaxLength(11)]
         public string Document { get; set; }
         public DateTime BirthDate { get; set; }
@@ -35,7 +35,9 @@ namespace UnaPinta.Data.Entities
         public virtual BloodComponent BloodComponentNav { get; set; }
         [ForeignKey("RequesterId")]
         public virtual User RequesterNav { get; set; }
-        
+        [ForeignKey("BloodTypeId")]
+        public virtual BloodType BloodTypeNav { get; set; }
+
         public ICollection<RequestPossibleBloodTypes> PossibleBloodTypes { get; set; }
     }
 }
