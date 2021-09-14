@@ -7,6 +7,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Una_Pinta.Helpers.Requests;
 using Una_Pinta.Models;
 using Una_Pinta.Services;
@@ -71,6 +72,13 @@ namespace Una_Pinta.Controllers
             }
             var provinces = selectList.Select(elem => new { id = Convert.ToInt32(elem.Value), name = elem.Text });
             return Json(new { content = provinces });
+        }
+
+        [HttpGet("confirmemail")]
+        public async Task<IActionResult> EmailVerification(string id, string token)
+        {
+            var result = await _userRepository.ConfirmEmail(id, token);
+            return Json(new { status = result.StatusCode });
         }
     }
 }
