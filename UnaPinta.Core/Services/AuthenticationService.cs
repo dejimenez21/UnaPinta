@@ -84,7 +84,8 @@ namespace UnaPinta.Core.Services
             var claims = new List<Claim>
             {
                 new Claim("Name", $"{_user.FirstName} {_user.LastName}"),
-                new Claim("UserName", _user.UserName)
+                new Claim("UserName", _user.UserName),
+                new Claim("EmailConfirmed", _user.EmailConfirmed.ToString())
             };
 
 
