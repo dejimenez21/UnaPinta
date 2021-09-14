@@ -13,6 +13,8 @@ namespace Una_Pinta.Helpers.Requests
         public static string GetUserLogin = "api/Auth/login";
         public static string GetProvinces = "api/provinces";
         public static string GetBloodComponent = "api/BloodComponent";
+        public static string ConfirmEmail(string id, string token) 
+            => $"api/auth/confirmemail?userid={id}&token={token}";
 
         public static string GetBloodTypesPossibles(int idBlood)
         {

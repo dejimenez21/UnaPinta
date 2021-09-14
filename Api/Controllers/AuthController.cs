@@ -74,7 +74,11 @@ namespace UnaPinta.Api.Controllers
                     await userManager.DeleteAsync(user);
                     return Problem(userRoleResult.Errors.First().Description, null, 400);
                 }
-                       
+
+                //var link = string.Format("{0}://{1}{2}", Request.Scheme, HttpContext.Request.Host, Url.Action("ConfirmEmail"));
+                var link = string.Format("{0}://{1}{2}", Request.Scheme, "localhost:44308", "/ConfirmEmail");
+
+                Response.OnCompleted(() => _authService.SendEmailConfirmationAsync(user, link));
             }
             else
             {
@@ -135,6 +139,13 @@ namespace UnaPinta.Api.Controllers
                 return BadRequest(ModelState);
             }
 
+            return Ok();
+        }
+
+        [HttpGet("confirmemail")]
+        public async Task<ActionResult> ConfirmEmail([FromQuery]string userId, [FromQuery]string token)
+        {
+            await _authService.ConfirmEmailAsync(userId, token);
             return Ok();
         }
     }

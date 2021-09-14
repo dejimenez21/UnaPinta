@@ -12,5 +12,6 @@ namespace Una_Pinta.Services
     {
         Task<IRestResponse> GetUser(UserSignUp userSignUp);
         Task<IRestResponse> PostUser(UserSignUp userSignUp);
+        Task<IRestResponse> ConfirmEmail(string id, string token);
     }
 }

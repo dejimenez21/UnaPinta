@@ -15,6 +15,10 @@ namespace UnaPinta.Core.Exceptions
 
         public BaseDomainException() { }
         public BaseDomainException(string message) : base(message) { }
+        public BaseDomainException(string message, int status) : this(message)
+        {
+            this.StatusCode = status;
+        }
 
         public object ToResponseObject()
         {

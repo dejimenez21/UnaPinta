@@ -13,6 +13,9 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using UnaPinta.Core.Exceptions.Role;
+using Microsoft.AspNetCore.WebUtilities;
+using UnaPinta.Core.Exceptions;
+using UnaPinta.Core.Exceptions.User;
 
 namespace UnaPinta.Core.Services
 {
@@ -22,15 +25,16 @@ namespace UnaPinta.Core.Services
         private readonly IConfiguration _configuration;
         private readonly RoleManager<Role> _roleManager;
         private readonly IMapper _mapper;
-
+        private readonly IEmailService _emailService;
         private User _user;
         public AuthenticationService(UserManager<User> userManager, IConfiguration configuration, 
-             RoleManager<Role> roleManager, IMapper mapper)
+             RoleManager<Role> roleManager, IMapper mapper, IEmailService emailService)
         {
             _userManager = userManager;
             _configuration = configuration;
             _roleManager = roleManager;
             _mapper = mapper;
+            _emailService = emailService;
         }
 
         public async Task<RoleCreateResponseDto> CreateRole(RoleCreate roleCreate)
@@ -107,6 +111,51 @@ namespace UnaPinta.Core.Services
             );
 
             return tokenOptions;
+        }
+
+        public async Task ConfirmEmailAsync(string id, string token)
+        {
+            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(token))
+                throw new EmailVerificationDataMissingException();
+
+            var user = await _userManager.FindByIdAsync(id);
+            if(user == null)
+            {
+                throw new UserNotFoundException($"The user with the id {id} doesn't exist.", id);
+            }
+
+            byte[] decodedToken;
+            try
+            {
+                decodedToken = WebEncoders.Base64UrlDecode(token);
+            }
+            catch(Exception e)
+            {
+                throw new TokenBadFormatException(e.Message);
+            }
+
+            var normalToken = Encoding.UTF8.GetString(decodedToken);
+
+            var result = await _userManager.ConfirmEmailAsync(user, normalToken);
+
+            if (!result.Succeeded)
+            {
+                if(result.Errors.Any(e => e.Code == "InvalidToken"))
+                    throw new EmailVerificationTokenInvalidException();
+            }
+                
+        }
+
+        public async Task SendEmailConfirmationAsync(User user, string action)
+        {
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            var encodedToken = Encoding.UTF8.GetBytes(token);
+            var validEmailToken = WebEncoders.Base64UrlEncode(encodedToken);
+
+            var url = string.Concat(action, $"?id={user.Id}&token={validEmailToken}");
+
+            await _emailService.SendEmailVerificationAsync(user, url);
         }
     }
 }

@@ -68,5 +68,23 @@ namespace Una_Pinta.Services
         }
 
 
+        public Task<IRestResponse> ConfirmEmail(string id, string token)
+        {
+            var client = new RestClient(ApiRequests.HostUrl);
+            var request = new RestRequest(ApiRequests.ConfirmEmail(id, token), Method.GET);
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("Cache-Control", "no-cache");
+            try
+            {
+                var queryResult = client.ExecuteAsync(request).Result;
+                return Task.FromResult(queryResult);
+            }
+            catch (WebException ex)
+            {
+                Debug.WriteLine(ex.Response);
+                return null;
+            }
+        }
+
     }
 }
