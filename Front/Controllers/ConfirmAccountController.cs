@@ -18,5 +18,10 @@ namespace Una_Pinta.Controllers
         {
             return View();
         }
+
+        public IActionResult ConfirmAccountProcess()
+        {
+            return View();
+        }
     }
 }

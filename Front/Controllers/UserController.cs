@@ -78,7 +78,8 @@ namespace Una_Pinta.Controllers
         public async Task<IActionResult> EmailVerification(string id, string token)
         {
             var result = await _userRepository.ConfirmEmail(id, token);
-            return Json(new { status = result.StatusCode });
+            //return Json(new { status = result.StatusCode });
+            return RedirectToAction("");
         }
     }
 }
