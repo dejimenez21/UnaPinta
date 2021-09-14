@@ -41,6 +41,7 @@ namespace UnaPinta.Data.Brokers
             mimeMessage.From.Add(_from);
             mimeMessage.To.Add(to);
             mimeMessage.Body = body;
+            mimeMessage.Subject = subject;
 
             await _client.SendAsync(mimeMessage);
         }
