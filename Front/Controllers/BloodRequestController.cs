@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Una_Pinta.Models;
 using Una_Pinta.Services;
 using UnaPinta.Dto.Models;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Una_Pinta.Controllers
 {
@@ -25,9 +26,32 @@ namespace Una_Pinta.Controllers
 
         public IActionResult BloodRequestPage()
         {
-            LoadBloodComponents();
-            LoadBloodTypes();
-            return View();
+            var tokenString = TempData.Peek("tokenval").ToString();
+
+            var token = new JwtSecurityToken(jwtEncodedString: tokenString);
+
+            var validateToken = VerifiedToken(token);
+
+            if (validateToken == true)
+            {
+                LoadBloodComponents();
+                LoadBloodTypes();
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("ConfirmAccount", "ConfirmAccount");
+            }
+        }
+
+        public bool VerifiedToken(JwtSecurityToken token)
+        {
+            if(token.Claims.First(c => c.Type == "EmailConfirmed").Value.Contains("False"))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public void LoadBloodTypes()
