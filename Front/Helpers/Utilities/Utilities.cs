@@ -15,8 +15,10 @@ namespace Una_Pinta.Helpers.Utilities
     {
         public static string SetUserCookies(IRestResponse restResponse)
         {
-            var option = new CookieOptions();
-            option.Expires = DateTime.Now.AddMinutes(50);
+            var option = new CookieOptions
+            {
+                Expires = DateTime.Now.AddMinutes(50)
+            };
             var obj = JObject.Parse(restResponse.Content);
             var getToken = obj["token"].ToString();
             return getToken;

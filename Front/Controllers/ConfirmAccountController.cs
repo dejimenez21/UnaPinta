@@ -35,8 +35,8 @@ namespace Una_Pinta.Controllers
         public async Task<IActionResult> SendEmailVerification()
         {
             var tokenString = TempData.Peek("tokenval").ToString();
-            var reuslt = await _userRepository.ResendEmail(tokenString);
-            return View();
+            var result = await _userRepository.ResendEmail(tokenString);
+            return Json(new { code = result.StatusCode, content = result.Content });
         }
     }
 }

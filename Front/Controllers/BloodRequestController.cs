@@ -23,25 +23,22 @@ namespace Una_Pinta.Controllers
 
         public IActionResult BloodRequestPage()
         {
-            //var tokenString = TempData.Peek("tokenval").ToString();
+            var tokenString = TempData.Peek("tokenval").ToString();
 
-            //var token = new JwtSecurityToken(jwtEncodedString: tokenString);
+            var token = new JwtSecurityToken(jwtEncodedString: tokenString);
 
-            //var validateToken = ValidateToken.VerifiedToken(token);
+            var validateToken = ValidateToken.VerifiedToken(token);
 
-            //if (validateToken == true)
-            //{
-            //    LoadBloodComponents();
-            //    LoadBloodTypes();
-            //    return View();
-            //}
-            //else
-            //{
-            //    return RedirectToAction("ConfirmAccount", "ConfirmAccount");
-            //}
-            ViewData["bloodTypesList"] = BloodComponentFill.LoadBloodTypes();
-            ViewData["bloodComponentList"] = BloodComponentFill.LoadBloodComponent();
-            return View();
+            if (validateToken == true)
+            {
+                ViewData["bloodTypesList"] = BloodComponentFill.LoadBloodTypes();
+                ViewData["bloodComponentList"] = BloodComponentFill.LoadBloodComponent();
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("ConfirmAccount", "ConfirmAccount");
+            }
         }
 
         [HttpPost]
