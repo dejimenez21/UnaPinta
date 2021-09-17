@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using Una_Pinta.Services;
-using Una_Pinta.Helpers.Validations;
 using UnaPinta.Dto.Models;
 using Una_Pinta.Helpers.BloodComponentFill;
 using System.Threading.Tasks;
