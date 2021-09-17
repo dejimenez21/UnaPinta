@@ -39,6 +39,10 @@ namespace Una_Pinta.Controllers
         public IActionResult UserTapRegister(UserSignUp userSignUp)
         {
             var result = _userRepository.PostUser(userSignUp).Result;
+            if (((int)result.StatusCode) == 201)
+            {
+                SetUserCookies(result);
+            }
             return Json(new { code = (int)result.StatusCode, responseText = result.Content });
         }
 
@@ -58,8 +62,8 @@ namespace Una_Pinta.Controllers
             var option = new CookieOptions();
             option.Expires = DateTime.Now.AddMinutes(50);
             var obj = JObject.Parse(restResponse.Content);
-            var gettoken = obj["token"].ToString();
-            TempData["tokenval"] = gettoken;
+            var getToken = obj["token"].ToString();
+            TempData["tokenval"] = getToken;
         }
 
         public IActionResult GetProvinces()

@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using Una_Pinta.Services;
+using Una_Pinta.Helpers.Validations;
 using UnaPinta.Dto.Models;
+using Una_Pinta.Helpers.BloodComponentFill;
 
 namespace Una_Pinta.Controllers
 {
@@ -12,8 +14,6 @@ namespace Una_Pinta.Controllers
     {
         readonly IBloodTypesRepository _bloodTypesRepository;
         readonly IBloodRequestRepository _bloodRequestRepository;
-        List<SelectListItem> bloodTypes = new List<SelectListItem>();
-        List<SelectListItem> bloodComponent = new List<SelectListItem>();
         public BloodRequestController(IBloodTypesRepository bloodTypesRepository, IBloodRequestRepository bloodRequestRepository)
         {
             _bloodTypesRepository = bloodTypesRepository;
@@ -22,54 +22,35 @@ namespace Una_Pinta.Controllers
 
         public IActionResult BloodRequestPage()
         {
-            var tokenString = TempData.Peek("tokenval").ToString();
+            //var tokenString = TempData.Peek("tokenval").ToString();
 
-            var token = new JwtSecurityToken(jwtEncodedString: tokenString);
+            //var token = new JwtSecurityToken(jwtEncodedString: tokenString);
 
-            var validateToken = VerifiedToken(token);
+            //var validateToken = ValidateToken.VerifiedToken(token);
 
-            if (validateToken == true)
-            {
-                LoadBloodComponents();
-                LoadBloodTypes();
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("ConfirmAccount", "ConfirmAccount");
-            }
-        }
-
-        public bool VerifiedToken(JwtSecurityToken token)
-        {
-            if (token.Claims.First(c => c.Type == "EmailConfirmed").Value.Contains("False"))
-            {
-                return false;
-            }
-
-            return true;
+            //if (validateToken == true)
+            //{
+            //    LoadBloodComponents();
+            //    LoadBloodTypes();
+            //    return View();
+            //}
+            //else
+            //{
+            //    return RedirectToAction("ConfirmAccount", "ConfirmAccount");
+            //}
+            LoadBloodComponents();
+            LoadBloodTypes();
+            return View();
         }
 
         public void LoadBloodTypes()
         {
-            bloodTypes.Add(new SelectListItem { Text = "A+", Value = "1" });
-            bloodTypes.Add(new SelectListItem { Text = "A-", Value = "2" });
-            bloodTypes.Add(new SelectListItem { Text = "B+", Value = "3" });
-            bloodTypes.Add(new SelectListItem { Text = "B-", Value = "4" });
-            bloodTypes.Add(new SelectListItem { Text = "AB+", Value = "5" });
-            bloodTypes.Add(new SelectListItem { Text = "AB-", Value = "6" });
-            bloodTypes.Add(new SelectListItem { Text = "O+", Value = "7" });
-            bloodTypes.Add(new SelectListItem { Text = "O-", Value = "8" });
-            ViewData["bloodTypesList"] = bloodTypes;
+            ViewData["bloodTypesList"] = BloodComponentFill.LoadBloodTypes();
         }
 
         public void LoadBloodComponents()
         {
-            bloodComponent.Add(new SelectListItem { Text = "Plasma", Value = "1" });
-            bloodComponent.Add(new SelectListItem { Text = "Plaquetas", Value = "2" });
-            bloodComponent.Add(new SelectListItem { Text = "Globulos Blancos", Value = "3" });
-            bloodComponent.Add(new SelectListItem { Text = "Globulos Rojos", Value = "4" });
-            ViewData["bloodComponentList"] = bloodComponent;
+            ViewData["bloodComponentList"] = BloodComponentFill.LoadBloodComponent();
         }
 
         [HttpPost]
@@ -89,7 +70,7 @@ namespace Una_Pinta.Controllers
             var listBloodFromApi = _bloodTypesRepository.GetBloodTypes(id).Result;
             foreach (var item in listBloodFromApi)
             {
-                var searchtype = bloodTypes.Find(elem => elem.Value == item.ToString());
+                var searchtype = BloodComponentFill.LoadBloodTypes().Find(elem => elem.Value == item.ToString());
                 selectedTypes.Add(new SelectListItem { Text = searchtype.Text, Value = searchtype.Value });
             }
             var types = selectedTypes.Select(elem => new { id = elem.Value, text = elem.Text });
