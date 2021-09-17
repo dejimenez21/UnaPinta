@@ -15,6 +15,7 @@ namespace Una_Pinta.Controllers
     {
         readonly IBloodTypesRepository _bloodTypesRepository;
         readonly IBloodRequestRepository _bloodRequestRepository;
+        public string _token { get; set; } = "";
         public BloodRequestController(IBloodTypesRepository bloodTypesRepository, IBloodRequestRepository bloodRequestRepository)
         {
             _bloodTypesRepository = bloodTypesRepository;
@@ -23,9 +24,8 @@ namespace Una_Pinta.Controllers
 
         public IActionResult BloodRequestPage()
         {
-            var tokenString = TempData.Peek("tokenval").ToString();
-
-            var token = new JwtSecurityToken(jwtEncodedString: tokenString);
+            _token = TempData.Peek("tokenval").ToString();
+            var token = new JwtSecurityToken(jwtEncodedString: _token);
 
             var validateToken = ValidateToken.VerifiedToken(token);
 
@@ -45,8 +45,7 @@ namespace Una_Pinta.Controllers
         public async Task<IActionResult> TapBloodRequestCreate(RequestCreate requestCreate)
         {
             requestCreate.PrescriptionBase64 = "something";
-            var cookie = TempData.Peek("tokenval");
-            var result = await _bloodRequestRepository.PostBloodRequest(requestCreate, cookie.ToString());
+            var result = await _bloodRequestRepository.PostBloodRequest(requestCreate, _token);
             return Json(new { code = (int)result.StatusCode, responseText = result.Content });
         }
 
@@ -66,8 +65,7 @@ namespace Una_Pinta.Controllers
 
         public async Task<IActionResult> BloodRequestDetail()
         {
-            var cookie = TempData.Peek("tokenval");
-            var result = await _bloodRequestRepository.GetRequestDetails(12, cookie.ToString());
+            var result = await _bloodRequestRepository.GetRequestDetails(12, _token);
             TempData["resultRequest"] = result;
             return View();
         }
