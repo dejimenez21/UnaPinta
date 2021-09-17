@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Una_Pinta.Helpers.Requests;
+using Una_Pinta.Helpers.Utilities;
 using Una_Pinta.Models;
 using Una_Pinta.Services;
 
@@ -41,7 +42,7 @@ namespace Una_Pinta.Controllers
             var result = _userRepository.PostUser(userSignUp).Result;
             if (((int)result.StatusCode) == 201)
             {
-                SetUserCookies(result);
+                TempData["tokenval"] = Utilities.SetUserCookies(result);
             }
             return Json(new { code = (int)result.StatusCode, responseText = result.Content });
         }
@@ -52,18 +53,9 @@ namespace Una_Pinta.Controllers
             var result = _userRepository.GetUser(userSignUp).Result;
             if (((int)result.StatusCode) == 200)
             {
-                SetUserCookies(result);
+                TempData["tokenval"] = Utilities.SetUserCookies(result);
             }
             return Json(new { code = (int)result.StatusCode, responseText = result.Content });
-        }
-
-        public void SetUserCookies(IRestResponse restResponse)
-        {
-            var option = new CookieOptions();
-            option.Expires = DateTime.Now.AddMinutes(50);
-            var obj = JObject.Parse(restResponse.Content);
-            var getToken = obj["token"].ToString();
-            TempData["tokenval"] = getToken;
         }
 
         public IActionResult GetProvinces()

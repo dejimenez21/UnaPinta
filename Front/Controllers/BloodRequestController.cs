@@ -38,19 +38,9 @@ namespace Una_Pinta.Controllers
             //{
             //    return RedirectToAction("ConfirmAccount", "ConfirmAccount");
             //}
-            LoadBloodComponents();
-            LoadBloodTypes();
-            return View();
-        }
-
-        public void LoadBloodTypes()
-        {
             ViewData["bloodTypesList"] = BloodComponentFill.LoadBloodTypes();
-        }
-
-        public void LoadBloodComponents()
-        {
             ViewData["bloodComponentList"] = BloodComponentFill.LoadBloodComponent();
+            return View();
         }
 
         [HttpPost]
@@ -65,7 +55,6 @@ namespace Una_Pinta.Controllers
         [HttpPost]
         public IActionResult GetBloodTypes(int id)
         {
-            LoadBloodTypes();
             var selectedTypes = new List<SelectListItem>();
             var listBloodFromApi = _bloodTypesRepository.GetBloodTypes(id).Result;
             foreach (var item in listBloodFromApi)
