@@ -8,6 +8,7 @@ using Una_Pinta.Helpers.Validations;
 using UnaPinta.Dto.Models;
 using Una_Pinta.Helpers.BloodComponentFill;
 using System.Threading.Tasks;
+using Una_Pinta.Helpers.Utilities;
 
 namespace Una_Pinta.Controllers
 {
@@ -15,7 +16,7 @@ namespace Una_Pinta.Controllers
     {
         readonly IBloodTypesRepository _bloodTypesRepository;
         readonly IBloodRequestRepository _bloodRequestRepository;
-        public string _token { get; set; } = "";
+        public string Token { get; set; } = "";
         public BloodRequestController(IBloodTypesRepository bloodTypesRepository, IBloodRequestRepository bloodRequestRepository)
         {
             _bloodTypesRepository = bloodTypesRepository;
@@ -24,10 +25,10 @@ namespace Una_Pinta.Controllers
 
         public IActionResult BloodRequestPage()
         {
-            _token = TempData.Peek("tokenval").ToString();
-            var token = new JwtSecurityToken(jwtEncodedString: _token);
+            Token = TempData.Peek("tokenval").ToString();
+            var jwToken = new JwtSecurityToken(jwtEncodedString: Token);
 
-            var validateToken = ValidateToken.VerifiedToken(token);
+            var validateToken = Utilities.VerifiedToken(jwToken);
 
             if (validateToken == true)
             {
@@ -45,7 +46,7 @@ namespace Una_Pinta.Controllers
         public async Task<IActionResult> TapBloodRequestCreate(RequestCreate requestCreate)
         {
             requestCreate.PrescriptionBase64 = "something";
-            var result = await _bloodRequestRepository.PostBloodRequest(requestCreate, _token);
+            var result = await _bloodRequestRepository.PostBloodRequest(requestCreate, Token);
             return Json(new { code = (int)result.StatusCode, responseText = result.Content });
         }
 
@@ -65,7 +66,7 @@ namespace Una_Pinta.Controllers
 
         public async Task<IActionResult> BloodRequestDetail()
         {
-            var result = await _bloodRequestRepository.GetRequestDetails(12, _token);
+            var result = await _bloodRequestRepository.GetRequestDetails(12, Token);
             TempData["resultRequest"] = result;
             return View();
         }
