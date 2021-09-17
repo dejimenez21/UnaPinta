@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using RestSharp;
-using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Threading.Tasks;
-using Una_Pinta.Models;
 using Una_Pinta.Services;
 using UnaPinta.Dto.Models;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace Una_Pinta.Controllers
 {
@@ -46,7 +42,7 @@ namespace Una_Pinta.Controllers
 
         public bool VerifiedToken(JwtSecurityToken token)
         {
-            if(token.Claims.First(c => c.Type == "EmailConfirmed").Value.Contains("False"))
+            if (token.Claims.First(c => c.Type == "EmailConfirmed").Value.Contains("False"))
             {
                 return false;
             }
@@ -94,7 +90,7 @@ namespace Una_Pinta.Controllers
             foreach (var item in listBloodFromApi)
             {
                 var searchtype = bloodTypes.Find(elem => elem.Value == item.ToString());
-                selectedTypes.Add(new SelectListItem { Text = searchtype.Text, Value = searchtype.Value});
+                selectedTypes.Add(new SelectListItem { Text = searchtype.Text, Value = searchtype.Value });
             }
             var types = selectedTypes.Select(elem => new { id = elem.Value, text = elem.Text });
             return Json(new { content = types });

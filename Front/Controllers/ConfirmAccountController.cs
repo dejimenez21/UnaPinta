@@ -23,5 +23,12 @@ namespace Una_Pinta.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public IActionResult SendEmailVerification()
+        {
+
+            return "";
+        }
     }
 }

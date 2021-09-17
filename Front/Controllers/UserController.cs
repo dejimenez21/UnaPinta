@@ -86,7 +86,6 @@ namespace Una_Pinta.Controllers
             {
                 return RedirectToAction("ConfirmAccount", "ConfirmAccount");
             }
-            //return Json(new { status = result.StatusCode });
         }
     }
 }
