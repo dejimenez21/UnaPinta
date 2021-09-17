@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
+using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -86,5 +87,23 @@ namespace Una_Pinta.Services
             }
         }
 
+        public Task<IRestResponse> ResendEmail(string token)
+        {
+            var client = new RestClient(ApiRequests.HostUrl);
+            client.Authenticator = new JwtAuthenticator(token);
+            var request = new RestRequest(ApiRequests.ResendEmail(), Method.GET);
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("Cache-Control", "no-cache");
+            try
+            {
+                var queryResult = client.ExecuteAsync(request).Result;
+                return Task.FromResult(queryResult);
+            }
+            catch (WebException ex)
+            {
+                Debug.WriteLine(ex.Response);
+                return null;
+            }
+        }
     }
 }

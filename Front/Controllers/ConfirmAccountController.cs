@@ -3,11 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Una_Pinta.Services;
 
 namespace Una_Pinta.Controllers
 {
     public class ConfirmAccountController : Controller
     {
+        readonly IUserRepository _userRepository;
+        public ConfirmAccountController(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
         public IActionResult ConfirmAccount()
         {
             return View();
@@ -27,8 +34,9 @@ namespace Una_Pinta.Controllers
         [HttpGet]
         public IActionResult SendEmailVerification()
         {
-
-            return "";
+            var tokenString = TempData.Peek("tokenval").ToString();
+            var reuslt =_userRepository.ResendEmail(tokenString).Result;
+            return View();
         }
     }
 }

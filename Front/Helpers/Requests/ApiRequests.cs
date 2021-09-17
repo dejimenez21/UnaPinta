@@ -13,17 +13,14 @@ namespace Una_Pinta.Helpers.Requests
         public static string GetUserLogin = "api/Auth/login";
         public static string GetProvinces = "api/provinces";
         public static string GetBloodComponent = "api/BloodComponent";
-        public static string ConfirmEmail(string id, string token) 
-            => $"api/auth/confirmemail?userid={id}&token={token}";
 
-        public static string GetBloodTypesPossibles(int idBlood)
-        {
-            return $"api/BloodTypes/compatible/{idBlood}";
-        }
+        public static string ConfirmEmail(string id, string token) => $"api/auth/confirmemail?userid={id}&token={token}";
 
-        public static string GetRequestDetails(int idRequest)
-        {
-            return $"api/Requests/{idRequest}/details";
-        }
+        public static string GetBloodTypesPossibles(int idBlood) => $"api/BloodTypes/compatible/{idBlood}";
+
+        public static string GetRequestDetails(int idRequest) => $"api/Requests/{idRequest}/details";
+
+        public static string ResendEmail() => $"api/auth/sendemailverification";
+
     }
 }
