@@ -26,7 +26,7 @@ namespace UnaPinta.Core.Services
         private readonly RoleManager<Role> _roleManager;
         private readonly IMapper _mapper;
         private readonly IEmailService _emailService;
-        private User _user;
+        //private User _user;
         public AuthenticationService(UserManager<User> userManager, IConfiguration configuration, 
              RoleManager<Role> roleManager, IMapper mapper, IEmailService emailService)
         {
@@ -55,20 +55,13 @@ namespace UnaPinta.Core.Services
                 throw new Exception(roleResult.Errors.First().Description);
         }
 
-        public async Task<string> CreateToken()
+        public async Task<string> CreateToken(User user)
         {
             var signinCredentials = GetSigningCredentials();
-            var claims = await GetClaims();
+            var claims = await GetClaims(user);
             var tokenOptions = GenerateTokenOptions(signinCredentials, claims);
 
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-        }
-
-        public async Task<bool> ValidateUser(UserLogin login)
-        {
-            _user = await _userManager.FindByNameAsync(login.UserName);
-
-            return (_user != null && await _userManager.CheckPasswordAsync(_user, login.Password));
         }
 
         private SigningCredentials GetSigningCredentials()
@@ -79,17 +72,17 @@ namespace UnaPinta.Core.Services
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }
 
-        private async Task<List<Claim>> GetClaims()
+        private async Task<List<Claim>> GetClaims(User user)
         {
             var claims = new List<Claim>
             {
-                new Claim("Name", $"{_user.FirstName} {_user.LastName}"),
-                new Claim("UserName", _user.UserName),
-                new Claim("EmailConfirmed", _user.EmailConfirmed.ToString())
+                new Claim("Name", $"{user.FirstName} {user.LastName}"),
+                new Claim("UserName", user.UserName),
+                new Claim("EmailConfirmed", user.EmailConfirmed.ToString())
             };
 
 
-            var roles = await _userManager.GetRolesAsync(_user);
+            var roles = await _userManager.GetRolesAsync(user);
             foreach(var role in roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));   
@@ -114,7 +107,7 @@ namespace UnaPinta.Core.Services
             return tokenOptions;
         }
 
-        public async Task ConfirmEmailAsync(string id, string token)
+        public async Task<string> ConfirmEmailAsync(string id, string token)
         {
             if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(token))
                 throw new EmailVerificationDataMissingException();
@@ -144,6 +137,8 @@ namespace UnaPinta.Core.Services
                 if(result.Errors.Any(e => e.Code == "InvalidToken"))
                     throw new EmailVerificationTokenInvalidException();
             }
+
+            return await CreateToken(user);
                 
         }
 
@@ -157,6 +152,19 @@ namespace UnaPinta.Core.Services
             var url = string.Concat(action, $"?id={user.Id}&token={validEmailToken}");
 
             await _emailService.SendEmailVerificationAsync(user, url);
+        }
+
+        public async Task<string> AuthenticateAsync(UserLogin login)
+        {
+            var user = await _userManager.FindByNameAsync(login.UserName);
+
+            var isValidCredentials = user != null && await _userManager.CheckPasswordAsync(user, login.Password);
+            if (!isValidCredentials)
+                throw new InvalidCredentialsException();
+
+            var token = await CreateToken(user);
+
+            return token;
         }
     }
 }

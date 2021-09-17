@@ -9,10 +9,10 @@ namespace UnaPinta.Core.Contracts
 {
     public interface IAuthenticationService
     {
-        Task ConfirmEmailAsync(string id, string token);
+        Task<string> ConfirmEmailAsync(string id, string token);
         Task SendEmailConfirmationAsync(User user, string action);
-        Task<bool> ValidateUser(UserLogin login);
-        Task<string> CreateToken();
+        Task<string> CreateToken(User user);
+        Task<string> AuthenticateAsync(UserLogin login);
 
         Task<RoleCreateResponseDto> CreateRole(RoleCreate roleCreate);
     }
