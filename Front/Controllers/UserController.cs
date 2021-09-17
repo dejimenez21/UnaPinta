@@ -37,9 +37,9 @@ namespace Una_Pinta.Controllers
         }
 
         [HttpPost]
-        public IActionResult UserTapRegister(UserSignUp userSignUp)
+        public async Task<IActionResult> UserTapRegister(UserSignUp userSignUp)
         {
-            var result = _userRepository.PostUser(userSignUp).Result;
+            var result = await _userRepository.PostUser(userSignUp);
             if (((int)result.StatusCode) == 201)
             {
                 TempData["tokenval"] = Utilities.SetUserCookies(result);
@@ -48,9 +48,9 @@ namespace Una_Pinta.Controllers
         }
 
         [HttpPost]
-        public IActionResult UserTapLogin(UserSignUp userSignUp)
+        public async Task<IActionResult> UserTapLogin(UserSignUp userSignUp)
         {
-            var result = _userRepository.GetUser(userSignUp).Result;
+            var result = await _userRepository.GetUser(userSignUp);
             if (((int)result.StatusCode) == 200)
             {
                 TempData["tokenval"] = Utilities.SetUserCookies(result);
@@ -58,9 +58,9 @@ namespace Una_Pinta.Controllers
             return Json(new { code = (int)result.StatusCode, responseText = result.Content });
         }
 
-        public IActionResult GetProvinces()
+        public async Task<IActionResult> GetProvinces()
         {
-            var listProvinces = _provincesRepository.GetProvinces().Result;
+            var listProvinces = await _provincesRepository.GetProvinces();
             var selectList = new List<SelectListItem>();
             foreach (var item in listProvinces)
             {

@@ -7,6 +7,7 @@ using Una_Pinta.Services;
 using Una_Pinta.Helpers.Validations;
 using UnaPinta.Dto.Models;
 using Una_Pinta.Helpers.BloodComponentFill;
+using System.Threading.Tasks;
 
 namespace Una_Pinta.Controllers
 {
@@ -44,19 +45,19 @@ namespace Una_Pinta.Controllers
         }
 
         [HttpPost]
-        public IActionResult TapBloodRequestCreate(RequestCreate requestCreate)
+        public async Task<IActionResult> TapBloodRequestCreate(RequestCreate requestCreate)
         {
             requestCreate.PrescriptionBase64 = "something";
             var cookie = TempData.Peek("tokenval");
-            var result = _bloodRequestRepository.PostBloodRequest(requestCreate, cookie.ToString()).Result;
+            var result = await _bloodRequestRepository.PostBloodRequest(requestCreate, cookie.ToString());
             return Json(new { code = (int)result.StatusCode, responseText = result.Content });
         }
 
         [HttpPost]
-        public IActionResult GetBloodTypes(int id)
+        public async Task<IActionResult> GetBloodTypes(int id)
         {
             var selectedTypes = new List<SelectListItem>();
-            var listBloodFromApi = _bloodTypesRepository.GetBloodTypes(id).Result;
+            var listBloodFromApi = await _bloodTypesRepository.GetBloodTypes(id);
             foreach (var item in listBloodFromApi)
             {
                 var searchtype = BloodComponentFill.LoadBloodTypes().Find(elem => elem.Value == item.ToString());
@@ -66,10 +67,10 @@ namespace Una_Pinta.Controllers
             return Json(new { content = types });
         }
 
-        public IActionResult BloodRequestDetail()
+        public async Task<IActionResult> BloodRequestDetail()
         {
             var cookie = TempData.Peek("tokenval");
-            var result = _bloodRequestRepository.GetRequestDetails(12, cookie.ToString()).Result;
+            var result = await _bloodRequestRepository.GetRequestDetails(12, cookie.ToString());
             TempData["resultRequest"] = result;
             return View();
         }
