@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Una_Pinta.Helpers.Requests;
@@ -19,11 +20,13 @@ namespace Una_Pinta.Controllers
     {
         readonly IUserRepository _userRepository;
         readonly IProvincesRepository _provincesRepository;
+        readonly Utilities _utilities;
 
-        public UserController(IUserRepository userRepository, IProvincesRepository provincesRepository)
+        public UserController(IUserRepository userRepository, IProvincesRepository provincesRepository, IHttpContextAccessor httpContextAccessor)
         {
             _userRepository = userRepository;
             _provincesRepository = provincesRepository;
+            _utilities = new Utilities(httpContextAccessor);
         }
 
         public IActionResult UserLoginPage()
@@ -40,10 +43,6 @@ namespace Una_Pinta.Controllers
         public async Task<IActionResult> UserTapRegister(UserSignUp userSignUp)
         {
             var result = await _userRepository.PostUser(userSignUp);
-            if (((int)result.StatusCode) == 201)
-            {
-                TempData["tokenval"] = Utilities.SetUserCookies(result);
-            }
             return Json(new { code = (int)result.StatusCode, responseText = result.Content });
         }
 
@@ -53,7 +52,7 @@ namespace Una_Pinta.Controllers
             var result = await _userRepository.GetUser(userSignUp);
             if (((int)result.StatusCode) == 200)
             {
-                TempData["tokenval"] = Utilities.SetUserCookies(result);
+                _utilities.SetSession(result);
             }
             return Json(new { code = (int)result.StatusCode, responseText = result.Content });
         }

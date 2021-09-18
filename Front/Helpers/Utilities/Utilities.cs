@@ -14,18 +14,21 @@ namespace Una_Pinta.Helpers.Utilities
 {
     public class Utilities
     {
-        public static string SetUserCookies(IRestResponse restResponse)
+        readonly IHttpContextAccessor _httpContextAccessor;
+        public Utilities(IHttpContextAccessor httpContextAccessor)
         {
-            var option = new CookieOptions
-            {
-                Expires = DateTime.Now.AddMinutes(50)
-            };
-            var obj = JObject.Parse(restResponse.Content);
-            var getToken = obj["token"].ToString();
-            return getToken;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public static bool VerifiedToken(JwtSecurityToken token)
+        public string SetSession(IRestResponse restResponse)
+        {
+            var parseContent = JObject.Parse(restResponse.Content);
+            var token = parseContent["token"].ToString();
+            _httpContextAccessor.HttpContext.Session.SetString("userToken", token);
+            return _httpContextAccessor.HttpContext.Session.GetString("userToken");
+        }
+
+        public bool VerifiedToken(JwtSecurityToken token)
         {
             if (token.Claims.First(c => c.Type == "EmailConfirmed").Value.Contains("False"))
             {
@@ -33,6 +36,12 @@ namespace Una_Pinta.Helpers.Utilities
             }
 
             return true;
+        }
+
+        public JwtSecurityToken GetJwtToken(string token)
+        {
+            var jwToken = new JwtSecurityToken(jwtEncodedString: token);
+            return jwToken;
         }
     }
 }

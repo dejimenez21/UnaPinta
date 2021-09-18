@@ -8,6 +8,7 @@ using UnaPinta.Dto.Models;
 using Una_Pinta.Helpers.BloodComponentFill;
 using System.Threading.Tasks;
 using Una_Pinta.Helpers.Utilities;
+using Microsoft.AspNetCore.Http;
 
 namespace Una_Pinta.Controllers
 {
@@ -15,19 +16,22 @@ namespace Una_Pinta.Controllers
     {
         readonly IBloodTypesRepository _bloodTypesRepository;
         readonly IBloodRequestRepository _bloodRequestRepository;
+        readonly IHttpContextAccessor _httpContextAccessor;
+        readonly Utilities _utilities;
         public string Token { get; set; } = "";
-        public BloodRequestController(IBloodTypesRepository bloodTypesRepository, IBloodRequestRepository bloodRequestRepository)
+        public BloodRequestController(IBloodTypesRepository bloodTypesRepository, IBloodRequestRepository bloodRequestRepository, IHttpContextAccessor httpContextAccessor)
         {
             _bloodTypesRepository = bloodTypesRepository;
             _bloodRequestRepository = bloodRequestRepository;
+            _httpContextAccessor = httpContextAccessor;
+            _utilities = new Utilities(httpContextAccessor);
         }
 
         public IActionResult BloodRequestPage()
         {
-            Token = TempData.Peek("tokenval").ToString();
-            var jwToken = new JwtSecurityToken(jwtEncodedString: Token);
-
-            var validateToken = Utilities.VerifiedToken(jwToken);
+            Token = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var token = _utilities.GetJwtToken(Token);
+            var validateToken = _utilities.VerifiedToken(token: token);
 
             if (validateToken == true)
             {
