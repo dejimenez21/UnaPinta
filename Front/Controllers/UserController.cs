@@ -23,6 +23,7 @@ namespace Una_Pinta.Controllers
         readonly IUserRepository _userRepository;
         readonly IProvincesRepository _provincesRepository;
         readonly Utilities _utilities;
+        public RoleEnum RoleEnum;
 
         public UserController(IUserRepository userRepository, IProvincesRepository provincesRepository, IHttpContextAccessor httpContextAccessor)
         {
@@ -52,14 +53,14 @@ namespace Una_Pinta.Controllers
         public async Task<IActionResult> UserTapLogin(UserSignUp userSignUp)
         {
             var result = await _userRepository.GetUser(userSignUp);
-            var role = new RoleEnum();
+            RoleEnum = new RoleEnum();
             if (((int)result.StatusCode) == 200)
             {
                 var tokenSession = _utilities.SetSession(result);
                 var token = _utilities.GetJwtToken(tokenSession);
-                role =_utilities.VerifyRole(token);
+                RoleEnum = _utilities.VerifyRole(token);
             }
-            return Json(new { code = (int)result.StatusCode, responseText = result.Content, roleUser = ((int)role) });
+            return Json(new { code = (int)result.StatusCode, responseText = result.Content, roleUser = ((int)RoleEnum) });
             
         }
 

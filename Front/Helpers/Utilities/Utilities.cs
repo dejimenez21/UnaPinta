@@ -35,7 +35,6 @@ namespace Una_Pinta.Helpers.Utilities
             {
                 return false;
             }
-
             return true;
         }
 
@@ -54,8 +53,7 @@ namespace Una_Pinta.Helpers.Utilities
 
         public JwtSecurityToken GetJwtToken(string token)
         {
-            var jwToken = new JwtSecurityToken(jwtEncodedString: token);
-            return jwToken;
+            return new JwtSecurityToken(jwtEncodedString: token);
         }
     }
 }
