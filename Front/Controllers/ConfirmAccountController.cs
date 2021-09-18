@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,11 @@ namespace Una_Pinta.Controllers
     public class ConfirmAccountController : Controller
     {
         readonly IUserRepository _userRepository;
-        public ConfirmAccountController(IUserRepository userRepository)
+        readonly IHttpContextAccessor _httpContextAccessor;
+        public ConfirmAccountController(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
         {
             _userRepository = userRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult ConfirmAccount()
@@ -34,8 +37,8 @@ namespace Una_Pinta.Controllers
         [HttpGet]
         public async Task<IActionResult> SendEmailVerification()
         {
-            var tokenString = TempData.Peek("tokenval").ToString();
-            var result = await _userRepository.ResendEmail(tokenString);
+            var tokenUser = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var result = await _userRepository.ResendEmail(tokenUser);
             return Json(new { code = result.StatusCode, content = result.Content });
         }
     }

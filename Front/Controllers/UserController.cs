@@ -75,6 +75,7 @@ namespace Una_Pinta.Controllers
             var result = await _userRepository.ConfirmEmail(id, token);
             if (((int)result.StatusCode) == 200)
             {
+                _utilities.SetSession(result);
                 return RedirectToAction("ConfirmAccountProcess", "ConfirmAccount");
             }
             else
