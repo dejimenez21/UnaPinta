@@ -31,18 +31,17 @@ namespace Una_Pinta.Controllers
         public IActionResult NavigateToBloodRequestCollection()
         {
             Token = _httpContextAccessor.HttpContext.Session.GetString("userToken");
-            if (!string.IsNullOrEmpty(Token))
-            {
-                var tokenDecoded = _utilities.GetJwtToken(Token);
-                EmailVerified = _utilities.VerifyEmail(tokenDecoded);
-                RoleEnum = _utilities.VerifyRole(tokenDecoded);
-            }
-            return Json(new { verified = EmailVerified, roleUser = ((int)RoleEnum) });
+            return VerifyUser(Token);
         }
 
         public IActionResult NavigateToBloodRequest()
         {
             Token = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            return VerifyUser(Token);
+        }
+
+        public JsonResult VerifyUser(string Token)
+        {
             if (!string.IsNullOrEmpty(Token))
             {
                 var tokenDecoded = _utilities.GetJwtToken(Token);

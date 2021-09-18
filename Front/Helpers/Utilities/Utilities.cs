@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Una_Pinta.Services;
 using UnaPinta.Dto.Enums;
@@ -16,6 +18,8 @@ namespace Una_Pinta.Helpers.Utilities
     public class Utilities
     {
         readonly IHttpContextAccessor _httpContextAccessor;
+        public RoleEnum RoleEnum;
+        public bool EmailVerified = false;
         public Utilities(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
