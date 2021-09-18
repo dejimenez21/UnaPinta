@@ -74,7 +74,7 @@ namespace UnaPinta.Api
             services.AddScoped<IProvinceService, ProvinceService>();
             services.AddScoped<IRequestRepository, RequestRepository>();
             services.AddScoped<IEmailService, EmailSender>();
-            services.AddSingleton<IEmailBroker, EmailBroker>();
+            services.AddSingleton<IEmailBroker, MockEmailBroker>();
 
             //Remove
             services.AddScoped<EmailSender>();
