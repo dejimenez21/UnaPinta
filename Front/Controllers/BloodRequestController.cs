@@ -31,7 +31,7 @@ namespace Una_Pinta.Controllers
         {
             Token = _httpContextAccessor.HttpContext.Session.GetString("userToken");
             var token = _utilities.GetJwtToken(Token);
-            var validateToken = _utilities.VerifiedToken(token: token);
+            var validateToken = _utilities.VerifyEmail(token: token);
 
             if (validateToken == true)
             {
@@ -72,6 +72,21 @@ namespace Una_Pinta.Controllers
             var result = await _bloodRequestRepository.GetRequestDetails(12, Token);
             TempData["resultRequest"] = result;
             return View();
+        }
+
+        public async Task<IActionResult> BloodRequestDetailsCollection()
+        {
+            var token = _utilities.GetJwtToken(Token);
+            var validateToken = _utilities.VerifyEmail(token: token);
+
+            if (validateToken == true)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("ConfirmAccount", "ConfirmAccount");
+            }
         }
 
     }

@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Una_Pinta.Services;
+using UnaPinta.Dto.Enums;
 
 namespace Una_Pinta.Helpers.Utilities
 {
@@ -28,7 +29,7 @@ namespace Una_Pinta.Helpers.Utilities
             return _httpContextAccessor.HttpContext.Session.GetString("userToken");
         }
 
-        public bool VerifiedToken(JwtSecurityToken token)
+        public bool VerifyEmail(JwtSecurityToken token)
         {
             if (token.Claims.First(c => c.Type == "EmailConfirmed").Value.Contains("False"))
             {
@@ -36,6 +37,19 @@ namespace Una_Pinta.Helpers.Utilities
             }
 
             return true;
+        }
+
+        public RoleEnum VerifyRole(JwtSecurityToken token)
+        {
+            if (token.Claims.First(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Value.Contains("solicitante"))
+            {
+                return RoleEnum.Solicitante;
+            }
+            else if (token.Claims.First(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Value.Contains("donante"))
+            {
+                return RoleEnum.Donante;
+            }
+            return RoleEnum.Administrador;
         }
 
         public JwtSecurityToken GetJwtToken(string token)

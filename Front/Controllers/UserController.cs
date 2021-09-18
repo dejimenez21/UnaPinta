@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
+using UnaPinta.Dto.Enums;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using Una_Pinta.Helpers.Requests;
@@ -50,11 +52,15 @@ namespace Una_Pinta.Controllers
         public async Task<IActionResult> UserTapLogin(UserSignUp userSignUp)
         {
             var result = await _userRepository.GetUser(userSignUp);
+            var role = new RoleEnum();
             if (((int)result.StatusCode) == 200)
             {
-                _utilities.SetSession(result);
+                var tokenSession = _utilities.SetSession(result);
+                var token = _utilities.GetJwtToken(tokenSession);
+                role =_utilities.VerifyRole(token);
             }
-            return Json(new { code = (int)result.StatusCode, responseText = result.Content });
+            return Json(new { code = (int)result.StatusCode, responseText = result.Content, roleUser = ((int)role) });
+            
         }
 
         public async Task<IActionResult> GetProvinces()
