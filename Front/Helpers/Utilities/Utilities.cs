@@ -59,5 +59,14 @@ namespace Una_Pinta.Helpers.Utilities
         {
             return new JwtSecurityToken(jwtEncodedString: token);
         }
+
+        public void SetUserName(JwtSecurityToken token)
+        {
+            var getUserName = token.Claims.First(c => c.Type == "UserName").Value;
+            if (!string.IsNullOrEmpty(getUserName))
+            {
+                _httpContextAccessor.HttpContext.Session.SetString("userName", getUserName);
+            }
+        }
     }
 }

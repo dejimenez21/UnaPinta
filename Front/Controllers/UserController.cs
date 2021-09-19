@@ -59,6 +59,7 @@ namespace Una_Pinta.Controllers
                 var tokenSession = _utilities.SetSession(result);
                 var token = _utilities.GetJwtToken(tokenSession);
                 RoleEnum = _utilities.VerifyRole(token);
+                _utilities.SetUserName(token);
             }
             return Json(new { code = (int)result.StatusCode, responseText = result.Content, roleUser = ((int)RoleEnum) });
             
