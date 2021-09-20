@@ -30,15 +30,15 @@ namespace Una_Pinta.Controllers
         }
 
         [HttpPost]
-        public IActionResult DonorTapRegister(UserSignUp userSignUp)
+        public async Task<IActionResult> DonorTapRegister(UserSignUp userSignUp)
         {
-            var result = _userRepository.PostUser(userSignUp).Result;
+            var result = await _userRepository.PostUser(userSignUp);
             return Json(new { code = ((int)result.StatusCode), responseText = result.Content });
         }
 
-        public IActionResult GetProvinces()
+        public async Task<IActionResult> GetProvinces()
         {
-            var listProvinces = _provincesRepository.GetProvinces().Result;
+            var listProvinces =  await _provincesRepository.GetProvinces();
             var selectList = new List<SelectListItem>();
             foreach (var item in listProvinces)
             {

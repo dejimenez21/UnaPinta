@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using RestSharp;
-using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Threading.Tasks;
-using Una_Pinta.Models;
 using Una_Pinta.Services;
 using UnaPinta.Dto.Models;
+using Una_Pinta.Helpers.BloodComponentFill;
+using System.Threading.Tasks;
+using Una_Pinta.Helpers.Utilities;
+using Microsoft.AspNetCore.Http;
 
 namespace Una_Pinta.Controllers
 {
@@ -15,73 +16,77 @@ namespace Una_Pinta.Controllers
     {
         readonly IBloodTypesRepository _bloodTypesRepository;
         readonly IBloodRequestRepository _bloodRequestRepository;
-        List<SelectListItem> bloodTypes = new List<SelectListItem>();
-        List<SelectListItem> bloodComponent = new List<SelectListItem>();
-        public BloodRequestController(IBloodTypesRepository bloodTypesRepository, IBloodRequestRepository bloodRequestRepository)
+        readonly IHttpContextAccessor _httpContextAccessor;
+        readonly Utilities _utilities;
+        public string Token { get; set; } = "";
+        public BloodRequestController(IBloodTypesRepository bloodTypesRepository, IBloodRequestRepository bloodRequestRepository, IHttpContextAccessor httpContextAccessor)
         {
             _bloodTypesRepository = bloodTypesRepository;
             _bloodRequestRepository = bloodRequestRepository;
+            _httpContextAccessor = httpContextAccessor;
+            _utilities = new Utilities(httpContextAccessor);
         }
 
         public IActionResult BloodRequestPage()
         {
-            LoadBloodComponents();
-            LoadBloodTypes();
-            return View();
-        }
+            Token = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var token = _utilities.GetJwtToken(Token);
+            var validateToken = _utilities.VerifyEmail(token: token);
 
-        public void LoadBloodTypes()
-        {
-            bloodTypes.Add(new SelectListItem { Text = "A+", Value = "1" });
-            bloodTypes.Add(new SelectListItem { Text = "A-", Value = "2" });
-            bloodTypes.Add(new SelectListItem { Text = "B+", Value = "3" });
-            bloodTypes.Add(new SelectListItem { Text = "B-", Value = "4" });
-            bloodTypes.Add(new SelectListItem { Text = "AB+", Value = "5" });
-            bloodTypes.Add(new SelectListItem { Text = "AB-", Value = "6" });
-            bloodTypes.Add(new SelectListItem { Text = "O+", Value = "7" });
-            bloodTypes.Add(new SelectListItem { Text = "O-", Value = "8" });
-            ViewData["bloodTypesList"] = bloodTypes;
-        }
-
-        public void LoadBloodComponents()
-        {
-            bloodComponent.Add(new SelectListItem { Text = "Plasma", Value = "1" });
-            bloodComponent.Add(new SelectListItem { Text = "Plaquetas", Value = "2" });
-            bloodComponent.Add(new SelectListItem { Text = "Globulos Blancos", Value = "3" });
-            bloodComponent.Add(new SelectListItem { Text = "Globulos Rojos", Value = "4" });
-            ViewData["bloodComponentList"] = bloodComponent;
+            if (validateToken == true)
+            {
+                ViewData["bloodTypesList"] = BloodComponentFill.LoadBloodTypes();
+                ViewData["bloodComponentList"] = BloodComponentFill.LoadBloodComponent();
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("ConfirmAccount", "ConfirmAccount");
+            }
         }
 
         [HttpPost]
-        public IActionResult TapBloodRequestCreate(RequestCreate requestCreate)
+        public async Task<IActionResult> TapBloodRequestCreate(RequestCreate requestCreate)
         {
             requestCreate.PrescriptionBase64 = "something";
-            var cookie = TempData.Peek("tokenval");
-            var result = _bloodRequestRepository.PostBloodRequest(requestCreate, cookie.ToString()).Result;
+            var result = await _bloodRequestRepository.PostBloodRequest(requestCreate, Token);
             return Json(new { code = (int)result.StatusCode, responseText = result.Content });
         }
 
         [HttpPost]
-        public IActionResult GetBloodTypes(int id)
+        public async Task<IActionResult> GetBloodTypes(int id)
         {
-            LoadBloodTypes();
             var selectedTypes = new List<SelectListItem>();
-            var listBloodFromApi = _bloodTypesRepository.GetBloodTypes(id).Result;
+            var listBloodFromApi = await _bloodTypesRepository.GetBloodTypes(id);
             foreach (var item in listBloodFromApi)
             {
-                var searchtype = bloodTypes.Find(elem => elem.Value == item.ToString());
-                selectedTypes.Add(new SelectListItem { Text = searchtype.Text, Value = searchtype.Value});
+                var searchtype = BloodComponentFill.LoadBloodTypes().Find(elem => elem.Value == item.ToString());
+                selectedTypes.Add(new SelectListItem { Text = searchtype.Text, Value = searchtype.Value });
             }
             var types = selectedTypes.Select(elem => new { id = elem.Value, text = elem.Text });
             return Json(new { content = types });
         }
 
-        public IActionResult BloodRequestDetail()
+        public async Task<IActionResult> BloodRequestDetail()
         {
-            var cookie = TempData.Peek("tokenval");
-            var result = _bloodRequestRepository.GetRequestDetails(12, cookie.ToString()).Result;
+            var result = await _bloodRequestRepository.GetRequestDetails(12, Token);
             TempData["resultRequest"] = result;
             return View();
+        }
+
+        public async Task<IActionResult> BloodRequestDetailsCollection()
+        {
+            var token = _utilities.GetJwtToken(Token);
+            var validateToken = _utilities.VerifyEmail(token: token);
+
+            if (validateToken == true)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("ConfirmAccount", "ConfirmAccount");
+            }
         }
 
     }
