@@ -45,5 +45,20 @@ namespace UnaPinta.Data.Brokers
 
             await _client.SendAsync(mimeMessage);
         }
+
+
+        public async Task SendToMany(IEnumerable<MailboxAddress> to, string subject, MimeEntity body)
+        {
+            MimeMessage mimeMessage = new MimeMessage();
+            mimeMessage.From.Add(_from);
+            mimeMessage.To.AddRange(to);
+            mimeMessage.Body = body;
+            mimeMessage.Subject = subject;
+
+            await _client.SendAsync(mimeMessage);
+        }
+
+
+
     }
 }

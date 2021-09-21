@@ -148,5 +148,13 @@ namespace UnaPinta.Core.Services
 
             await _broker.Send(to, subject, body);
         }
+
+        public async Task<MimeEntity> GetRequestNotificationBody(Request request)
+        {
+            BodyBuilder bodyBuilder = new BodyBuilder();
+            bodyBuilder.HtmlBody = "Me estoy enviando!!!";
+            var body = bodyBuilder.ToMessageBody();
+            return body;
+        }
     }
 }

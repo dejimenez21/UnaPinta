@@ -11,5 +11,6 @@ namespace UnaPinta.Data.Contracts
     {
         Task Send(string message, MailboxAddress to);
         Task Send(MailboxAddress to, string subject, MimeEntity body);
+        Task SendToMany(IEnumerable<MailboxAddress> to, string subject, MimeEntity body);
     }
 }
