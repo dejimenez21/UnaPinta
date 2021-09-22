@@ -91,31 +91,11 @@
     }, 3000);
 
 
-    $("#donorCard").click(function () {
-        $.ajax({
-            url: 'HomePage/NavigateToBloodRequestCollection',
-            success: function (response) {
-                if (response.roleUser == 0) {
-                    window.location.href = "User/UserLoginPage";
-                }
-                else if (response.roleUser != 0 && response.verified == true) {
-                    window.location.href = "BloodRequest/BloodRequestDetailsCollection";
-                }
-            }
-        });
+    $("#donorCard").click(function () {        
+        window.location.href = "Donor/DonorRegisterPage";
     });
 
     $("#userCard").click(function () {
-        $.ajax({
-            url: 'HomePage/NavigateToBloodRequest',
-            success: function (response) {
-                if (response.roleUser == 0) {
-                    window.location.href = "User/UserLoginPage";
-                }
-                else if (response.roleUser != 0 && response.verified == true) {
-                    window.location.href = "BloodRequest/BloodRequestPage";
-                }
-            }
-        });
+        window.location.href = "User/UserLoginPage";
     });
 </script>

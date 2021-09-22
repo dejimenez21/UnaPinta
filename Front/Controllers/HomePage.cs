@@ -12,43 +12,16 @@ namespace Una_Pinta.Controllers
     public class HomePage : Controller
     {
         readonly IHttpContextAccessor _httpContextAccessor;
-        readonly Utilities _utilities;
-        public string Token { get; set; } = "";
-        public RoleEnum RoleEnum;
-        public bool EmailVerified = false;
 
         public HomePage(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
-            _utilities = new Utilities(_httpContextAccessor);
         }
 
         public IActionResult HomePageView()
         {
+            _httpContextAccessor.HttpContext.Session.Clear();
             return View();
-        }
-
-        public IActionResult NavigateToBloodRequestCollection()
-        {
-            Token = _httpContextAccessor.HttpContext.Session.GetString("userToken");
-            return VerifyUser(Token);
-        }
-
-        public IActionResult NavigateToBloodRequest()
-        {
-            Token = _httpContextAccessor.HttpContext.Session.GetString("userToken");
-            return VerifyUser(Token);
-        }
-
-        public JsonResult VerifyUser(string Token)
-        {
-            if (!string.IsNullOrEmpty(Token))
-            {
-                var tokenDecoded = _utilities.GetJwtToken(Token);
-                EmailVerified = _utilities.VerifyEmail(tokenDecoded);
-                RoleEnum = _utilities.VerifyRole(tokenDecoded);
-            }
-            return Json(new { verified = EmailVerified, roleUser = ((int)RoleEnum) });
         }
     }
 

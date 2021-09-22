@@ -18,7 +18,6 @@ namespace Una_Pinta.Controllers
         readonly IBloodRequestRepository _bloodRequestRepository;
         readonly IHttpContextAccessor _httpContextAccessor;
         readonly Utilities _utilities;
-        public string Token { get; set; } = "";
         public BloodRequestController(IBloodTypesRepository bloodTypesRepository, IBloodRequestRepository bloodRequestRepository, IHttpContextAccessor httpContextAccessor)
         {
             _bloodTypesRepository = bloodTypesRepository;
@@ -29,8 +28,8 @@ namespace Una_Pinta.Controllers
 
         public IActionResult BloodRequestPage()
         {
-            Token = _httpContextAccessor.HttpContext.Session.GetString("userToken");
-            var token = _utilities.GetJwtToken(Token);
+            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var token = _utilities.GetJwtToken(getToken);
             var validateToken = _utilities.VerifyEmail(token: token);
 
             if (validateToken == true)
@@ -49,7 +48,8 @@ namespace Una_Pinta.Controllers
         public async Task<IActionResult> TapBloodRequestCreate(RequestCreate requestCreate)
         {
             requestCreate.PrescriptionBase64 = "something";
-            var result = await _bloodRequestRepository.PostBloodRequest(requestCreate, Token);
+            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var result = await _bloodRequestRepository.PostBloodRequest(requestCreate, getToken);
             return Json(new { code = (int)result.StatusCode, responseText = result.Content });
         }
 
@@ -69,24 +69,26 @@ namespace Una_Pinta.Controllers
 
         public async Task<IActionResult> BloodRequestDetail()
         {
-            var result = await _bloodRequestRepository.GetRequestDetails(12, Token);
+            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var result = await _bloodRequestRepository.GetRequestDetails(12, getToken);
             TempData["resultRequest"] = result;
             return View();
         }
 
         public async Task<IActionResult> BloodRequestDetailsCollection()
         {
-            var token = _utilities.GetJwtToken(Token);
-            var validateToken = _utilities.VerifyEmail(token: token);
+            return View();
+            //var token = _utilities.GetJwtToken(Token);
+            //var validateToken = _utilities.VerifyEmail(token: token);
 
-            if (validateToken == true)
-            {
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("ConfirmAccount", "ConfirmAccount");
-            }
+            //if (validateToken == true)
+            //{
+            //    return View();
+            //}
+            //else
+            //{
+            //    return RedirectToAction("ConfirmAccount", "ConfirmAccount");
+            //}
         }
 
     }
