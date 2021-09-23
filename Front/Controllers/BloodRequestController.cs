@@ -34,8 +34,6 @@ namespace Una_Pinta.Controllers
 
             if (validateToken == true)
             {
-                ViewData["bloodTypesList"] = BloodComponentFill.LoadBloodTypes();
-                ViewData["bloodComponentList"] = BloodComponentFill.LoadBloodComponent();
                 return View();
             }
             else
@@ -77,18 +75,18 @@ namespace Una_Pinta.Controllers
 
         public async Task<IActionResult> BloodRequestDetailsCollection()
         {
-            return View();
-            //var token = _utilities.GetJwtToken(Token);
-            //var validateToken = _utilities.VerifyEmail(token: token);
+            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var token = _utilities.GetJwtToken(getToken);
+            var validateToken = _utilities.VerifyEmail(token: token);
 
-            //if (validateToken == true)
-            //{
-            //    return View();
-            //}
-            //else
-            //{
-            //    return RedirectToAction("ConfirmAccount", "ConfirmAccount");
-            //}
+            if (validateToken == true)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("ConfirmAccount", "ConfirmAccount");
+            }
         }
 
     }

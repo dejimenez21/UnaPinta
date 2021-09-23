@@ -5,7 +5,7 @@
     </div>
     <form data-ajax="true"
           data-ajax-method="POST"
-          data-ajax-success="OnSuccess" asp-action="TapBloodRequestCreate" asp-controller="BloodRequest">
+          data-ajax-success="OnSuccess" asp-action="TapBloodRequestCreate" asp-controller="BloodRequest" id="createRequest">
         <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);transition: 0.5s;">
             <div class="card-header">
                 <div class="float-right">
@@ -25,12 +25,28 @@
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Hemocomponentes:</label>
-                @Html.DropDownListFor(Model => Model.BloodComponentId, ViewData["bloodComponentList"] as List<SelectListItem>, "Hemocomponente", new { @class = "form-control" })
+                <select asp-for="BloodComponentId" id="bloodComplist" data-val-required="El componente es un campo obligatorio" data-val="true" class="form-control">
+                    <option selected="selected">Componente</option>
+                    <option value="1">Plasma</option>
+                    <option value="2">Plaquetas</option>
+                    <option value="3">Globulos Blancos</option>
+                    <option value="4">Globulos Rojos</option>
+                </select>
                 <div class="text-center">
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Tipo de sangre</label>
-                @Html.DropDownListFor(Model => Model.BloodTypeId, ViewData["bloodTypesList"] as List<SelectListItem>, "Tipo de sangre", new { @class = "form-control", @id = "bloodtypelist" })
+                <select asp-for="BloodTypeId" id="bloodtypelist" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
+                    <option selected="selected">Tipo de sangre</option>
+                    <option value="1">A+</option>
+                    <option value="2">A-</option>
+                    <option value="3">B+</option>
+                    <option value="4">B-</option>
+                    <option value="5">AB+</option>
+                    <option value="6">AB-</option>
+                    <option value="7">O+</option>
+                    <option value="8">O-</option>
+                </select>
                 <div class="text-center">
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
@@ -50,7 +66,7 @@
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Tipos de sangre a donar:</label>
-                <select asp-for="PossibleBloodTypes" id="possiblebloodtype" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
+                <select multiple asp-for="PossibleBloodTypes" id="possiblebloodtype" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
                 </select>
                 <div class="text-center">
                     <span class="text-danger" data-valmsg-replace="true" />
@@ -78,8 +94,11 @@
 </div>
 <script type="text/javascript">
     let dropdown = $('#possiblebloodtype');
+    let dropdownbloodtypelist = $('#bloodtypelist');
+    let dropdownbloodComplist = $('#bloodComplist');
 
     $(document).ready(function () {
+        dropdown.empty();
         $("#bloodtypelist").change(function () {
             dropdown.empty();
             dropdown.append('<option selected="true" disabled>Tipo de sangre compatible</option>');
@@ -130,6 +149,8 @@
                 closeOnConfirm: true,
                 closeOnCancel: true
             });
+            document.getElementById("createRequest").reset();
+            document.getElementById("possiblebloodtype").reset();
         }
     }
 </script>
