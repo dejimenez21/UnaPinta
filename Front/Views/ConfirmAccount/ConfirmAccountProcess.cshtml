@@ -7,18 +7,18 @@
         <p style="font-size:20px;">Cuenta confirmada</p>
     </div>
 </div>
-<script type="text/javascript">    
-    $.ajax({
-        url: 'ConfirmAccount/ConfirmProcess',
-        type: 'POST',
-        timeout: 3000,
-        success: function (response) {
-            if (response.roleUser == 1) {
-                window.location.href = "BloodRequest/BloodRequestDetailsCollection";
-            }
-            else if (response.roleUser == 2) {
-                window.location.href = "BloodRequest/BloodRequestPage";
-            }
-        }
+<script type="text/javascript">
+    $(document).ready(function () {
+        setTimeout(function () {
+            var url = "/ConfirmAccount/ConfirmProcess";
+            $.post(url, function (response) {
+                if (response.roleUser == 1) {
+                    window.location.href = "https://localhost:44308/BloodRequest/BloodRequestDetailsCollection";
+                }
+                else if (response.roleUser == 2) {
+                    window.location.href = "https://localhost:44308/BloodRequest/BloodRequestPage";
+                }
+            });
+        }, 3000);
     });
 </script>
