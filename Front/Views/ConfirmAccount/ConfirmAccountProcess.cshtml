@@ -13,7 +13,9 @@
             var url = "/ConfirmAccount/ConfirmProcess";
             $.post(url, function (response) {
                 if (response.roleUser == 1) {
-                    window.location.href = "https://localhost:44308/BloodRequest/BloodRequestDetailsCollection";
+                    if (response.emailUser == true) {
+                        window.location.href = "https://localhost:44308/Donor/DonorQuestionsPage";
+                    }
                 }
                 else if (response.roleUser == 2) {
                     window.location.href = "https://localhost:44308/BloodRequest/BloodRequestPage";

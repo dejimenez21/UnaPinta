@@ -45,7 +45,8 @@ namespace Una_Pinta.Controllers
             var tokenUser = _httpContextAccessor.HttpContext.Session.GetString("userToken");
             var tokenDecoded = _utilities.GetJwtToken(tokenUser);
             RoleEnum = _utilities.VerifyRole(tokenDecoded);
-            return Json(new { roleUser = ((int)RoleEnum) });
+            var emailVerify = _utilities.VerifyEmail(tokenDecoded);
+            return Json(new { roleUser = ((int)RoleEnum), emailUser = emailVerify });
         }
 
         [HttpGet]
