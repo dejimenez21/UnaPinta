@@ -1,0 +1,15 @@
+Name: Leonardo
+LastName: Paniagua
+Sex: Male
+Blood Type: A+
+Weight: 150 kg
+Role: Donante
+CanDonate: 0
+Tatuajes: Si, hace 3 meses
+Drogas: Si
+Ha donado sangre: No
+Piercing: Si, hace 2 meses
+Transplante: No
+Procedimiento odontológico: No
+Transfusión: No
+Enfermedades: No
