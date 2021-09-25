@@ -11,6 +11,8 @@ using AutoMapper;
 using UnaPinta.Core.Contracts;
 using UnaPinta.Data.Contracts;
 using UnaPinta.Dto.Enums;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace UnaPinta.Api.Controllers
 {
@@ -21,19 +23,28 @@ namespace UnaPinta.Api.Controllers
         private readonly IWaitListServices _services;
         private readonly IMapper _mapper;
         private readonly IUnaPintaRepository _repo;
+        private readonly UserManager<User> _userManager;
 
-        public WaitListController(IWaitListServices services, IMapper mapper, IUnaPintaRepository repo)
+        public WaitListController(IWaitListServices services, IMapper mapper, IUnaPintaRepository repo, UserManager<User> userManager)
         {
             _services = services;
             _mapper = mapper;
             _repo = repo;
+            _userManager = userManager;
         }
 
+        [Authorize(Roles = "donante")]
         [HttpPost("")]
         public async Task<ActionResult<WaitList>> CreateWaitListItem(WaitListCreate waitList)
         {
             var EntityWaitList = waitList.Conditions.Select(x=>_mapper.Map<WaitList>(x));
-            var userId = waitList.UserId;
+
+            var userName = User.Claims.First(x => x.Type == "UserName").Value;
+            var user = await _userManager.FindByNameAsync(userName);
+
+            if (user == null) return NotFound("Error al crear el usuario");
+            var userId = user.Id;
+
             foreach (var item in EntityWaitList.Where(x=>x.ConditionId!=ConditionEnum.SinCondicion))
             {
                 item.UserId = userId;
@@ -48,7 +59,7 @@ namespace UnaPinta.Api.Controllers
 
             await _repo.SaveChangesAsync();
 
-            Response.OnCompleted(async () => await _services.ReviewDonorAvailability(userId, EntityWaitList.ToList()));
+            Response.OnCompleted(async () => await _services.ReviewDonorAvailability((int)userId, EntityWaitList.ToList()));
 
             return Created("/api/waitlist", new {userId, EntityWaitList});
         }

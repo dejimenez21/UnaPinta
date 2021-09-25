@@ -1,0 +1,27 @@
+﻿<div class="container">
+    <div class="text-center" style="margin-top:60px;">
+        <div id="success_div" class="col d-flex justify-content-center">
+            <lottie-player src="https://assets9.lottiefiles.com/packages/lf20_ctvgysft.json" background="transparent" speed="1" style="width: 300px; height: 300px;" autoplay></lottie-player>
+        </div>
+        <br />
+        <p style="font-size:20px;">Cuenta confirmada</p>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        setTimeout(function () {
+            var url = "/ConfirmAccount/ConfirmProcess";
+            $.post(url, function (response) {
+                if (response.roleUser == 1) {
+                    if (response.emailUser == true) {
+                        window.location.href = "https://localhost:44308/Donor/DonorQuestionsPage";
+                        window.localStorage.setItem("tokenUser", response.token);
+                    }
+                }
+                else if (response.roleUser == 2) {
+                    window.location.href = "https://localhost:44308/BloodRequest/BloodRequestPage";
+                }
+            });
+        }, 3000);
+    });
+</script>

@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Una_Pinta.Helpers.Utilities;
 using Una_Pinta.Models;
 using Una_Pinta.Services;
 
@@ -13,10 +15,14 @@ namespace Una_Pinta.Controllers
     {
         readonly IUserRepository _userRepository;
         readonly IProvincesRepository _provincesRepository;
-        public DonorController(IUserRepository userRepository, IProvincesRepository provincesRepository)
+        readonly IHttpContextAccessor _httpContextAccessor;
+        readonly Utilities _utilities;
+        public DonorController(IUserRepository userRepository, IProvincesRepository provincesRepository, IHttpContextAccessor httpContextAccessor)
         {
             _userRepository = userRepository;
             _provincesRepository = provincesRepository;
+            _httpContextAccessor = httpContextAccessor;
+            _utilities = new Utilities(httpContextAccessor);
         }
 
         public IActionResult DonorIndexPage()
@@ -30,15 +36,15 @@ namespace Una_Pinta.Controllers
         }
 
         [HttpPost]
-        public IActionResult DonorTapRegister(UserSignUp userSignUp)
+        public async Task<IActionResult> DonorTapRegister(UserSignUp userSignUp)
         {
-            var result = _userRepository.PostUser(userSignUp).Result;
+            var result = await _userRepository.PostUser(userSignUp);
             return Json(new { code = ((int)result.StatusCode), responseText = result.Content });
         }
 
-        public IActionResult GetProvinces()
+        public async Task<IActionResult> GetProvinces()
         {
-            var listProvinces = _provincesRepository.GetProvinces().Result;
+            var listProvinces =  await _provincesRepository.GetProvinces();
             var selectList = new List<SelectListItem>();
             foreach (var item in listProvinces)
             {
@@ -50,7 +56,18 @@ namespace Una_Pinta.Controllers
 
         public IActionResult DonorQuestionsPage()
         {
-            return View();
+            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var token = _utilities.GetJwtToken(getToken);
+            var validateToken = _utilities.VerifyEmail(token: token);
+
+            if (validateToken == true)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("ConfirmAccount", "ConfirmAccount");
+            }
         }
     }
 }

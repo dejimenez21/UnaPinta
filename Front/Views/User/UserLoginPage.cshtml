@@ -65,8 +65,12 @@
             });
         }
         else {
-            window.localStorage.setItem("userKey", response.responseText);
-            window.location.href = "/BloodRequest/BloodRequestPage"
+            if (response.roleUser == 1) {
+                window.location.href = "/BloodRequest/BloodRequestDetailsCollection"
+            }
+            else if (response.roleUser == 2) {
+                window.location.href = "/BloodRequest/BloodRequestPage"
+            }            
         }
     }
 </script>

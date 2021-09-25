@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using UnaPinta.Core.Exceptions.Role;
 using UnaPinta.Core.Exceptions;
 using UnaPinta.Api.Filters;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -78,7 +79,7 @@ namespace UnaPinta.Api.Controllers
                 //var link = string.Format("{0}://{1}{2}", Request.Scheme, HttpContext.Request.Host, Url.Action("ConfirmEmail"));
                 var link = string.Format("{0}://{1}{2}", Request.Scheme, "localhost:44308", "/ConfirmEmail");
 
-                Response.OnCompleted(() => _authService.SendEmailConfirmationAsync(user, link));
+                Response.OnCompleted(async () => await _authService.SendEmailConfirmationAsync(user, link));
             }
             else
             {
@@ -90,17 +91,9 @@ namespace UnaPinta.Api.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<User>> Authenticate(UserLogin obj)
-        {
+        public async Task<ActionResult<string>> Authenticate(UserLogin obj) =>
+            Ok(new { Token = await _authService.AuthenticateAsync(obj) });
 
-            if(!await _authService.ValidateUser(obj))
-            {
-                return Unauthorized();
-            }
-
-            return Ok(new { Token = await _authService.CreateToken() });
-
-        }
 
         [HttpPost("roles")]
         public async Task<ActionResult<Role>> CreateRole(RoleCreate roleCreate)
@@ -145,7 +138,20 @@ namespace UnaPinta.Api.Controllers
         [HttpGet("confirmemail")]
         public async Task<ActionResult> ConfirmEmail([FromQuery]string userId, [FromQuery]string token)
         {
-            await _authService.ConfirmEmailAsync(userId, token);
+            var newToken = await _authService.ConfirmEmailAsync(userId, token);
+            return Ok(new { Token = newToken });
+        }
+
+        [Authorize]
+        [HttpGet("sendemailverification")]
+        public async Task<ActionResult> SendEmailVerification()
+        {
+            var link = string.Format("{0}://{1}{2}", Request.Scheme, "localhost:44308", "/ConfirmEmail");
+            var userName = User.Claims.First(x => x.Type == "UserName").Value;
+            var user = await userManager.FindByNameAsync(userName);
+
+            await _authService.SendEmailConfirmationAsync(user, link);
+
             return Ok();
         }
     }

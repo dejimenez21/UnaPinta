@@ -4,11 +4,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
+using UnaPinta.Dto.Enums;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using Una_Pinta.Helpers.Requests;
+using Una_Pinta.Helpers.Utilities;
 using Una_Pinta.Models;
 using Una_Pinta.Services;
 
@@ -18,11 +22,14 @@ namespace Una_Pinta.Controllers
     {
         readonly IUserRepository _userRepository;
         readonly IProvincesRepository _provincesRepository;
+        readonly Utilities _utilities;
+        public RoleEnum RoleEnum;
 
-        public UserController(IUserRepository userRepository, IProvincesRepository provincesRepository)
+        public UserController(IUserRepository userRepository, IProvincesRepository provincesRepository, IHttpContextAccessor httpContextAccessor)
         {
             _userRepository = userRepository;
             _provincesRepository = provincesRepository;
+            _utilities = new Utilities(httpContextAccessor);
         }
 
         public IActionResult UserLoginPage()
@@ -36,35 +43,31 @@ namespace Una_Pinta.Controllers
         }
 
         [HttpPost]
-        public IActionResult UserTapRegister(UserSignUp userSignUp)
+        public async Task<IActionResult> UserTapRegister(UserSignUp userSignUp)
         {
-            var result = _userRepository.PostUser(userSignUp).Result;
+            var result = await _userRepository.PostUser(userSignUp);
             return Json(new { code = (int)result.StatusCode, responseText = result.Content });
         }
 
         [HttpPost]
-        public IActionResult UserTapLogin(UserSignUp userSignUp)
+        public async Task<IActionResult> UserTapLogin(UserSignUp userSignUp)
         {
-            var result = _userRepository.GetUser(userSignUp).Result;
+            var result = await _userRepository.GetUser(userSignUp);
+            RoleEnum = new RoleEnum();
             if (((int)result.StatusCode) == 200)
             {
-                SetUserCookies(result);
+                var tokenSession = _utilities.SetSession(result);
+                var token = _utilities.GetJwtToken(tokenSession);
+                RoleEnum = _utilities.VerifyRole(token);
+                _utilities.SetUserName(token);
             }
-            return Json(new { code = (int)result.StatusCode, responseText = result.Content });
+            return Json(new { code = (int)result.StatusCode, responseText = result.Content, roleUser = ((int)RoleEnum) });
+            
         }
 
-        public void SetUserCookies(IRestResponse restResponse)
+        public async Task<IActionResult> GetProvinces()
         {
-            var option = new CookieOptions();
-            option.Expires = DateTime.Now.AddMinutes(50);
-            var obj = JObject.Parse(restResponse.Content);
-            var gettoken = obj["token"].ToString();
-            TempData["tokenval"] = gettoken;
-        }
-
-        public IActionResult GetProvinces()
-        {
-            var listProvinces = _provincesRepository.GetProvinces().Result;
+            var listProvinces = await _provincesRepository.GetProvinces();
             var selectList = new List<SelectListItem>();
             foreach (var item in listProvinces)
             {
@@ -78,7 +81,15 @@ namespace Una_Pinta.Controllers
         public async Task<IActionResult> EmailVerification(string id, string token)
         {
             var result = await _userRepository.ConfirmEmail(id, token);
-            return Json(new { status = result.StatusCode });
+            if (((int)result.StatusCode) == 200)
+            {
+                _utilities.SetSession(result);
+                return RedirectToAction("ConfirmAccountProcess", "ConfirmAccount");
+            }
+            else
+            {
+                return RedirectToAction("ConfirmAccount", "ConfirmAccount");
+            }
         }
     }
 }

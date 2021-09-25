@@ -85,15 +85,6 @@
                             <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="transplanteQuestionNo" value="9">
                             <label class="form-check-label" for="inlineRadio2">No</label>
                         </div>
-                        <select  id="transplanteCondition" class="form-control">
-                            <option value="-1">¿Hace cuantos meses?</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                        </select>
                     </div>
                     <div>
                         <label style="font-family: 'Segoe UI';">¿Se ha realizado algún procedimiento odontológico hace menos de un mes?</label>
@@ -141,6 +132,11 @@
                             <option value="4">4</option>
                             <option value="5">5</option>
                             <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
                         </select>
                     </div>
                     <div>
@@ -169,179 +165,8 @@
                             <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="drugQuestionNo" value="9">
                             <label class="form-check-label" for="inlineRadio2">No</label>
                         </div>
-                    </div>
-                    @*
-        <div >
-            <label style="font-family: 'Roboto', sans-serif;">¿Se realizó alguna perforación o piercing en los últimos 6 meses?</label>
-            <select id="piercingQuestion" class="form-control">
-                <option>Seleccionar</option>
-                <option value="2">Si</option>
-                <option value="9">No</option>
-            </select>
-        </div>
-        <div >
-            <label style="font-family: 'Roboto', sans-serif;">¿Ha recibido algún trasplante de órgano?</label>
-            <select id="transplanteQuestion" class="form-control">
-                <option>Seleccionar</option>
-                <option value="8">Si</option>
-                <option value="9">No</option>
-            </select>
-        </div>
-        <div >
-            <label style="font-family: 'Roboto', sans-serif;">¿Hace cuantos meses?</label>
-            <input type="text" id="piercingCondition" data-val="true" class="form-control">
-        </div>
-        <div >
-            <label style="font-family: 'Roboto', sans-serif;">¿Hace cuantos meses?</label>
-            <input type="text" id="transplanteCondition" data-val="true" class="form-control">
-        </div>
-        <div >
-            <label style="font-family: 'Roboto', sans-serif;">¿Se ha realizado algún procedimiento odontológico hace menos de un mes?</label>
-            <select id="odonQuestion" class="form-control">
-                <option>Seleccionar</option>
-                <option value="3">Si</option>
-                <option value="9">No</option>
-            </select>
-        </div>
-        <div >
-            <label style="font-family: 'Roboto', sans-serif;">¿Ha estado embarazada en los últimos 9 meses?</label>
-            <select id="pregnanQuestion" class="form-control">
-                <option>Seleccionar</option>
-                <option value="6">Si</option>
-                <option value="9">No</option>
-            </select>
-        </div>
-        <div >
-            <label style="font-family: 'Roboto', sans-serif;">¿Ha recibido alguna transfusión sanguínea en el último año?</label>
-            <select id="transfusionQuestion" class="form-control">
-                <option>Seleccionar</option>
-                <option value="4">Si</option>
-                <option value="9">No</option>
-            </select>
-        </div>
-        <div >
-            <label style="font-family: 'Roboto', sans-serif;">¿Padece o ha padecido algunas de estas enfermedades?</label>
-            <select id="enfermedadesList" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
-                <option value="8">VIH</option>
-                <option value="8">Hepatitis B</option>
-                <option value="8">Hepatitis C</option>
-                <option value="8">Cancer</option>
-                <option value="8">Lupus</option>
-                <option value="8">Falcemia</option>
-                <option value="9">Ninguno</option>
-            </select>
-        </div>
-        <div >
-            <label style="font-family: 'Roboto', sans-serif;">¿Hace cuantos meses?</label>
-            <input type="text" id="transfusionCondition" data-val="true" class="form-control">
-        </div>
-        <div >
-            <label style="font-family: 'Roboto', sans-serif;">¿Ha consumido drogas?</label>
-            <select id="drugQuestion" class="form-control">
-                <option>Seleccionar</option>
-                <option value="8">Si</option>
-                <option value="9">No</option>
-            </select>
-        </div>*@
+                    </div>        
                 </div>
-                <!--<div class="row g-3">-->
-                    @*<div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Se realizó algún tatuaje en los últimos 6 meses?</label>
-                        <select class="form-control" id="tattooQuestion">
-                            <option>Seleccionar</option>
-                            <option value="1">Si</option>
-                            <option value="9">No</option>
-                        </select>
-                    </div>*@
-                    <!--<div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Ha donado sangre en los últimos 3 meses?</label>
-                        <select id="bloodQuestion" class="form-control">
-                            <option>Seleccionar</option>
-                            <option value="5">Si</option>
-                            <option value="9">No</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Hace cuantos meses?</label>
-                        <input type="text" id="tattooCondition" data-val="true" class="form-control">
-                    </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Hace cuantos meses?</label>
-                        <input type="text" id="bloodCondition" data-val="true" class="form-control">
-                    </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Se realizó alguna perforación o piercing en los últimos 6 meses?</label>
-                        <select id="piercingQuestion" class="form-control">
-                            <option>Seleccionar</option>
-                            <option value="2">Si</option>
-                            <option value="9">No</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Ha recibido algún trasplante de órgano?</label>
-                        <select id="transplanteQuestion" class="form-control">
-                            <option>Seleccionar</option>
-                            <option value="8">Si</option>
-                            <option value="9">No</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Hace cuantos meses?</label>
-                        <input type="text" id="piercingCondition" data-val="true" class="form-control">
-                    </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Hace cuantos meses?</label>
-                        <input type="text" id="transplanteCondition" data-val="true" class="form-control">
-                    </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Se ha realizado algún procedimiento odontológico hace menos de un mes?</label>
-                        <select id="odonQuestion" class="form-control">
-                            <option>Seleccionar</option>
-                            <option value="3">Si</option>
-                            <option value="9">No</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Ha estado embarazada en los últimos 9 meses?</label>
-                        <select id="pregnanQuestion" class="form-control">
-                            <option>Seleccionar</option>
-                            <option value="6">Si</option>
-                            <option value="9">No</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Ha recibido alguna transfusión sanguínea en el último año?</label>
-                        <select id="transfusionQuestion" class="form-control">
-                            <option>Seleccionar</option>
-                            <option value="4">Si</option>
-                            <option value="9">No</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Padece o ha padecido algunas de estas enfermedades?</label>
-                        <select id="enfermedadesList" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
-                            <option value="8">VIH</option>
-                            <option value="8">Hepatitis B</option>
-                            <option value="8">Hepatitis C</option>
-                            <option value="8">Cancer</option>
-                            <option value="8">Lupus</option>
-                            <option value="8">Falcemia</option>
-                            <option value="9">Ninguno</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Hace cuantos meses?</label>
-                        <input type="text" id="transfusionCondition" data-val="true" class="form-control">
-                    </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Ha consumido drogas?</label>
-                        <select id="drugQuestion" class="form-control">
-                            <option>Seleccionar</option>
-                            <option value="8">Si</option>
-                            <option value="9">No</option>
-                        </select>
-                    </div>
-                </div>-->
                 <br />
                 <div class="text-center">
                     <button type="button" id="btnRegister" onclick="btnRegister_Click()" class="btn btn-outline-success float-right">Guardar</button>
@@ -350,7 +175,7 @@
         </div>
     </div>
 </div>
-<script>
+<script type="text/javascript">
     $('#tattooQuestionYes').change(function () {
         if ($(this).is(":checked")) {
             $('#tattooCondition').fadeIn();
@@ -481,4 +306,105 @@
             $('#odonQuestionYes').prop('checked', false);
         }
     });
+
+    function btnRegister_Click() {
+        var obj = {};
+        obj.conditions = [];
+        if ($('#tattooQuestionYes').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#tattooQuestionYes").val(), months: $("#tattooCondition").val() });
+        }
+        if ($('#tattooQuestionNo').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#tattooQuestionNo").val(), months: $("#tattooCondition").val() });
+        }
+        if ($('#bloodQuestionYes').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#bloodQuestionYes").val(), months: $("#bloodCondition").val() });
+        }
+        if ($('#bloodQuestionNo').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#bloodQuestionNo").val(), months: $("#bloodCondition").val() });
+        }
+        if ($('#piercingQuestionYes').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#piercingQuestionYes").val(), months: $("#piercingCondition").val() });
+        }
+        if ($('#piercingQuestionNo').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#piercingQuestionNo").val(), months: $("#piercingCondition").val() });
+        }
+        if ($('#transplanteQuestionYes').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#transplanteQuestionYes").val(), months: -1 });
+        }
+        if ($('#transplanteQuestionNo').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#transplanteQuestionNo").val(), months: -1 });
+        }
+        if ($('#drugQuestionYes').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#drugQuestionYes").val(), months: -1 });
+        }
+        if ($('#drugQuestionNo').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#drugQuestionNo").val(), months: -1 });
+        }
+        if ($('#pregnanQuestionYes').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#pregnanQuestionYes").val(), months: -1 });
+        }
+        if ($('#pregnanQuestionNo').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#pregnanQuestionNo").val(), months: -1 });
+        }
+        if ($('#transfusionQuestionYes').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#transfusionQuestionYes").val(), months: $("#transfusionCondition").val() });
+        }
+        if ($('#transfusionQuestionNo').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#transfusionQuestionNo").val(), months: $("#transfusionCondition").val() });
+        }
+        if ($('#odonQuestionYes').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#odonQuestionYes").val(), months: 1 });
+        }
+        if ($('#odonQuestionNo').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#odonQuestionNo").val(), months: 1 });
+        }
+        obj.conditions.push({ conditionId: $("#enfermedadesList").val(), months: -1 });
+
+        var token = localStorage.getItem('tokenUser');
+
+        $.ajax({
+            url: 'https://localhost:44393/api/waitlist',
+            method: "POST",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            error: function (err) {
+                switch (err.status) {
+                    case "400":
+                        // bad request
+                        break;
+                    case "401":
+                        swal({
+                            title: "Error",
+                            text: "Hubo un error inesperado" + err.status,
+                            icon: "Error",
+                            showCancelButton: true,
+                            closeOnConfirm: true,
+                            closeOnCancel: true
+                        });
+                        break;
+                    case "403":
+                        // forbidden
+                        break;
+                    default:
+                        //Something bad happened
+                        break;
+                }
+            },
+            success: function (data) {
+                swal({
+                    title: "Correcto",
+                    text: "Respuestas enviadas correctamente",
+                    icon: "success",
+                    showCancelButton: true,
+                    closeOnConfirm: true,
+                    closeOnCancel: true
+                });
+            }
+        });
+    }
 </script>
