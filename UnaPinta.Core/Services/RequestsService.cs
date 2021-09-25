@@ -11,6 +11,7 @@ using UnaPinta.Dto.Enums;
 using UnaPinta.Dto.Models;
 using AutoMapper;
 using UnaPinta.Core.Exceptions.Request;
+using UnaPinta.Dto.Models.Request;
 
 namespace UnaPinta.Core.Services
 {
@@ -66,6 +67,16 @@ namespace UnaPinta.Core.Services
                 await sender.SendNotification(user, CompleteRequest);
                 await sender.Disconnect();
             }
+        }
+
+        public async Task<IEnumerable<RequestSummaryDto>> RetrieveRequestsSummaryByDonor(string username)
+        {
+            var donor = await _userManager.FindByNameAsync(username);
+            var requests = await _requestRepository.SelectRequestsByDonor(donor);
+
+            var requestsSummary = _mapper.Map<IEnumerable<RequestSummaryDto>>(requests);
+
+            return requestsSummary;
         }
 
         private Task<IEnumerable<User>> GetCompatibleUsers(BloodTypeEnum bloodTypeEnum)

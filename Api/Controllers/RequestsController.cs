@@ -5,6 +5,8 @@ using UnaPinta.Data.Entities;
 using AutoMapper;
 using UnaPinta.Core.Contracts;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
+using UnaPinta.Dto.Models.Request;
 
 namespace UnaPinta.Api.Controllers
 {
@@ -50,20 +52,13 @@ namespace UnaPinta.Api.Controllers
             return Ok(details);
         }
 
-        // [HttpPut("{id}")]
-        // public async Task<IActionResult> PutTModel(int id, TModel model)
-        // {
-        //     await Task.Yield();
-
-        //     return NoContent();
-        // }
-
-        // [HttpDelete("{id}")]
-        // public async Task<ActionResult<TModel>> DeleteTModelById(int id)
-        // {
-        //     await Task.Yield();
-
-        //     return null;
-        // }
+        [HttpGet("summary")]
+        [Authorize(Roles = "donante")]
+        public async Task<ActionResult<IEnumerable<RequestSummaryDto>>> GetRequestsSummary()
+        {
+            var username = HttpContext.User.FindFirst("UserName").Value;
+            var requestsSummary = await _service.RetrieveRequestsSummaryByDonor(username);
+            return Ok(requestsSummary);
+        }
     }
 }
