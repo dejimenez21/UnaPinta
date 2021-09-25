@@ -46,7 +46,7 @@ namespace Una_Pinta.Controllers
             var tokenDecoded = _utilities.GetJwtToken(tokenUser);
             RoleEnum = _utilities.VerifyRole(tokenDecoded);
             var emailVerify = _utilities.VerifyEmail(tokenDecoded);
-            return Json(new { roleUser = ((int)RoleEnum), emailUser = emailVerify });
+            return Json(new { roleUser = ((int)RoleEnum), emailUser = emailVerify, token = tokenUser });
         }
 
         [HttpGet]

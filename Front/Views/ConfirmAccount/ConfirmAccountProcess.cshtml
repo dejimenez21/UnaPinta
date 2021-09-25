@@ -15,6 +15,7 @@
                 if (response.roleUser == 1) {
                     if (response.emailUser == true) {
                         window.location.href = "https://localhost:44308/Donor/DonorQuestionsPage";
+                        window.localStorage.setItem("tokenUser", response.token);
                     }
                 }
                 else if (response.roleUser == 2) {
