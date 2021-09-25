@@ -33,13 +33,14 @@ namespace UnaPinta.Api.Controllers
             _userManager = userManager;
         }
 
-        [Authorize(Roles = "Donante")]
+        [Authorize(Roles = "donante")]
         [HttpPost("")]
         public async Task<ActionResult<WaitList>> CreateWaitListItem(WaitListCreate waitList)
         {
             var EntityWaitList = waitList.Conditions.Select(x=>_mapper.Map<WaitList>(x));
 
-            var user = await _userManager.GetUserAsync(User);
+            var userName = User.Claims.First(x => x.Type == "UserName").Value;
+            var user = await _userManager.FindByNameAsync(userName);
 
             if (user == null) return NotFound("Error al crear el usuario");
             var userId = user.Id;

@@ -364,6 +364,8 @@
         }
         obj.conditions.push({ conditionId: $("#enfermedadesList").val(), months: -1 });
 
+        var token = localStorage.getItem('tokenUser');
+
         $.ajax({
             url: 'https://localhost:44393/api/waitlist',
             method: "POST",
@@ -372,7 +374,7 @@
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                "Authorization": $`Bearer ${localStorage.getItem('tokenUser')}`
+                'Authorization': 'Bearer ' + token
             },
             error: function (err) {
                 switch (err.status) {
