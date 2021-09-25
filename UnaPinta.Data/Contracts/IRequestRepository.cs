@@ -10,5 +10,6 @@ namespace UnaPinta.Data.Contracts
     public interface IRequestRepository
     {
         Task<Request> SelectRequestById(int id);
+        Task<IEnumerable<Request>> SelectRequestsByDonor(User donor);
     }
 }

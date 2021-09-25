@@ -30,13 +30,16 @@ namespace UnaPinta.Data.Entities
         public string PatientStory { get; set; }
         [Required]
         public string ResponseDueDate { get; set; }
-        
+        public int ProvinceId { get; set; }
+
         [ForeignKey("BloodComponentId")]
         public virtual BloodComponent BloodComponentNav { get; set; }
         [ForeignKey("RequesterId")]
         public virtual User RequesterNav { get; set; }
         [ForeignKey("BloodTypeId")]
         public virtual BloodType BloodTypeNav { get; set; }
+        [ForeignKey("ProvinceId")]
+        public virtual Province ProvinceNav { get; set; }
 
         public ICollection<RequestPossibleBloodTypes> PossibleBloodTypes { get; set; }
     }
