@@ -376,10 +376,23 @@
             dataType: "json",
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "Authorization": localStorage.getItem('tokenUser')
             }
         }).done(onSuccess)
             .fail(onError)
             .always(always);
     }
+
+    function onSuccess() {
+        swal({
+            title: "Correcto",
+            text: "Respuestas enviadas correctamente",
+            icon: "success",
+            showCancelButton: true,
+            closeOnConfirm: true,
+            closeOnCancel: true
+        });
+    }
+
 </script>
