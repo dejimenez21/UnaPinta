@@ -75,18 +75,19 @@ namespace Una_Pinta.Controllers
 
         public async Task<IActionResult> BloodRequestDetailsCollection()
         {
-            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
-            var token = _utilities.GetJwtToken(getToken);
-            var validateToken = _utilities.VerifyEmail(token: token);
+            return View();
+            //var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            //var token = _utilities.GetJwtToken(getToken);
+            //var validateToken = _utilities.VerifyEmail(token: token);
 
-            if (validateToken == true)
-            {
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("ConfirmAccount", "ConfirmAccount");
-            }
+            //if (validateToken == true)
+            //{
+            //    return View();
+            //}
+            //else
+            //{
+            //    return RedirectToAction("ConfirmAccount", "ConfirmAccount");
+            //}
         }
 
     }
