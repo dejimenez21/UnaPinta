@@ -32,38 +32,6 @@ namespace UnaPinta.Core.Services
             //client.Authenticate("unapintateam@gmail.com", "Unapinta1234");
 
         }
-        public EmailSender(IUnaPintaRepository repo)
-        {
-            _repo = repo;
-        }
-
-        public async Task<bool> SendNotification(User user, Request request)
-        {
-
-            message.Subject = "Notificacion de Solicitud Publicada";
-            BodyBuilder bodyBuilder = new BodyBuilder();
-            var imagePath = "../API/wwwroot/images/UnaPinta.png";
-            var image = bodyBuilder.LinkedResources.Add(imagePath);
-            image.ContentId = MimeUtils.GenerateMessageId();
-            // bodyBuilder.TextBody = $"Saludos, {user.FirstName} {user.LastName}. A traves de este correo le informamos que ha sido publicada una solicitud de donacion compatible con su perfil.";
-            // bodyBuilder.TextBody += $"\n\n Solicitante: {request.RequesterNav.FirstName} {request.RequesterNav.LastName}";
-            // var hemo = await _repo.GetBloodComponentById(request.BloodComponentId);
-            // bodyBuilder.TextBody += $"\n Hemocomponente: {hemo.Description}";
-            // bodyBuilder.TextBody += $"\n Cantidad: {request.Amount} pintas";
-            // var type = await _repo.GetBloodTypeById(request.RequesterNav.BloodTypeId);
-            // bodyBuilder.TextBody += $"\n Grupo Sanguineo: {type.Description}";
-            var preBody = await GetNotificationBody(user, request);
-            bodyBuilder.HtmlBody = preBody.Replace("Images/UnaPinta.png", "cid:"+image.ContentId);
-            //bodyBuilder.HtmlBody = await GetNotificationBody(user, request);
-            message.Body = bodyBuilder.ToMessageBody();
-
-            MailboxAddress to = new MailboxAddress($"{user.FirstName} {user.LastName}", user.Email);
-            message.To.Add(to);
-
-            await client.SendAsync(message);
-
-            return true;
-        }
 
         public async Task<bool> SendConfirmation(ConfirmationCode confirmation)
         {
@@ -101,12 +69,6 @@ namespace UnaPinta.Core.Services
             await client.SendAsync(message);
 
             return true;
-        }
-
-        public async Task Disconnect()
-        {
-            await client.DisconnectAsync(true);
-            client.Dispose();
         }
 
         public async Task<string> GetConfirmationBody(string url)
