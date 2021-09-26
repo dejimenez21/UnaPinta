@@ -12,6 +12,6 @@ namespace UnaPinta.Core.Contracts
         Task SendRequestNotification(Request request);
         Task<RequestDetailsDto> RetrieveRequestDetailsById(int id);
         Task<Func<Task>> CreateRequest(RequestCreate request, string userName);
-        Task<IEnumerable<RequestSummaryDto>> RetrieveRequestsSummaryByDonor(string username)
+        Task<IEnumerable<RequestSummaryDto>> RetrieveRequestsSummaryByDonor(string username);
     }
 }
