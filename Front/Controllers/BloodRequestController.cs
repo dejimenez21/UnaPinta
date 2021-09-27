@@ -82,7 +82,8 @@ namespace Una_Pinta.Controllers
             if (validateToken == true)
             {
                 var requestSummary = await _bloodRequestRepository.GetRequestSummary(getToken);
-                return View(requestSummary);
+                TempData["requestSummary"] = requestSummary;
+                return View();
             }
             else
             {
