@@ -12,7 +12,7 @@ namespace UnaPinta.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    
+
     public class RequestsController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -40,7 +40,7 @@ namespace UnaPinta.Api.Controllers
             {
                 return BadRequest();
             }
-            
+
         }
 
 
@@ -50,15 +50,6 @@ namespace UnaPinta.Api.Controllers
         {
             var details = await _service.RetrieveRequestDetailsById(id);
             return Ok(details);
-        }
-
-        [HttpGet("summary")]
-        [Authorize(Roles = "donante")]
-        public async Task<ActionResult<IEnumerable<RequestSummaryDto>>> GetRequestsSummary()
-        {
-            var username = HttpContext.User.FindFirst("UserName").Value;
-            var requestsSummary = await _service.RetrieveRequestsSummaryByDonor(username);
-            return Ok(requestsSummary);
         }
     }
 }

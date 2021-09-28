@@ -23,7 +23,7 @@ namespace UnaPinta.Core.Services
         private readonly IMapper _mapper;
         private readonly IRequestNotificationService _requestNotificationService;
 
-        public RequestsService(IUnaPintaRepository repo, UserManager<User> userManager, 
+        public RequestsService(IUnaPintaRepository repo, UserManager<User> userManager,
             IRequestRepository requestRepository, IMapper mapper, IRequestNotificationService requestNotificationService)
         {
             _repo = repo;
@@ -56,50 +56,6 @@ namespace UnaPinta.Core.Services
             return details;
         }
 
-        
-        public async Task SendRequestNotification(Request request)
-        {  
-            var requester = await _repo.GetUserById(request.RequesterId);
-            var compatibleUsers = await GetCompatibleUsers(requester.BloodTypeId);
-            var CompleteRequest = await _repo.GetRequestById(request.Id);
-            foreach (var user in compatibleUsers)
-            {
-                if(!(await IsAvailable(user)))
-                    continue;
-                EmailSender sender = new EmailSender(_repo);
-                await sender.SendNotification(user, CompleteRequest);
-                await sender.Disconnect();
-            }
-        }
 
-        public async Task<IEnumerable<RequestSummaryDto>> RetrieveRequestsSummaryByDonor(string username)
-        {
-            var donor = await _userManager.FindByNameAsync(username);
-            var requests = await _requestRepository.SelectRequestsByDonor(donor);
-
-            var requestsSummary = _mapper.Map<IEnumerable<RequestSummaryDto>>(requests);
-
-            return requestsSummary;
-        }
-
-        private Task<IEnumerable<User>> GetCompatibleUsers(BloodTypeEnum bloodTypeEnum)
-        {
-            var dict = new BloodTypeDictionary();
-            var CompatibleBloodTypes = dict.GetCompatibleWith(bloodTypeEnum);
-            return _repo.GetDonorsByBloodType(CompatibleBloodTypes);
-        }
-
-        private async Task<bool> IsAvailable(User donor)
-        {
-            if(!donor.CanDonate)
-                return false;
-
-            var availableAt = await _repo.GetAvailabilityDateByDonorId(donor.Id);
-
-            if(availableAt>DateTime.Now)
-                return false;
-
-            return true;
-        }
     }
 }

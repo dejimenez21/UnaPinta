@@ -24,6 +24,11 @@
                 <div class="text-center">
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
+                <div class="col-sm-6">
+                    <label style="font-family: 'Roboto', sans-serif;">Provincia</label>
+                    <select data-val-required="El tipo de sangre es un campo obligatorio" asp-for="ProvinceId" id="provincesDropdown" data-val="true" class="form-control">
+                    </select>
+                </div>
                 <label style="font-family: 'Roboto', sans-serif;">Hemocomponentes:</label>
                 <select asp-for="BloodComponentId" id="bloodComplist" data-val-required="El componente es un campo obligatorio" data-val="true" class="form-control">
                     <option selected="selected">Componente</option>
@@ -116,6 +121,21 @@
                 })
                 // do something if necessary
             });
+        });
+
+        let dropdown = $('#provincesDropdown');
+        dropdown.empty();
+        dropdown.append('<option selected="true" disabled>Provincia</option>');
+        dropdown.prop('selectedIndex', 0);
+
+        var url = "/BloodRequest/GetProvinces/";
+
+        $.get(url, function (data) {
+            var result = JSON.stringify(data.content)
+            $.each(data.content, function (key, entry) {
+                dropdown.append($('<option></option>').attr('value', entry.code).text(entry.name));
+            })
+            // do something if necessary
         });
     });
 
