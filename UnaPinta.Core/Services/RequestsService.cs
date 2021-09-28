@@ -21,14 +21,16 @@ namespace UnaPinta.Core.Services
         private readonly UserManager<User> _userManager;
         private readonly IRequestRepository _requestRepository;
         private readonly IMapper _mapper;
+        private readonly IRequestNotificationService _requestNotificationService;
 
         public RequestsService(IUnaPintaRepository repo, UserManager<User> userManager, 
-            IRequestRepository requestRepository, IMapper mapper)
+            IRequestRepository requestRepository, IMapper mapper, IRequestNotificationService requestNotificationService)
         {
             _repo = repo;
             _userManager = userManager;
             _requestRepository = requestRepository;
             _mapper = mapper;
+            _requestNotificationService = requestNotificationService;
         }
 
         public async Task<Func<Task>> CreateRequest(RequestCreate inputRequest, string userName)
@@ -41,7 +43,7 @@ namespace UnaPinta.Core.Services
             _repo.CreateRequest(request);
             await _repo.SaveChangesAsync();
 
-            return async () => await this.SendRequestNotification(request);
+            return async () => await _requestNotificationService.SendRequestNotification(request);
         }
 
         public async Task<RequestDetailsDto> RetrieveRequestDetailsById(int id)
@@ -54,6 +56,7 @@ namespace UnaPinta.Core.Services
             return details;
         }
 
+        
         public async Task SendRequestNotification(Request request)
         {  
             var requester = await _repo.GetUserById(request.RequesterId);

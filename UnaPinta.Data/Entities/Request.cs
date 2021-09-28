@@ -19,6 +19,7 @@ namespace UnaPinta.Data.Entities
         public BloodComponentEnum BloodComponentId { get; set; }
         public double? Amount { get; set; }
         public string Name { get; set; }
+        public string CenterName { get; set; }
         [Required]
         public string CenterAddress { get; set; }
         public BloodTypeEnum BloodTypeId { get; set; }
