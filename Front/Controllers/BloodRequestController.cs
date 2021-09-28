@@ -43,7 +43,7 @@ namespace Una_Pinta.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> TapBloodRequestCreate(RequestCreate requestCreate)
+        public async Task<IActionResult> TapBloodRequestCreate(RequestCreateDto requestCreate)
         {
             requestCreate.PrescriptionBase64 = "something";
             var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");

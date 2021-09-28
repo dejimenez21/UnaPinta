@@ -33,7 +33,7 @@ namespace UnaPinta.Core.Services
             _requestNotificationService = requestNotificationService;
         }
 
-        public async Task<Func<Task>> CreateRequest(RequestCreate inputRequest, string userName)
+        public async Task<Func<Task>> CreateRequest(RequestCreateDto inputRequest, string userName)
         {
             var request = _mapper.Map<Request>(inputRequest);
 

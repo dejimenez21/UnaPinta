@@ -15,7 +15,7 @@ namespace UnaPinta.Core.Profiles
         public MappingProfile()
         {
             //From DTO to Entity
-            CreateMap<RequestCreate, Request>();
+            CreateMap<RequestCreateDto, Request>();
             CreateMap<int, RequestPossibleBloodTypes>()
                 .ForMember(rpb => rpb.BloodTypeId, opt => opt.MapFrom(i => (BloodTypeEnum)i));
             CreateMap<Register, User>();

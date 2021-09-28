@@ -34,9 +34,6 @@ namespace UnaPinta.Core.Services
             ConfirmationCode confirmation = new ConfirmationCode();
             confirmation.Code = code;
             confirmation.UserId = userId;
-            
-            _repo.AddConfirmationCode(confirmation);
-            await _repo.SaveChangesAsync();
 
             return confirmation;
         }

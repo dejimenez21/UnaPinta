@@ -50,7 +50,7 @@ namespace Una_Pinta.Services
         /// </summary>
         /// <returns>HttpResponseMessage</returns>
         /// <exception cref="System.WebException">Thrown when status code of response are different to 200 (OK)</exception>
-        public Task<IRestResponse> PostBloodRequest(RequestCreate requestCreate, string token)
+        public Task<IRestResponse> PostBloodRequest(RequestCreateDto requestCreate, string token)
         {
             var client = new RestClient(ApiRequests.HostUrl);
             client.Authenticator = new JwtAuthenticator(token);

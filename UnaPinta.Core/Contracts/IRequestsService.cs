@@ -10,7 +10,7 @@ namespace UnaPinta.Core.Contracts
     public interface IRequestsService
     {
         Task<RequestDetailsDto> RetrieveRequestDetailsById(int id);
-        Task<Func<Task>> CreateRequest(RequestCreate request, string userName);
-        Task<IEnumerable<RequestSummaryDto>> RetrieveRequestsSummaryByDonor(string username)
+        Task<Func<Task>> CreateRequest(RequestCreateDto request, string userName);
+        Task<IEnumerable<RequestSummaryDto>> RetrieveRequestsSummaryByDonor(string username);
     }
 }
