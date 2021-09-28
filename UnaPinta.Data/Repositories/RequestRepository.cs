@@ -25,5 +25,17 @@ namespace UnaPinta.Data.Repositories
                 .Include(x => x.BloodTypeNav)
                 .SingleOrDefaultAsync(r => r.Id == id);
         }
+
+        public async Task<IEnumerable<Request>> SelectRequestsByDonor(User donor)
+        {
+            return await _dbContext.Requests
+                .Include(x => x.ProvinceNav)
+                .Include(x => x.PossibleBloodTypes)
+                .Where(r =>
+                    r.ProvinceId == donor.ProvinceId
+                    && r.PossibleBloodTypes.Select(p => p.BloodTypeId).Contains(donor.BloodTypeId)
+                )
+                .ToListAsync();
+        }
     }
 }
