@@ -67,18 +67,19 @@ namespace UnaPinta.Api
 
             //Services and repositories
             services.AddScoped<IUnaPintaRepository, SqlUnaPintaRepo>();
-            services.AddScoped<IUsersServices, UsersServices>();
             services.AddScoped<IRequestsService, RequestsService>();
             services.AddScoped<IWaitListServices, WaitListServices>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IProvinceService, ProvinceService>();
             services.AddScoped<IRequestRepository, RequestRepository>();
-            services.AddScoped<IEmailService, EmailSender>();
+            services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IWaitListRepository, WaitListRepository>();
-            services.AddSingleton<IEmailBroker, MockEmailBroker>();
+            services.AddScoped<IRequestNotificationService, RequestNotificationService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddSingleton<IEmailBroker, EmailBroker>();
 
             //Remove
-            services.AddScoped<EmailSender>();
+            services.AddScoped<EmailService>();
 
             //CORS
             services.AddCors(options =>

@@ -32,10 +32,10 @@ namespace UnaPinta.Data.Brokers
 
         public async Task SendToMany(IEnumerable<MailboxAddress> to, string subject, MimeEntity body)
         {
-            foreach(var dest in to)
+            var path = _dirInfo.CreateSubdirectory($"{subject}-{DateTime.Now.Hour}{DateTime.Now.Minute}");
+            foreach (var dest in to)
             {
-                var path = _dirInfo.CreateSubdirectory($"{subject}-{DateTime.Now}");
-                var file = path.FullName + $"{dest.Name} - {dest.Address}.html";
+                var file = path.FullName + $"/{dest.Name} - {dest.Address}.html";
                 await body.WriteToAsync(file);
             }  
         }

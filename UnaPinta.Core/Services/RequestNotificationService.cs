@@ -9,6 +9,7 @@ using UnaPinta.Core.Contracts;
 using UnaPinta.Data.Contracts;
 using UnaPinta.Data.Entities;
 using UnaPinta.Core.Extensions;
+using UnaPinta.Dto.Enums;
 
 namespace UnaPinta.Core.Services
 {
@@ -55,7 +56,7 @@ namespace UnaPinta.Core.Services
 
             var items = await _waitListRepository.SelectWaitListItemsByDonorId(donor.Id);
 
-            if (!items.Any()) return true;
+            if (!items.Any(x => x.ConditionId != ConditionEnum.SinCondicion)) return true;
 
             var availableAt = items.Max(x => x.AvailableAt);
 

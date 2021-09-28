@@ -16,14 +16,19 @@ namespace UnaPinta.Data.Brokers
         public EmailBroker()
         {
             _from = new MailboxAddress("Una Pinta", "unapintateam@gmail.com");
-
             _client = new SmtpClient();
+            Connect();
+        }
+
+        private void Connect()
+        { 
             _client.Connect("smtp.gmail.com", 465, true);
             _client.Authenticate("unapintateam@gmail.com", "Unapinta1234");
         }
 
         public async Task Send(string message, MailboxAddress to)
         {
+            if (!_client.IsAuthenticated) Connect();
             MimeMessage mimeMessage = new MimeMessage();
             mimeMessage.From.Add(_from);
             mimeMessage.To.Add(to);
@@ -37,6 +42,7 @@ namespace UnaPinta.Data.Brokers
 
         public async Task Send(MailboxAddress to, string subject, MimeEntity body)
         {
+            if (!_client.IsAuthenticated) Connect();
             MimeMessage mimeMessage = new MimeMessage();
             mimeMessage.From.Add(_from);
             mimeMessage.To.Add(to);
@@ -49,6 +55,7 @@ namespace UnaPinta.Data.Brokers
 
         public async Task SendToMany(IEnumerable<MailboxAddress> to, string subject, MimeEntity body)
         {
+            if (!_client.IsAuthenticated) Connect();
             MimeMessage mimeMessage = new MimeMessage();
             mimeMessage.From.Add(_from);
             mimeMessage.To.AddRange(to);
