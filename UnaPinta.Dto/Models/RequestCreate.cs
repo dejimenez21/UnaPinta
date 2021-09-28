@@ -13,6 +13,8 @@ namespace UnaPinta.Dto.Models
         public double? Amount { get; set; }
 
         public string Name { get; set; }
+        [Required]
+        public string CenterName { get; set; }
 
         [Required]
         public string CenterAddress { get; set; }
@@ -37,5 +39,6 @@ namespace UnaPinta.Dto.Models
 
         [Required]
         public bool ForMe { get; set; }
+        public int ProvinceId { get; set; }
     }
 }

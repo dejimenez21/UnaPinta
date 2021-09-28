@@ -20,14 +20,16 @@ namespace UnaPinta.Core.Services
         private readonly UserManager<User> _userManager;
         private readonly IRequestRepository _requestRepository;
         private readonly IMapper _mapper;
+        private readonly IRequestNotificationService _requestNotificationService;
 
         public RequestsService(IUnaPintaRepository repo, UserManager<User> userManager, 
-            IRequestRepository requestRepository, IMapper mapper)
+            IRequestRepository requestRepository, IMapper mapper, IRequestNotificationService requestNotificationService)
         {
             _repo = repo;
             _userManager = userManager;
             _requestRepository = requestRepository;
             _mapper = mapper;
+            _requestNotificationService = requestNotificationService;
         }
 
         public async Task<Func<Task>> CreateRequest(RequestCreate inputRequest, string userName)
@@ -40,7 +42,7 @@ namespace UnaPinta.Core.Services
             _repo.CreateRequest(request);
             await _repo.SaveChangesAsync();
 
-            return async () => await this.SendRequestNotification(request);
+            return async () => await _requestNotificationService.SendRequestNotification(request);
         }
 
         public async Task<RequestDetailsDto> RetrieveRequestDetailsById(int id)
@@ -53,39 +55,6 @@ namespace UnaPinta.Core.Services
             return details;
         }
 
-        public async Task SendRequestNotification(Request request)
-        {  
-            var requester = await _repo.GetUserById(request.RequesterId);
-            var compatibleUsers = await GetCompatibleUsers(requester.BloodTypeId);
-            var CompleteRequest = await _repo.GetRequestById(request.Id);
-            foreach (var user in compatibleUsers)
-            {
-                if(!(await IsAvailable(user)))
-                    continue;
-                EmailSender sender = new EmailSender(_repo);
-                await sender.SendNotification(user, CompleteRequest);
-                await sender.Disconnect();
-            }
-        }
-
-        private Task<IEnumerable<User>> GetCompatibleUsers(BloodTypeEnum bloodTypeEnum)
-        {
-            var dict = new BloodTypeDictionary();
-            var CompatibleBloodTypes = dict.GetCompatibleWith(bloodTypeEnum);
-            return _repo.GetDonorsByBloodType(CompatibleBloodTypes);
-        }
-
-        private async Task<bool> IsAvailable(User donor)
-        {
-            if(!donor.CanDonate)
-                return false;
-
-            var availableAt = await _repo.GetAvailabilityDateByDonorId(donor.Id);
-
-            if(availableAt>DateTime.Now)
-                return false;
-
-            return true;
-        }
+        
     }
 }
