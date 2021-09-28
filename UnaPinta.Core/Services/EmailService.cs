@@ -7,6 +7,7 @@ using MimeKit.Utils;
 using UnaPinta.Data.Contracts;
 using UnaPinta.Dto.Models;
 using UnaPinta.Core.Contracts;
+using System.Globalization;
 
 namespace UnaPinta.Core.Services
 {
@@ -49,12 +50,14 @@ namespace UnaPinta.Core.Services
 
         public async Task<MimeEntity> GetRequestNotificationBody(Request request)
         {
+            var dateFormat = "MMMM dd, yyyy";
+
             string path = "../API/Templates/NotificationEmail.html";
             string preBody = await File.ReadAllTextAsync(path);
             preBody = preBody.Replace("@PatientName", request.Name);
             preBody = preBody.Replace("@CenterName", request.CenterName);
             preBody = preBody.Replace("@CenterAddress", request.CenterAddress);
-            preBody = preBody.Replace("@ResponseDueDate", request.ResponseDueDate);
+            preBody = preBody.Replace("@ResponseDueDate", request.ResponseDueDate.ToString(dateFormat, new CultureInfo("es-ES")));
             preBody = preBody.Replace("@PatientStory", request.PatientStory);
 
             BodyBuilder bodyBuilder = new BodyBuilder();
