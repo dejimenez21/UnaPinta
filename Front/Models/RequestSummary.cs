@@ -7,6 +7,7 @@ namespace Una_Pinta.Models
 {
     public class RequestSummary
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string PatientStory { get; set; }
         public string Province { get; set; }

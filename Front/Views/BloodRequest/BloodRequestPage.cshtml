@@ -157,7 +157,7 @@
 
     function OnSuccess(response) {
         if (response.code != 201) {
-            swal({
+            Swal.fire({
                 title: "Error",
                 text: response.responseText,
                 icon: "error",
@@ -167,7 +167,7 @@
             });
         }
         else {
-            swal({
+            Swal.fire({
                 title: "Correcto",
                 text: "Solicitud creada correctamente",
                 icon: "success",

@@ -9,6 +9,7 @@ using Una_Pinta.Helpers.BloodComponentFill;
 using System.Threading.Tasks;
 using Una_Pinta.Helpers.Utilities;
 using Microsoft.AspNetCore.Http;
+using Una_Pinta.Models;
 
 namespace Una_Pinta.Controllers
 {
@@ -19,6 +20,7 @@ namespace Una_Pinta.Controllers
         readonly IHttpContextAccessor _httpContextAccessor;
         readonly IProvincesRepository _provincesRepository;
         readonly Utilities _utilities;
+        public List<RequestSummary> RequestSummaries;
         public BloodRequestController(IBloodTypesRepository bloodTypesRepository, IBloodRequestRepository bloodRequestRepository, IHttpContextAccessor httpContextAccessor, IProvincesRepository provincesRepository)
         {
             _bloodTypesRepository = bloodTypesRepository;
@@ -26,6 +28,7 @@ namespace Una_Pinta.Controllers
             _httpContextAccessor = httpContextAccessor;
             _provincesRepository = provincesRepository;
             _utilities = new Utilities(httpContextAccessor);
+            RequestSummaries = new List<RequestSummary>();
         }
 
         public IActionResult BloodRequestPage()
@@ -97,6 +100,7 @@ namespace Una_Pinta.Controllers
             if (validateToken == true)
             {
                 var requestSummary = await _bloodRequestRepository.GetRequestSummary(getToken);
+                RequestSummaries = requestSummary;
                 TempData["requestSummary"] = requestSummary;
                 return View();
             }
@@ -104,6 +108,17 @@ namespace Una_Pinta.Controllers
             {
                 return RedirectToAction("ConfirmAccount", "ConfirmAccount");
             }
+        }
+
+        public IActionResult BloodRequestDetailsModal(int id)
+        {
+            var summaryDetaisls = RequestSummaries.Where(elem => elem.Id == id).FirstOrDefault();
+            return Json(new { patientName = summaryDetaisls.Name, 
+                centerName = summaryDetaisls.CenterName,
+                centerAddress = summaryDetaisls.CenterAddress,
+                createdAt = summaryDetaisls.CreatedAt,
+                storyPatient = summaryDetaisls.PatientStory,
+                responseDueDate = summaryDetaisls.ResponseDueDate});
         }
 
     }

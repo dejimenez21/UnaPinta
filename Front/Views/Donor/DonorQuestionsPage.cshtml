@@ -378,7 +378,7 @@
                         // bad request
                         break;
                     case "401":
-                        swal({
+                        Swal.fire({
                             title: "Error",
                             text: "Hubo un error inesperado" + err.status,
                             icon: "Error",
@@ -396,7 +396,7 @@
                 }
             },
             success: function (data) {
-                swal({
+                Swal.fire({
                     title: "Correcto",
                     text: "Respuestas enviadas correctamente",
                     icon: "success",
