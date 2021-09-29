@@ -29,21 +29,21 @@
                             <div class="widget-49">
                                 <div class="widget-49-title-wrapper">
                                     <div class="widget-49-date-primary">
-                                        <span class="widget-49-date-day">09</span>
-                                        <span class="widget-49-date-month">apr</span>
+                                        <span class="widget-49-date-day">@item.CreatedAt.Date.Day</span>
+                                        <span class="widget-49-date-month">@item.CreatedAt.Date.ToString("MMM")</span>
                                     </div>
                                     <div class="widget-49-meeting-info">
-                                        <span class="widget-49-pro-title">PRO-08235 DeskOpe. Website</span>
-                                        <span class="widget-49-meeting-time">12:00 to 13.30 Hrs</span>
+                                        <span class="widget-49-pro-title">@item.PatientStory</span>
+                                        @*<span class="widget-49-meeting-time">12:00 to 13.30 Hrs</span>*@
                                     </div>
                                 </div>
                                 <ol class="widget-49-meeting-points">
-                                    <li class="widget-49-meeting-item"><span>Expand module is removed</span></li>
-                                    <li class="widget-49-meeting-item"><span>Data migration is in scope</span></li>
-                                    <li class="widget-49-meeting-item"><span>Session timeout increase to 30 minutes</span></li>
+                                    <li class="widget-49-meeting-item"><span>Centro de Donación: @item.CenterName</span></li>
+                                    <li class="widget-49-meeting-item"><span>Dirección: @item.CenterAddress</span></li>
+                                    <li class="widget-49-meeting-item"><span>Fecha aproximada: @item.ResponseDueDate</span></li>
                                 </ol>
                                 <div class="widget-49-meeting-action">
-                                    <a href="#" class="btn btn-sm btn-flash-border-primary">View All</a>
+                                    <a href="#" class="btn btn-sm btn-flash-border-primary">Más detalles</a>
                                 </div>
                             </div>
                         </div>

@@ -17,12 +17,14 @@ namespace Una_Pinta.Controllers
         readonly IBloodTypesRepository _bloodTypesRepository;
         readonly IBloodRequestRepository _bloodRequestRepository;
         readonly IHttpContextAccessor _httpContextAccessor;
+        readonly IProvincesRepository _provincesRepository;
         readonly Utilities _utilities;
-        public BloodRequestController(IBloodTypesRepository bloodTypesRepository, IBloodRequestRepository bloodRequestRepository, IHttpContextAccessor httpContextAccessor)
+        public BloodRequestController(IBloodTypesRepository bloodTypesRepository, IBloodRequestRepository bloodRequestRepository, IHttpContextAccessor httpContextAccessor, IProvincesRepository provincesRepository)
         {
             _bloodTypesRepository = bloodTypesRepository;
             _bloodRequestRepository = bloodRequestRepository;
             _httpContextAccessor = httpContextAccessor;
+            _provincesRepository = provincesRepository;
             _utilities = new Utilities(httpContextAccessor);
         }
 
@@ -71,6 +73,19 @@ namespace Una_Pinta.Controllers
             var result = await _bloodRequestRepository.GetRequestDetails(12, getToken);
             TempData["resultRequest"] = result;
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetProvinces()
+        {
+            var listProvinces = await _provincesRepository.GetProvinces();
+            var selectList = new List<SelectListItem>();
+            foreach (var item in listProvinces)
+            {
+                selectList.Add(new SelectListItem { Text = item.name, Value = item.code });
+            }
+            var provinces = selectList.Select(elem => new { code = elem.Value, name = elem.Text });
+            return Json(new { content = provinces });
         }
 
         public async Task<IActionResult> BloodRequestDetailsCollection()
