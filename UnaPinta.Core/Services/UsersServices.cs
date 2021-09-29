@@ -5,46 +5,18 @@ using UnaPinta.Data.Entities;
 using UnaPinta.Dto.Models;
 using UnaPinta.Data.Contracts;
 using UnaPinta.Core.Contracts;
-using UnaPinta.Dto.Models;
 
 namespace UnaPinta.Core.Services
 {
-    public class UsersServices : IUsersServices
+    public class UsersServices
     {
-        private readonly EmailSender _sender;
+        private readonly EmailService _sender;
         private readonly IUnaPintaRepository _repo;
 
-        public UsersServices(IUnaPintaRepository repo, EmailSender sender)
+        public UsersServices(IUnaPintaRepository repo, EmailService sender)
         {
             _sender = sender;
             _repo = repo;
-        }
-
-        public async Task<ConfirmationResponse> ConfirmEmail(User userToConfirm, string code)
-        {
-            var matchingCode = await _repo.GetCodeByUser(code, userToConfirm.Id);
-            var response = new ConfirmationResponse();
-            if(matchingCode == null)
-            {
-                response.Confirmed = false; 
-                response.Message = "Code is incorrect";
-                return response;
-            }
-
-            if(matchingCode.ExpiresAt < DateTime.Now)
-            {
-                response.Confirmed = false; 
-                response.Message = "Code has expired";
-                return response;
-            }
-            
-            //userToConfirm.Confirmed = true;
-            await _repo.SaveChangesAsync();
-
-            response.Confirmed = true;
-            response.Message = "User's email confirmed successfully";
-            return response;
-                
         }
 
         private async Task<ConfirmationCode> GenerateConfirmationCode(long userId)
@@ -68,14 +40,6 @@ namespace UnaPinta.Core.Services
 
             return confirmation;
         }
-
-        public async Task SendConfirmationCode(long userId)
-        {
-            var confirmation = await GenerateConfirmationCode(userId);
-
-            await _sender.SendConfirmation(confirmation);
-        }
-
         
     }
 }
