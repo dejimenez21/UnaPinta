@@ -54,7 +54,7 @@
     function OnSuccess(response) {
         var userName = document.getElementById("userNametxt").value;
         if (response.code != 200) {
-            swal({
+            Swal.fire({
                 title: "Advertencia",
                 text: "Este usuario no existe",
                 type: "warning",

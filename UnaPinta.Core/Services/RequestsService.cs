@@ -11,6 +11,7 @@ using UnaPinta.Dto.Enums;
 using UnaPinta.Dto.Models;
 using AutoMapper;
 using UnaPinta.Core.Exceptions.Request;
+using UnaPinta.Dto.Models.Request;
 
 namespace UnaPinta.Core.Services
 {
@@ -55,6 +56,15 @@ namespace UnaPinta.Core.Services
             return details;
         }
 
-        
+        public async Task<IEnumerable<RequestSummaryDto>> RetrieveRequestsSummaryByDonor(string username)
+        {
+            var donor = await _userManager.FindByNameAsync(username);
+            var requests = await _requestRepository.SelectRequestsByDonor(donor);
+
+            var requestsSummary = _mapper.Map<IEnumerable<RequestSummaryDto>>(requests);
+
+            return requestsSummary;
+        }
+
     }
 }

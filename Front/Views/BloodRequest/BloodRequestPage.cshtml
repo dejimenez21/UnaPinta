@@ -19,8 +19,19 @@
                 <div class="text-center">
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
+                <label style="font-family: 'Roboto', sans-serif;">Centro de donación:</label>
+                <input type="text" asp-for="CenterName" id="CenterName" data-val-required="La direccion es un campo obligatorio" placeholder="Clinica Independencia" class="form-control" />
+                <div class="text-center">
+                    <span class="text-danger" data-valmsg-replace="true" />
+                </div>
                 <label style="font-family: 'Roboto', sans-serif;">Dirección:</label>
-                <input type="text" asp-for="CenterAddress" id="CenterAddress" data-val-required="La direccion es un campo obligatorio" placeholder="Calle B esquina..." class="form-control" />
+                <input type="text" asp-for="CenterAddress" id="CenterAddress" data-val-required="La direccion es un campo obligatorio" placeholder="Calle B..." class="form-control" />
+                <div class="text-center">
+                    <span class="text-danger" data-valmsg-replace="true" />
+                </div>
+                <label style="font-family: 'Roboto', sans-serif;">Centro de donación:</label>
+                <select type="text" asp-for="ProvinceId" id="provincesDropdown" data-val-required="La direccion es un campo obligatorio" placeholder="Santo Domingo" class="form-control">
+                </select>
                 <div class="text-center">
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
@@ -96,6 +107,10 @@
     let dropdown = $('#possiblebloodtype');
     let dropdownbloodtypelist = $('#bloodtypelist');
     let dropdownbloodComplist = $('#bloodComplist');
+    let dropdownProvince = $('#provincesDropdown');
+    dropdownProvince.empty();
+    dropdownProvince.append('<option selected="true" disabled>Provincia</option>');
+    dropdownProvince.prop('selectedIndex', 0);
 
     $(document).ready(function () {
         dropdown.empty();
@@ -117,6 +132,17 @@
                 // do something if necessary
             });
         });
+
+        var url = "/BloodRequest/GetProvinces/";
+
+        $.post(url, function (data) {
+            var result = JSON.stringify(data.content)
+            $.each(data.content, function (key, entry) {
+                var province = parseInt(entry.code);
+                dropdownProvince.append($('<option></option>').attr('value', province).text(entry.name));
+            })
+            // do something if necessary
+        });
     });
 
     function hideFields() {
@@ -131,7 +157,7 @@
 
     function OnSuccess(response) {
         if (response.code != 201) {
-            swal({
+            Swal.fire({
                 title: "Error",
                 text: response.responseText,
                 icon: "error",
@@ -141,7 +167,7 @@
             });
         }
         else {
-            swal({
+            Swal.fire({
                 title: "Correcto",
                 text: "Solicitud creada correctamente",
                 icon: "success",

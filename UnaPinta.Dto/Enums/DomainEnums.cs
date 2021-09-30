@@ -42,8 +42,8 @@ namespace UnaPinta.Dto.Enums
 
     public enum RoleEnum
     {
-        Donante = 2,
-        Solicitante = 1,
+        Donante = 1,
+        Solicitante = 2,
         Administrador = 3
     }
 }

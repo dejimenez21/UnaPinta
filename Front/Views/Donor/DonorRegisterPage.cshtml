@@ -137,7 +137,7 @@
         var password = document.getElementById("passwordtxt").value;
         var confirmPassword = document.getElementById("confirmpasswordtxt").value;
         if (password != confirmPassword) {
-            swal({
+            Swal.fire({
                 title: "Error",
                 text: "Las contraseñas no coinciden",
                 type: "error",
@@ -151,7 +151,7 @@
         var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
         var phone = document.getElementById("phonetxt").value;
         if ((!phone.match(phoneno))) {
-            swal({
+            Swal.fire({
                 title: "Error",
                 text: "El número de teléfono, no es válido",
                 type: "error",
@@ -167,7 +167,7 @@
 
     function OnSuccess(response) {
         if (response.code != 201) {
-            swal({
+            Swal.fire({
                 title: "Error",
                 text: response.responseText,
                 icon: "error",
