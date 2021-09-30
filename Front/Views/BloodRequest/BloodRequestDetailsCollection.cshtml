@@ -34,7 +34,6 @@
                                     </div>
                                     <div class="widget-49-meeting-info">
                                         <span class="widget-49-pro-title">@item.PatientStory</span>
-                                        @*<span class="widget-49-meeting-time">12:00 to 13.30 Hrs</span>*@
                                     </div>
                                 </div>
                                 <ol class="widget-49-meeting-points">
@@ -43,7 +42,7 @@
                                     <li class="widget-49-meeting-item"><span>Fecha aproximada: @item.ResponseDueDate</span></li>
                                 </ol>
                                 <div class="widget-49-meeting-action">
-                                    <button onclick="tapDetailsCard()" class="btn btn-sm btn-flash-border-primary">Más detalles</button>
+                                    <button onclick="tapDetailsCard()" class="btn btn-sm btn-flash-border-primary">Aceptar solicitud</button>
                                 </div>
                             </div>
                         </div>
@@ -55,33 +54,24 @@
 </div>
 <script type="text/javascript">
     function tapDetailsCard() {
-
-        var url = "/BloodRequest/BloodRequestDetailsModal/" + id;
-
-        $.get(url, function (data) {
-            var result = JSON.stringify(data.content)
-            //$.each(data.content, function (key, entry) {
-            //    dropdown.append($('<option></option>').attr('value', entry.code).text(entry.name));
-            //})
-            // do something if necessary
-        });
-
         Swal.fire({
-            title: 'Detalles de la solicitud',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
+            title: 'Información',
+            text: "¿Desea aceptar esta solicitud?",
+            icon: 'info',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonColor: '#38b000',
+            cancelButtonColor: '#c1121f',
+            confirmButtonText: 'Aceptar solicitud'
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire(
-                    'Deleted!',
-                    'Your file has been deleted.',
-                    'success'
-                )
+                Swal.fire({
+                    title: 'Correcto',
+                    text: "Soliciud aceptada",
+                    icon: 'success',
+                    confirmButtonColor: '#38b000',
+                    confirmButtonText: 'Ok'
+                })
             }
-        })
+        });
     }
 </script>

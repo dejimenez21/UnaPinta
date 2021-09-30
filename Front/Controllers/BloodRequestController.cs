@@ -110,16 +110,5 @@ namespace Una_Pinta.Controllers
             }
         }
 
-        public IActionResult BloodRequestDetailsModal(int id)
-        {
-            var summaryDetaisls = RequestSummaries.Where(elem => elem.Id == id).FirstOrDefault();
-            return Json(new { patientName = summaryDetaisls.Name, 
-                centerName = summaryDetaisls.CenterName,
-                centerAddress = summaryDetaisls.CenterAddress,
-                createdAt = summaryDetaisls.CreatedAt,
-                storyPatient = summaryDetaisls.PatientStory,
-                responseDueDate = summaryDetaisls.ResponseDueDate});
-        }
-
     }
 }
