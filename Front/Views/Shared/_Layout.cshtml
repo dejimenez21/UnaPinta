@@ -25,6 +25,17 @@
     <link rel="stylesheet" href="/assets/css/Navigation-with-Search.css">
     <link rel="stylesheet" href="/assets/css/Social-Icons.css">
     <link rel="stylesheet" href="/css/CardsDashboardRequest.css">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+          rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+          rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css"
+          rel="stylesheet" />
+
     <link href="~/css/SelectMultiple.css" rel="stylesheet" />
     <link href="~/css/PageBody.css" rel="stylesheet" />
     <link href="~/css/SplashPage.css" rel="stylesheet" />
@@ -39,7 +50,132 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-light navbar-expand-lg navigation-clean">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <!-- Container wrapper -->
+            <div class="container-fluid">
+                <!-- Toggle button -->
+                <button class="navbar-toggler"
+                        type="button"
+                        data-mdb-toggle="collapse"
+                        data-mdb-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <!-- Collapsible wrapper -->
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Navbar brand -->
+                    <a class="navbar-brand mt-2 mt-lg-0" asp-controller="HomePage" asp-action="HomePageView">
+                        <img src="~/Pics/pic-logo.png" class="img-responsive" style="width:120px" />
+                    </a>
+                    <!-- Left links -->
+                    <ul class="navbar-nav">
+                        <!-- Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle"
+                               href="#"
+                               id="navbarDropdownMenuLink"
+                               role="button"
+                               data-mdb-toggle="dropdown"
+                               aria-expanded="false">
+                                Sobre nosotros
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li>
+                                    <a class="dropdown-item" href="#infoPop" data-toggle="modal">Contacto</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">Valores</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle"
+                               href="#"
+                               id="navbarDropdownMenuLink"
+                               role="button"
+                               data-mdb-toggle="dropdown"
+                               aria-expanded="false">
+                                Eventos
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li>
+                                    <a class="dropdown-item" href="#infoPop" data-toggle="modal">Contacto</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">Valores</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <!-- Left links -->
+                </div>
+                <!-- Collapsible wrapper -->
+                <!-- Right elements -->
+                <div class="d-flex align-items-center">
+                    <!-- Notifications -->
+                    <a class="text-reset me-3 dropdown-toggle hidden-arrow"
+                       href="#"
+                       id="navbarDropdownMenuLink"
+                       role="button"
+                       data-mdb-toggle="dropdown"
+                       aria-expanded="false">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge rounded-pill badge-notification bg-danger">1</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end"
+                        aria-labelledby="navbarDropdownMenuLink">
+                        <li>
+                            <a class="dropdown-item" href="#">Some news</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">Another news</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </li>
+                    </ul>
+
+                    <!-- Avatar -->
+                    <a class="dropdown-toggle d-flex align-items-center hidden-arrow"
+                       href="#"
+                       id="navbarDropdownMenuLink"
+                       role="button"
+                       data-mdb-toggle="dropdown"
+                       aria-expanded="false">
+                        <img src="https://mdbootstrap.com/img/new/avatars/2.jpg"
+                             class="rounded-circle"
+                             height="25"
+                             alt=""
+                             loading="lazy" />
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end"
+                        aria-labelledby="navbarDropdownMenuLink">
+                        <li>
+                            @if (string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("userName")))
+                            {
+                                <a class="dropdown-item" href="#">Inicie sesión</a>
+                            }
+                            else
+                            {
+                                <a class="dropdown-item" href="#">@HttpContextAccessor.HttpContext.Session.GetString("userName")</a>
+                            }
+
+                        </li>
+                        <li>
+                            <a class="dropdown-item" asp-controller="HomePage" asp-action="HomePageView">Cerrar Sesión</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- Right elements -->
+            </div>
+            <!-- Container wrapper -->
+        </nav>
+        <!-- Navbar -->
+        @*<nav class="navbar navbar-light navbar-expand-lg navigation-clean">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarhome" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -89,7 +225,7 @@
                     }
                 </div>
             </div>
-        </nav>
+        </nav>*@
     </header>
 
     <main role="main" class="pb-3">
@@ -126,6 +262,12 @@
 
     <footer class="border-top footer text-muted">
     </footer>
+
+    <!-- MDB -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>
+
+
     <script src=@Url.Content("https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js")></script>
     @*<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>*@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
