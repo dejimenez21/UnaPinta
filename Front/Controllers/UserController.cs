@@ -24,6 +24,7 @@ namespace Una_Pinta.Controllers
         readonly IProvincesRepository _provincesRepository;
         readonly Utilities _utilities;
         public RoleEnum RoleEnum;
+        public int BloodType;
 
         public UserController(IUserRepository userRepository, IProvincesRepository provincesRepository, IHttpContextAccessor httpContextAccessor)
         {
@@ -52,16 +53,17 @@ namespace Una_Pinta.Controllers
         [HttpPost]
         public async Task<IActionResult> UserTapLogin(UserSignUp userSignUp)
         {
-            var result = await _userRepository.GetUser(userSignUp);
+            var result = await _userRepository.GetUser(userSignUp);            
             RoleEnum = new RoleEnum();
             if (((int)result.StatusCode) == 200)
             {
                 var tokenSession = _utilities.SetSession(result);
                 var token = _utilities.GetJwtToken(tokenSession);
+                BloodType = _utilities.VerifyBloodType(token);
                 RoleEnum = _utilities.VerifyRole(token);
                 _utilities.SetUserName(token);
             }
-            return Json(new { code = (int)result.StatusCode, responseText = result.Content, roleUser = ((int)RoleEnum) });
+            return Json(new { code = (int)result.StatusCode, responseText = result.Content, roleUser = ((int)RoleEnum), blood = BloodType });
             
         }
 

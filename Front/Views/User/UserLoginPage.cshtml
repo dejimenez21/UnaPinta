@@ -70,7 +70,8 @@
             }
             else if (response.roleUser == 2) {
                 window.location.href = "/BloodRequest/BloodRequestPage"
-            }            
+                window.localStorage.setItem("bloodTypeUser", response.blood);
+            }             
         }
     }
 </script>

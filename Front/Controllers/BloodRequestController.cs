@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Una_Pinta.Helpers.Utilities;
 using Microsoft.AspNetCore.Http;
 using Una_Pinta.Models;
+using System.IO;
 
 namespace Una_Pinta.Controllers
 {
@@ -50,10 +51,24 @@ namespace Una_Pinta.Controllers
         [HttpPost]
         public async Task<IActionResult> TapBloodRequestCreate(RequestCreate requestCreate)
         {
-            requestCreate.PrescriptionBase64 = "something";
-            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
-            var result = await _bloodRequestRepository.PostBloodRequest(requestCreate, getToken);
-            return Json(new { code = (int)result.StatusCode, responseText = result.Content });
+            if (requestCreate.ForMe)
+            {
+                var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+                var token = _utilities.GetJwtToken(getToken);
+                requestCreate.Name = _utilities.GetUserInfo(token).name;
+                requestCreate.BloodTypeId = _utilities.GetUserInfo(token).bloodType;
+                requestCreate.BirthDate = _utilities.GetUserInfo(token).birthDate;
+                requestCreate.PrescriptionBase64 = "something";
+                var result = await _bloodRequestRepository.PostBloodRequest(requestCreate, getToken);
+                return Json(new { code = (int)result.StatusCode, responseText = result.Content });
+            }
+            else
+            {
+                requestCreate.PrescriptionBase64 = "something";
+                var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+                var result = await _bloodRequestRepository.PostBloodRequest(requestCreate, getToken);
+                return Json(new { code = (int)result.StatusCode, responseText = result.Content });
+            }
         }
 
         [HttpPost]
