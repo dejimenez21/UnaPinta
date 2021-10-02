@@ -8,26 +8,32 @@
           data-ajax-success="OnSuccess" asp-action="TapBloodRequestCreate" asp-controller="BloodRequest" id="createRequest">
         <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);transition: 0.5s;">
             <div class="card-header">
-                <div class="float-right">
+                <div class="float-right form-check">
                     <input type="checkbox" onclick="hideFields()" class="form-check-input" asp-for="ForMe" id="forMeCheck">
                     <label class="form-check-label">Es para mi</label>
                 </div>
             </div>
             <div class="card-body">
                 <label style="font-family: 'Roboto', sans-serif;" id="nameLabel">Nombre:</label>
-                <input type="text" asp-for="Name" autocomplete="on" id="Name" data-val-required="El nombre es un campo obligatorio" placeholder="Nombre" class="form-control" />
+                <input type="text" asp-for="Name" id="Name" data-val-required="El nombre es un campo obligatorio" placeholder="Nombre" class="form-control" />
                 <div class="text-center">
-                    <span class="text-danger" data-valmsg-replace="true" />
+                    <span data-valmsg-for="Name" class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Centro de donación:</label>
-                <input type="text" asp-for="CenterName" id="CenterName" data-val-required="El centro de donación es un campo obligatorio" placeholder="Centro" class="form-control" />
+                <input type="text" asp-for="CenterName" id="CenterName" data-val-required="El centro de donacióñ es un campo obligatorio" placeholder="Clinica Independencia" class="form-control" />
                 <div class="text-center">
-                    <span class="text-danger" data-valmsg-replace="true" />
+                    <span data-valmsg-for="CenterName" class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Dirección:</label>
-                <input type="text" asp-for="CenterAddress" id="CenterAddress" data-val-required="La direccion es un campo obligatorio" placeholder="Calle B esquina..." class="form-control" />
+                <input type="text" asp-for="CenterAddress" id="CenterAddress" data-val-required="La direccion es un campo obligatorio" placeholder="Calle B..." class="form-control" />
                 <div class="text-center">
-                    <span class="text-danger" data-valmsg-replace="true" />
+                    <span data-valmsg-for="CenterAddress" class="text-danger" data-valmsg-replace="true" />
+                </div>
+                <label style="font-family: 'Roboto', sans-serif;">Centro de donación:</label>
+                <select type="text" asp-for="ProvinceId" id="provincesDropdown" data-val-required="La provincia es un campo obligatorio" placeholder="Santo Domingo" class="form-control">
+                </select>
+                <div class="text-center">
+                    <span data-valmsg-for="ProvinceId" class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Hemocomponentes:</label>
                 <select asp-for="BloodComponentId" id="bloodComplist" data-val-required="El componente es un campo obligatorio" data-val="true" class="form-control">
@@ -38,9 +44,9 @@
                     <option value="4">Globulos Rojos</option>
                 </select>
                 <div class="text-center">
-                    <span class="text-danger" data-valmsg-replace="true" />
+                    <span data-valmsg-for="BloodComponentId" class="text-danger" data-valmsg-replace="true" />
                 </div>
-                <label style="font-family: 'Roboto', sans-serif;">Tipo de sangre</label>
+                <label id="bloodTypeLabel" style="font-family: 'Roboto', sans-serif;">Tipo de sangre</label>
                 <select asp-for="BloodTypeId" id="bloodtypelist" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
                     <option selected="selected">Tipo de sangre</option>
                     <option value="1">A+</option>
@@ -53,39 +59,39 @@
                     <option value="8">O-</option>
                 </select>
                 <div class="text-center">
-                    <span class="text-danger" data-valmsg-replace="true" />
+                    <span data-valmsg-for="BloodTypeId" class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Cantidades:</label>
                 <input type="number" asp-for="Amount" id="Amount" data-val-required="La cantidad es un campo obligatorio" placeholder="0" class="form-control" />
                 <div class="text-center">
-                    <span class="text-danger" data-valmsg-replace="true" />
+                    <span data-valmsg-for="Amount" class="text-danger" data-valmsg-replace="true" />
                 </div>
-                <label style="font-family: 'Roboto', sans-serif;">Fecha de nacimiento:</label>
+                <label id="birthLabel" style="font-family: 'Roboto', sans-serif;">Fecha de nacimiento:</label>
                 <input type="date" asp-for="BirthDate" id="BirthDate" data-val-required="La fecha de nacimiento es un campo obligatorio" placeholder="5" class="form-control" />
                 <div class="text-center">
-                    <span class="text-danger" data-valmsg-replace="true" />
+                    <span data-valmsg-for="BirthDate" class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Indicación:</label>
-                <input type="file" asp-for="PrescriptionBase64" id="PrescriptionBase64" data-val-required="La Indicación es un campo obligatorio" class="form-control-file" />
+                <input type="file" asp-for="PrescriptionBase64" id="filechooser" accept="image/*" data-val-required="La Indicación es un campo obligatorio" class="form-control" />
                 <div class="text-center">
-                    <span class="text-danger" data-valmsg-replace="true" />
+                    <span data-valmsg-for="PrescriptionBase64" class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Tipos de sangre a donar:</label>
-                <select multiple asp-for="PossibleBloodTypes" id="possiblebloodtype" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
+                <select asp-for="PossibleBloodTypes" id="possiblebloodtype" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
                 </select>
                 <div class="text-center">
-                    <span class="text-danger" data-valmsg-replace="true" />
+                    <span data-valmsg-for="PossibleBloodTypes" class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Mensaje:</label>
                 <input type="text" asp-for="PatientStory" id="PatientStory" data-val-required="El Mensaje es un campo obligatorio" class="form-control" />
                 <div class="text-center">
-                    <span class="text-danger" data-valmsg-replace="true" />
+                    <span data-valmsg-for="PatientStory" class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Fecha límite de respuesta:</label>
                 <select asp-for="ResponseDueDateId" id="stringDatesDropdown" data-val-required="La Fecha límite es un campo obligatorio" data-val="true" class="form-control">
                 </select>
                 <div class="text-center">
-                    <span class="text-danger" data-valmsg-replace="true" />
+                    <span data-valmsg-for="ResponseDueDate" class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <div class="justify-end">
                     <div>
@@ -101,6 +107,10 @@
     let dropdown = $('#possiblebloodtype');
     let dropdownbloodtypelist = $('#bloodtypelist');
     let dropdownbloodComplist = $('#bloodComplist');
+    let dropdownProvince = $('#provincesDropdown');
+    dropdownProvince.empty();
+    dropdownProvince.append('<option selected="true" disabled>Provincia</option>');
+    dropdownProvince.prop('selectedIndex', 0);
 
     $(document).ready(function () {
         dropdown.empty();
@@ -121,6 +131,17 @@
                 })
                 // do something if necessary
             });
+        });
+
+        var url = "/BloodRequest/GetProvinces/";
+
+        $.post(url, function (data) {
+            var result = JSON.stringify(data.content)
+            $.each(data.content, function (key, entry) {
+                var province = parseInt(entry.code);
+                dropdownProvince.append($('<option></option>').attr('value', province).text(entry.name));
+            })
+            // do something if necessary
         });
 
         getStringDates();
@@ -146,15 +167,34 @@
         if ($('#forMeCheck').prop('checked')) {
             $("#Name").hide();
             $("#nameLabel").hide();
+            $("#birthLabel").hide();
+            $("#BirthDate").hide();
+            $("#bloodtypelist").hide();
+            $("#bloodTypeLabel").hide();
+            var bloodType = window.localStorage.getItem("bloodTypeUser");
+            var url = "/BloodRequest/GetBloodTypes/" + bloodType;
+
+            $.post(url, function (data) {
+                var result = JSON.stringify(data.content)
+                $.each(data.content, function (key, entry) {
+                    dropdown.append($('<option></option>').attr('value', entry.id).text(entry.text));
+                })
+                // do something if necessary
+            });
         } else {
             $("#Name").fadeIn();
             $("#nameLabel").fadeIn();
+            $("#bloodtypelist").fadeIn();
+            $("#bloodTypeLabel").fadeIn();
+            $("#birthLabel").hide();
+            $("#BirthDate").hide();
+            dropdown.empty();
         }
     }
 
     function OnSuccess(response) {
         if (response.code != 201) {
-            swal({
+            Swal.fire({
                 title: "Error",
                 text: response.responseText,
                 icon: "error",
@@ -164,7 +204,7 @@
             });
         }
         else {
-            swal({
+            Swal.fire({
                 title: "Correcto",
                 text: "Solicitud creada correctamente",
                 icon: "success",
@@ -174,6 +214,13 @@
             });
             document.getElementById("createRequest").reset();
             document.getElementById("possiblebloodtype").reset();
+            $("#Name").fadeIn();
+            $("#nameLabel").fadeIn();
+            $("#bloodtypelist").fadeIn();
+            $("#bloodTypeLabel").fadeIn();
+            $("#birthLabel").hide();
+            $("#BirthDate").hide();
+            dropdown.empty();
         }
     }
 </script>

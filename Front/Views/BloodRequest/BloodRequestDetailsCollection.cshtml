@@ -1,29 +1,77 @@
-﻿<div class="container">
-    <div class="card-deck">
-        <div class="card">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+﻿@using Una_Pinta.Models
+@{
+    var listData = @TempData["requestSummary"];
+}
+<div class="container">
+    <div class="row">
+        @{
+            var summaryList = listData as List<RequestSummary>;
+        }
+        @if (summaryList.Count == 0)
+        {
+            <div class="col d-flex justify-content-center">
+                <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_a7vr2ghs.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
             </div>
-        </div>
-        <div class="card">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            <div class="text-center">
+                <h1 class="display-6">No existen solicitudes al momento</h1>
             </div>
-        </div>
-        <div class="card">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-            </div>
-        </div>
+        }
+        else
+        {
+            @foreach (var item in listData as List<RequestSummary>)
+            {
+                <div class="col-lg-4">
+                    <div class="card card-margin">
+                        <div class="card-header no-border">
+                            <h5 class="card-title">@item.Name</h5>
+                        </div>
+                        <div class="card-body pt-0">
+                            <div class="widget-49">
+                                <div class="widget-49-title-wrapper">
+                                    <div class="widget-49-date-primary">
+                                        <span class="widget-49-date-day">@item.CreatedAt.Date.Day</span>
+                                        <span class="widget-49-date-month">@item.CreatedAt.Date.ToString("MMM")</span>
+                                    </div>
+                                    <div class="widget-49-meeting-info">
+                                        <span class="widget-49-pro-title">@item.PatientStory</span>
+                                    </div>
+                                </div>
+                                <ol class="widget-49-meeting-points">
+                                    <li class="widget-49-meeting-item"><span>Centro de Donación: @item.CenterName</span></li>
+                                    <li class="widget-49-meeting-item"><span>Dirección: @item.CenterAddress</span></li>
+                                    <li class="widget-49-meeting-item"><span>Fecha aproximada: @item.ResponseDueDate</span></li>
+                                </ol>
+                                <div class="widget-49-meeting-action">
+                                    <button onclick="tapDetailsCard()" class="btn btn-sm btn-flash-border-primary">Aceptar solicitud</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
     </div>
 </div>
-
+<script type="text/javascript">
+    function tapDetailsCard() {
+        Swal.fire({
+            title: 'Información',
+            text: "¿Desea aceptar esta solicitud?",
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#38b000',
+            cancelButtonColor: '#c1121f',
+            confirmButtonText: 'Aceptar solicitud'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Correcto',
+                    text: "Soliciud aceptada",
+                    icon: 'success',
+                    confirmButtonColor: '#38b000',
+                    confirmButtonText: 'Ok'
+                })
+            }
+        });
+    }
+</script>

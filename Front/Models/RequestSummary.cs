@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace UnaPinta.Dto.Models.Request
+namespace Una_Pinta.Models
 {
-    public class RequestSummaryDto
+    public class RequestSummary
     {
         public int Id { get; set; }
         public string Name { get; set; }

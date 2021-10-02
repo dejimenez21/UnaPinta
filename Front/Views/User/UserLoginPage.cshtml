@@ -54,7 +54,7 @@
     function OnSuccess(response) {
         var userName = document.getElementById("userNametxt").value;
         if (response.code != 200) {
-            swal({
+            Swal.fire({
                 title: "Advertencia",
                 text: "Este usuario no existe",
                 type: "warning",
@@ -70,7 +70,8 @@
             }
             else if (response.roleUser == 2) {
                 window.location.href = "/BloodRequest/BloodRequestPage"
-            }            
+                window.localStorage.setItem("bloodTypeUser", response.blood);
+            }             
         }
     }
 </script>

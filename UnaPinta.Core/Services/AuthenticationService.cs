@@ -78,7 +78,9 @@ namespace UnaPinta.Core.Services
             {
                 new Claim("Name", $"{user.FirstName} {user.LastName}"),
                 new Claim("UserName", user.UserName),
-                new Claim("EmailConfirmed", user.EmailConfirmed.ToString())
+                new Claim("EmailConfirmed", user.EmailConfirmed.ToString()),
+                new Claim("BloodType", ((int)user.BloodTypeId).ToString()),
+                new Claim("BirthDate", user.BirthDate.ToString())
             };
 
 
