@@ -60,5 +60,9 @@ namespace UnaPinta.Api.Controllers
             var requestsSummary = await _service.RetrieveRequestsSummaryByDonor(username);
             return Ok(requestsSummary);
         }
+
+        [HttpGet("stringDates")]
+        public async Task<ActionResult<IEnumerable<StringDate>>> GetStringDates() =>
+            Ok(await _service.RetrieveAllStringDates());
     }
 }

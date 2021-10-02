@@ -35,7 +35,10 @@ namespace UnaPinta.Core.Services
 
         public async Task<Func<Task>> CreateRequest(RequestCreateDto inputRequest, string userName)
         {
+            var stringDate = await _requestRepository.SelectStringDateById((int)inputRequest.ResponseDueDateId);
+
             var request = _mapper.Map<Request>(inputRequest);
+            request.ResponseDueDate = stringDate.ToDateTime();
 
             var user = await _userManager.FindByNameAsync(userName);
             request.RequesterId = user.Id;
@@ -56,21 +59,6 @@ namespace UnaPinta.Core.Services
             return details;
         }
 
-        public async Task SendRequestNotification(Request request)
-        {  
-            var requester = await _repo.GetUserById(request.RequesterId);
-            var compatibleUsers = await GetCompatibleUsers(requester.BloodTypeId);
-            var CompleteRequest = await _repo.GetRequestById(request.Id);
-            foreach (var user in compatibleUsers)
-            {
-                if(!(await IsAvailable(user)))
-                    continue;
-                EmailSender sender = new EmailSender(_repo);
-                await sender.SendNotification(user, CompleteRequest);
-                await sender.Disconnect();
-            }
-        }
-
         public async Task<IEnumerable<RequestSummaryDto>> RetrieveRequestsSummaryByDonor(string username)
         {
             var donor = await _userManager.FindByNameAsync(username);
@@ -81,24 +69,8 @@ namespace UnaPinta.Core.Services
             return requestsSummary;
         }
 
-        private Task<IEnumerable<User>> GetCompatibleUsers(BloodTypeEnum bloodTypeEnum)
-        {
-            var dict = new BloodTypeDictionary();
-            var CompatibleBloodTypes = dict.GetCompatibleWith(bloodTypeEnum);
-            return _repo.GetDonorsByBloodType(CompatibleBloodTypes);
-        }
+        public async Task<IEnumerable<StringDate>> RetrieveAllStringDates() =>
+            await _requestRepository.SelectAllStringDates();
 
-        private async Task<bool> IsAvailable(User donor)
-        {
-            if(!donor.CanDonate)
-                return false;
-
-            var availableAt = await _repo.GetAvailabilityDateByDonorId(donor.Id);
-
-            if(availableAt>DateTime.Now)
-                return false;
-
-            return true;
-        }
     }
 }

@@ -35,7 +35,7 @@ namespace UnaPinta.Dto.Models
         public string PatientStory { get; set; }
 
         [Required]
-        public int ResponseDueDateId { get; set; }
+        public int? ResponseDueDateId { get; set; }
 
         [Required]
         public bool ForMe { get; set; }

@@ -89,5 +89,17 @@ namespace Una_Pinta.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetStringDates()
+        {
+            var stringDates = await _bloodRequestRepository.GetStringDates();
+            var selectList = new List<SelectListItem>();
+            foreach (var item in stringDates)
+            {
+                selectList.Add(new SelectListItem { Text = item.String, Value = item.Id.ToString() });
+            }
+            var dates = selectList.Select(elem => new { code = elem.Value, name = elem.Text });
+            return Json(new { content = dates });
+        }
     }
 }

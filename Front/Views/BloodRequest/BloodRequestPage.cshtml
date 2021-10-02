@@ -19,6 +19,11 @@
                 <div class="text-center">
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
+                <label style="font-family: 'Roboto', sans-serif;">Centro de donación:</label>
+                <input type="text" asp-for="CenterName" id="CenterName" data-val-required="El centro de donación es un campo obligatorio" placeholder="Centro" class="form-control" />
+                <div class="text-center">
+                    <span class="text-danger" data-valmsg-replace="true" />
+                </div>
                 <label style="font-family: 'Roboto', sans-serif;">Dirección:</label>
                 <input type="text" asp-for="CenterAddress" id="CenterAddress" data-val-required="La direccion es un campo obligatorio" placeholder="Calle B esquina..." class="form-control" />
                 <div class="text-center">
@@ -51,7 +56,7 @@
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Cantidades:</label>
-                <input type="number" asp-for="Amount" id="Amount" data-val-required="La cantidad es un campo obligatorio" placeholder="5" class="form-control" />
+                <input type="number" asp-for="Amount" id="Amount" data-val-required="La cantidad es un campo obligatorio" placeholder="0" class="form-control" />
                 <div class="text-center">
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
@@ -77,11 +82,11 @@
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Fecha límite de respuesta:</label>
-                <input type="text" asp-for="ResponseDueDate" id="ResponseDueDate" data-val-required="La Fecha límite es un campo obligatorio" class="form-control" />
+                <select asp-for="ResponseDueDateId" id="stringDatesDropdown" data-val-required="La Fecha límite es un campo obligatorio" data-val="true" class="form-control">
+                </select>
                 <div class="text-center">
                     <span class="text-danger" data-valmsg-replace="true" />
                 </div>
-                <br />
                 <div class="justify-end">
                     <div>
                         <button type="submit" class="btn btn-success float-right">Crear</button>
@@ -117,7 +122,25 @@
                 // do something if necessary
             });
         });
+
+        getStringDates();
     });
+
+    function getStringDates() {
+        let dropdown = $('#stringDatesDropdown');
+        dropdown.empty();
+        dropdown.append('<option selected="true" disabled>Fecha aproximada</option>');
+        dropdown.prop('selectedIndex', 0);
+
+        var url = "/BloodRequest/GetStringDates";
+
+        $.get(url, function (data) {
+            $.each(data.content, function (key, entry) {
+                dropdown.append($('<option></option>').attr('value', entry.code).text(entry.name));
+            })
+            // do something if necessary
+        });
+    }
 
     function hideFields() {
         if ($('#forMeCheck').prop('checked')) {

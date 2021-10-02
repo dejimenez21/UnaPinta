@@ -12,5 +12,6 @@ namespace Una_Pinta.Services
     {
         Task<IRestResponse> PostBloodRequest(RequestCreateDto requestCreate, string token);
         Task<RequestDetails> GetRequestDetails(int id, string token);
+        Task<List<StringDate>> GetStringDates();
     }
 }

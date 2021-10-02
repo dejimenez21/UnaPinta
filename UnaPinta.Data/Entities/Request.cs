@@ -31,6 +31,7 @@ namespace UnaPinta.Data.Entities
         public string PatientStory { get; set; }
         [Required]
         public DateTime ResponseDueDate { get; set; }
+        [Required]
         public int ProvinceId { get; set; }
 
         [ForeignKey("BloodComponentId")]
