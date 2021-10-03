@@ -39,6 +39,6 @@ namespace UnaPinta.Dto.Models
 
         [Required]
         public bool ForMe { get; set; }
-        public int ProvinceId { get; set; }
+        public string ProvinceCode { get; set; }
     }
 }
