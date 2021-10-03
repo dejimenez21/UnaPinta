@@ -43,5 +43,6 @@ namespace UnaPinta.Data.Entities
         public virtual Province ProvinceNav { get; set; }
 
         public ICollection<RequestPossibleBloodTypes> PossibleBloodTypes { get; set; }
+        public ICollection<Case> Cases { get; set; }
     }
 }
