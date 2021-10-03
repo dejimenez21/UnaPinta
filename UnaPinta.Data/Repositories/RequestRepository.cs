@@ -17,6 +17,12 @@ namespace UnaPinta.Data.Repositories
         {
             _dbContext = dbContext;   
         }
+
+        public void CreateRequest(Request request)
+        {
+            _dbContext.Requests.Add(request);
+        }
+
         public async Task<Request> SelectRequestById(int id)
         {
             return await _dbContext.Requests
@@ -28,7 +34,7 @@ namespace UnaPinta.Data.Repositories
 
         public async Task<IEnumerable<Request>> SelectRequestsByDonor(User donor)
         {
-            return await _dbContext.Requests
+            var requests = await _dbContext.Requests
                 .Include(x => x.ProvinceNav)
                 .Include(x => x.PossibleBloodTypes)
                 .Where(r =>
@@ -36,6 +42,17 @@ namespace UnaPinta.Data.Repositories
                     && r.PossibleBloodTypes.Select(p => p.BloodTypeId).Contains(donor.BloodTypeId)
                 )
                 .ToListAsync();
+            return requests;
+        }
+
+        public async Task<StringDate> SelectStringDateById(int id)
+        {
+            return await _dbContext.StringDates.SingleOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<IEnumerable<StringDate>> SelectAllStringDates()
+        {
+            return await _dbContext.StringDates.ToListAsync();
         }
     }
 }

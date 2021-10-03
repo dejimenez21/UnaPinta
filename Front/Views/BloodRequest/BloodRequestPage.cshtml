@@ -1,4 +1,4 @@
-﻿@model UnaPinta.Dto.Models.RequestCreate
+﻿@model UnaPinta.Dto.Models.RequestCreateDto
 <div class="container" style="margin-top:20px;">
     <div class="text-center">
         <p style="font-family: 'Roboto', sans-serif; font-size:30px;">Creación de solicitud</p>
@@ -29,8 +29,8 @@
                 <div class="text-center">
                     <span data-valmsg-for="CenterAddress" class="text-danger" data-valmsg-replace="true" />
                 </div>
-                <label style="font-family: 'Roboto', sans-serif;">Centro de donación:</label>
-                <select type="text" asp-for="ProvinceId" id="provincesDropdown" data-val-required="La provincia es un campo obligatorio" placeholder="Santo Domingo" class="form-control">
+                <label style="font-family: 'Roboto', sans-serif;">Provincia:</label>
+                <select type="text" asp-for="ProvinceCode" id="provincesDropdown" data-val-required="La provincia es un campo obligatorio" placeholder="Santo Domingo" class="form-control">
                 </select>
                 <div class="text-center">
                     <span data-valmsg-for="ProvinceId" class="text-danger" data-valmsg-replace="true" />
@@ -62,7 +62,7 @@
                     <span data-valmsg-for="BloodTypeId" class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Cantidades:</label>
-                <input type="number" asp-for="Amount" id="Amount" data-val-required="La cantidad es un campo obligatorio" placeholder="5" class="form-control" />
+                <input type="number" asp-for="Amount" id="Amount" data-val-required="La cantidad es un campo obligatorio" placeholder="0" class="form-control" />
                 <div class="text-center">
                     <span data-valmsg-for="Amount" class="text-danger" data-valmsg-replace="true" />
                 </div>
@@ -88,11 +88,11 @@
                     <span data-valmsg-for="PatientStory" class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Fecha límite de respuesta:</label>
-                <input type="text" asp-for="ResponseDueDate" id="ResponseDueDate" data-val-required="La Fecha límite es un campo obligatorio" class="form-control" />
+                <select asp-for="ResponseDueDateId" id="stringDatesDropdown" data-val-required="La Fecha límite es un campo obligatorio" data-val="true" class="form-control">
+                </select>
                 <div class="text-center">
                     <span data-valmsg-for="ResponseDueDate" class="text-danger" data-valmsg-replace="true" />
                 </div>
-                <br />
                 <div class="justify-end">
                     <div>
                         <button type="submit" class="btn btn-success float-right">Crear</button>
@@ -138,13 +138,29 @@
         $.post(url, function (data) {
             var result = JSON.stringify(data.content)
             $.each(data.content, function (key, entry) {
-                var province = parseInt(entry.code);
-                dropdownProvince.append($('<option></option>').attr('value', province).text(entry.name));
+                dropdownProvince.append($('<option></option>').attr('value', entry.code).text(entry.name));
             })
             // do something if necessary
         });
 
+        getStringDates();
     });
+
+    function getStringDates() {
+        let dropdown = $('#stringDatesDropdown');
+        dropdown.empty();
+        dropdown.append('<option selected="true" disabled>Fecha aproximada</option>');
+        dropdown.prop('selectedIndex', 0);
+
+        var url = "/BloodRequest/GetStringDates";
+
+        $.get(url, function (data) {
+            $.each(data.content, function (key, entry) {
+                dropdown.append($('<option></option>').attr('value', entry.code).text(entry.name));
+            })
+            // do something if necessary
+        });
+    }
 
     function hideFields() {
         if ($('#forMeCheck').prop('checked')) {

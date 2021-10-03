@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace UnaPinta.Dto.Models
 {
-    public class RequestCreate
+    public class RequestCreateDto
     {
         [Required]
         public int? BloodComponentId { get; set; }
@@ -35,10 +35,10 @@ namespace UnaPinta.Dto.Models
         public string PatientStory { get; set; }
 
         [Required]
-        public string ResponseDueDate { get; set; }
+        public int? ResponseDueDateId { get; set; }
 
         [Required]
         public bool ForMe { get; set; }
-        public int ProvinceId { get; set; }
+        public string ProvinceCode { get; set; }
     }
 }

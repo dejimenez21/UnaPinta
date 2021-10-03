@@ -77,7 +77,7 @@ namespace Una_Pinta.Services
         /// </summary>
         /// <returns>HttpResponseMessage</returns>
         /// <exception cref="System.WebException">Thrown when status code of response are different to 200 (OK)</exception>
-        public Task<IRestResponse> PostBloodRequest(RequestCreate requestCreate, string token)
+        public Task<IRestResponse> PostBloodRequest(RequestCreateDto requestCreate, string token)
         {
             var client = new RestClient(ApiRequests.HostUrl);
             client.Authenticator = new JwtAuthenticator(token);
@@ -90,6 +90,31 @@ namespace Una_Pinta.Services
             {
                 var queryResult = client.ExecuteAsync(request).Result;
                 return Task.FromResult(queryResult);
+            }
+            catch (WebException ex)
+            {
+                Debug.WriteLine(ex.Response);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get Request to API
+        /// </summary>
+        /// <returns>List of stringDates</returns>
+        /// <exception cref="System.WebException">Thrown when status code of response are different to 200 (OK)</exception>
+        public Task<List<StringDate>> GetStringDates()
+        {
+            try
+            {
+                var client = new RestClient(ApiRequests.HostUrl);
+                var request = new RestRequest(ApiRequests.GetStringDates, Method.GET);
+                request.RequestFormat = DataFormat.Json;
+                request.AddHeader("Content-Type", "application/json");
+                request.AddHeader("Cache-Control", "no-cache");
+                var response = client.ExecuteAsync(request).Result.Content;
+                var content = JsonConvert.DeserializeObject<List<StringDate>>(response);
+                return Task.FromResult(content);
             }
             catch (WebException ex)
             {

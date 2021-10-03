@@ -10,13 +10,7 @@ namespace UnaPinta.Data.Contracts
     {
         Task<bool> SaveChangesAsync();
 
-        //Users table methods
-        void AddUser(User user);
-        void UpdateUser(User user);
-        Task<IEnumerable<User>> GetAllDonors();
-        Task<IEnumerable<User>> GetDonorsByBloodType(List<BloodTypeEnum> bloodTypes);
         Task<User> GetUserById(long id);
-        Task<bool> GetUserByEmail(string email);
 
         //Request table methods
         void CreateRequest(Request request);
@@ -29,10 +23,6 @@ namespace UnaPinta.Data.Contracts
         //BloodComponents table methods
         Task<IEnumerable<BloodComponent>> GetAllBloodComponents();
         Task<BloodComponent> GetBloodComponentById(BloodComponentEnum id);
-
-        //ConfirmationCodes table methods
-        void AddConfirmationCode(ConfirmationCode code);
-        Task<ConfirmationCode> GetCodeByUser(string code, long id);
 
         //WaitList table methods
         void AddWaitListItem(WaitList item);

@@ -7,6 +7,8 @@ using MimeKit.Utils;
 using UnaPinta.Data.Contracts;
 using UnaPinta.Dto.Models;
 using UnaPinta.Core.Contracts;
+using System.Globalization;
+using UnaPinta.Core.Extensions;
 
 namespace UnaPinta.Core.Services
 {
@@ -54,7 +56,7 @@ namespace UnaPinta.Core.Services
             preBody = preBody.Replace("@PatientName", request.Name);
             preBody = preBody.Replace("@CenterName", request.CenterName);
             preBody = preBody.Replace("@CenterAddress", request.CenterAddress);
-            preBody = preBody.Replace("@ResponseDueDate", request.ResponseDueDate);
+            preBody = preBody.Replace("@ResponseDueDate", request.ResponseDueDate.ToStringSP());
             preBody = preBody.Replace("@PatientStory", request.PatientStory);
 
             BodyBuilder bodyBuilder = new BodyBuilder();

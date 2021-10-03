@@ -30,7 +30,8 @@ namespace UnaPinta.Data.Entities
         public string PrescriptionBase64 { get; set; }
         public string PatientStory { get; set; }
         [Required]
-        public string ResponseDueDate { get; set; }
+        public DateTime ResponseDueDate { get; set; }
+        [Required]
         public int ProvinceId { get; set; }
 
         [ForeignKey("BloodComponentId")]
