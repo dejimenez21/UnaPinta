@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using UnaPinta.Api.Filters;
 using UnaPinta.Data.Repositories;
 using UnaPinta.Data.Brokers;
+using UnaPinta.Core.Contracts.Case;
 
 namespace UnaPinta.Api
 {
@@ -77,6 +78,8 @@ namespace UnaPinta.Api
             services.AddScoped<IRequestNotificationService, RequestNotificationService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddSingleton<IEmailBroker, EmailBroker>();
+            services.AddScoped<ICaseService, CaseService>();
+            services.AddScoped<ICaseRepository, CaseRepository>();
 
             //Remove
             services.AddScoped<EmailService>();
