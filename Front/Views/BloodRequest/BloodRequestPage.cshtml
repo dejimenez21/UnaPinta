@@ -29,8 +29,8 @@
                 <div class="text-center">
                     <span data-valmsg-for="CenterAddress" class="text-danger" data-valmsg-replace="true" />
                 </div>
-                <label style="font-family: 'Roboto', sans-serif;">Centro de donación:</label>
-                <select type="text" asp-for="ProvinceId" id="provincesDropdown" data-val-required="La provincia es un campo obligatorio" placeholder="Santo Domingo" class="form-control">
+                <label style="font-family: 'Roboto', sans-serif;">Provincia:</label>
+                <select type="text" asp-for="ProvinceCode" id="provincesDropdown" data-val-required="La provincia es un campo obligatorio" placeholder="Santo Domingo" class="form-control">
                 </select>
                 <div class="text-center">
                     <span data-valmsg-for="ProvinceId" class="text-danger" data-valmsg-replace="true" />
@@ -138,8 +138,7 @@
         $.post(url, function (data) {
             var result = JSON.stringify(data.content)
             $.each(data.content, function (key, entry) {
-                var province = parseInt(entry.code);
-                dropdownProvince.append($('<option></option>').attr('value', province).text(entry.name));
+                dropdownProvince.append($('<option></option>').attr('value', entry.code).text(entry.name));
             })
             // do something if necessary
         });
