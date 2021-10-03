@@ -8,7 +8,7 @@ using UnaPinta.Dto.Enums;
 
 namespace UnaPinta.Data.Entities
 {
-    public partial class Request : BaseEntity
+    public partial class Request : BaseEntity<long>
     {
         public Request()
         {
