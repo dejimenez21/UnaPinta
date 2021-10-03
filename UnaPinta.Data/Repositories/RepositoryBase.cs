@@ -9,28 +9,37 @@ using UnaPinta.Data.Contracts;
 
 namespace UnaPinta.Data.Repositories
 {
-    public class RepositoryBase<T> : IRepositoryBase<T>
+    public class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
         protected readonly UnaPintaDBContext _dbContext;
 
+        public RepositoryBase(UnaPintaDBContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public void Create(T entity)
         {
-            throw new NotImplementedException();
+            _dbContext.Set<T>().Add(entity);
         }
 
         public void Delete(T entity)
         {
-            throw new NotImplementedException();
+            _dbContext.Set<T>().Remove(entity);
         }
 
         public IQueryable<T> FindAll(bool trackChanges)
         {
-            throw new NotImplementedException();
+            return !trackChanges ? 
+                _dbContext.Set<T>().AsNoTracking() :
+                _dbContext.Set<T>();
         }
 
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges)
         {
-            throw new NotImplementedException();
+            return !trackChanges ?
+                _dbContext.Set<T>().Where(expression).AsNoTracking() :
+                _dbContext.Set<T>().Where(expression);
         }
 
         public async Task<int> SaveChangesAsync()
@@ -40,7 +49,7 @@ namespace UnaPinta.Data.Repositories
 
         public void Update(T entity)
         {
-            throw new NotImplementedException();
+            _dbContext.Set<T>().Update(entity);
         }
     }
 }
