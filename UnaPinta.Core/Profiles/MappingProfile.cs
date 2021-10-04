@@ -18,8 +18,6 @@ namespace UnaPinta.Core.Profiles
             CreateMap<RequestCreate, Request>();
             CreateMap<int, RequestPossibleBloodTypes>()
                 .ForMember(rpb => rpb.BloodTypeId, opt => opt.MapFrom(i => (BloodTypeEnum)i));
-            CreateMap<Register, User>();
-            CreateMap<Register, Role>();
             CreateMap<WaitListItemCreate, WaitList>();
             CreateMap<UserSignUp, User>();
 
