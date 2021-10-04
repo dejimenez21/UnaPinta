@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using UnaPinta.Dto.Enums;
 using UnaPinta.Dto.Models.Request;
 using UnaPinta.Core.Extensions;
+using Microsoft.AspNetCore.Http;
 
 namespace UnaPinta.Core.Profiles
 {
@@ -25,11 +26,12 @@ namespace UnaPinta.Core.Profiles
             CreateMap<UserSignUp, User>();
 
             //From Entity to DTO
+            CreateMap<File, byte[]>().ConvertUsing((entity, dto) => entity.FileContent);
             CreateMap<Role, RoleCreateResponseDto>();
             CreateMap<Request, RequestDetailsDto>()
                 .ForMember(d => d.PatientName, opt => opt.MapFrom(x => x.Name))
                 .ForMember(d => d.PatientPhone, opt => opt.MapFrom(x => x.RequesterNav.PhoneNumber))
-                .ForMember(d => d.Prescription, opt => opt.MapFrom(x => x.PrescriptionBase64))
+                .ForMember(d => d.Prescription, opt => opt.MapFrom(x => x.Prescription))
                 .ForMember(d => d.BloodComponent, opt => opt.MapFrom(x => x.BloodComponentNav.Description))
                 .ForMember(d => d.BloodType, opt => opt.MapFrom(x => x.BloodTypeNav.Description))
                 .ForMember(d => d.RequesterEmail, opt => opt.MapFrom(x => x.RequesterNav.Email))

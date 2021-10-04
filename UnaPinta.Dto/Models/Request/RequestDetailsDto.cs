@@ -18,6 +18,6 @@ namespace UnaPinta.Dto.Models
         public string CenterAddress { get; set; }
         public string BloodComponent { get; set; }
         public string BloodType { get; set; }
-        public string Prescription { get; set; }
+        public byte[] Prescription { get; set; }
     }
 }

@@ -26,8 +26,7 @@ namespace UnaPinta.Data.Entities
         [MaxLength(11)]
         public string Document { get; set; }
         public DateTime BirthDate { get; set; }
-        [Required]
-        public string PrescriptionBase64 { get; set; }
+        public long PrescriptionImageId { get; set; }
         public string PatientStory { get; set; }
         [Required]
         public DateTime ResponseDueDate { get; set; }
@@ -42,7 +41,8 @@ namespace UnaPinta.Data.Entities
         public virtual BloodType BloodTypeNav { get; set; }
         [ForeignKey("ProvinceId")]
         public virtual Province ProvinceNav { get; set; }
-
+        [ForeignKey("PrescriptionImageId")]
+        public virtual File Prescription { get; set; }
         public ICollection<RequestPossibleBloodTypes> PossibleBloodTypes { get; set; }
     }
 }

@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using UnaPinta.Data.Entities;
 using MailKit.Net.Smtp;
 using MimeKit;
-using System.IO;
 using MimeKit.Utils;
 using UnaPinta.Data.Contracts;
 using UnaPinta.Dto.Models;
@@ -26,7 +25,7 @@ namespace UnaPinta.Core.Services
         public async Task<string> GetConfirmationBody(string url)
         {
             string path = "../API/Templates/ConfirmationEmail.html";
-            string body = await File.ReadAllTextAsync(path);
+            string body = await System.IO.File.ReadAllTextAsync(path);
             body = body.Replace("@Url", url);
             return body;
         }
@@ -52,7 +51,7 @@ namespace UnaPinta.Core.Services
         public async Task<MimeEntity> GetRequestNotificationBody(Request request)
         {
             string path = "../API/Templates/NotificationEmail.html";
-            string preBody = await File.ReadAllTextAsync(path);
+            string preBody = await System.IO.File.ReadAllTextAsync(path);
             preBody = preBody.Replace("@PatientName", request.Name);
             preBody = preBody.Replace("@CenterName", request.CenterName);
             preBody = preBody.Replace("@CenterAddress", request.CenterAddress);

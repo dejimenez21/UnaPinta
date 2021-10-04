@@ -13,6 +13,8 @@ using AutoMapper;
 using UnaPinta.Core.Exceptions.Request;
 using UnaPinta.Dto.Models.Request;
 using UnaPinta.Core.Exceptions;
+using Microsoft.AspNetCore.Http;
+using UnaPinta.Core.Extensions;
 
 namespace UnaPinta.Core.Services
 {
@@ -48,6 +50,7 @@ namespace UnaPinta.Core.Services
             var request = _mapper.Map<Request>(inputRequest);
             request.ResponseDueDate = stringDate.ToDateTime();
             request.ProvinceId = province.Id;
+            request.Prescription = await inputRequest.PrescriptionImage.ToFileModel();
 
             var user = await _userManager.FindByNameAsync(userName);
             request.RequesterId = user.Id;
