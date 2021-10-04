@@ -166,6 +166,7 @@
             },
             type: 'POST',
             success: function (dataofconfirm) {
+                console.log(dataofconfirm);
                 Swal.fire({
                     title: "Correcto",
                     text: "Solicitud creada correctamente",
@@ -174,20 +175,14 @@
                     closeOnConfirm: true,
                     closeOnCancel: true
                 });
-                document.getElementById("createRequest").reset();
-                document.getElementById("PossibleBloodTypes").reset();
-                $("#Name").fadeIn();
-                $("#nameLabel").fadeIn();
-                $("#BloodTypeId").fadeIn();
-                $("#bloodTypeLabel").fadeIn();
-                $("#birthLabel").hide();
-                $("#BirthDate").hide();
+                $("#createRequest").reset();
                 dropdown.empty();
             },
             error: function (dataofconfirm) {
+                console.log(dataofconfirm);
                 Swal.fire({
                     title: "Error",
-                    text: response.responseText,
+                    text: dataofconfirm.responseText,
                     icon: "error",
                     showCancelButton: true,
                     closeOnConfirm: true,
@@ -222,6 +217,9 @@
             $("#BloodTypeId").hide();
             $("#bloodTypeLabel").hide();
             var bloodType = window.localStorage.getItem("bloodTypeUser");
+            var nameOfUser = window.localStorage.getItem("nameofuser");
+            var birthOfUser = window.localStorage.getItem("birthdate");
+
             var url = "/BloodRequest/GetBloodTypes/" + bloodType;
 
             $.post(url, function (data) {
@@ -231,6 +229,10 @@
                 })
                 // do something if necessary
             });
+
+            $("#Name").val(nameOfUser);
+            $("#BirthDate").val(birthOfUser);
+
         } else {
             $("#Name").fadeIn();
             $("#nameLabel").fadeIn();
@@ -238,6 +240,8 @@
             $("#bloodTypeLabel").fadeIn();
             $("#birthLabel").fadeIn();
             $("#BirthDate").fadeIn();
+            $("#Name").empty();
+            $("#BirthDate").empty();
             dropdown.empty();
         }
     }
