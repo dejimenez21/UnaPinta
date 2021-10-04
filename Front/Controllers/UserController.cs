@@ -53,17 +53,18 @@ namespace Una_Pinta.Controllers
         [HttpPost]
         public async Task<IActionResult> UserTapLogin(UserSignUp userSignUp)
         {
+            var tokenSession = "";
             var result = await _userRepository.GetUser(userSignUp);            
             RoleEnum = new RoleEnum();
             if (((int)result.StatusCode) == 200)
             {
-                var tokenSession = _utilities.SetSession(result);
+                tokenSession = _utilities.SetSession(result);
                 var token = _utilities.GetJwtToken(tokenSession);
                 BloodType = _utilities.VerifyBloodType(token);
                 RoleEnum = _utilities.VerifyRole(token);
                 _utilities.SetUserName(token);
             }
-            return Json(new { code = (int)result.StatusCode, responseText = result.Content, roleUser = ((int)RoleEnum), blood = BloodType });
+            return Json(new { code = (int)result.StatusCode, responseText = result.Content, roleUser = ((int)RoleEnum), blood = BloodType, token = tokenSession });
             
         }
 

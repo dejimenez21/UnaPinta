@@ -4,8 +4,10 @@ using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using Una_Pinta.Helpers.Requests;
 using Una_Pinta.Models;
@@ -77,15 +79,20 @@ namespace Una_Pinta.Services
         /// </summary>
         /// <returns>HttpResponseMessage</returns>
         /// <exception cref="System.WebException">Thrown when status code of response are different to 200 (OK)</exception>
+        [Obsolete]
         public Task<IRestResponse> PostBloodRequest(RequestCreateDto requestCreate, string token)
         {
             var client = new RestClient(ApiRequests.HostUrl);
             client.Authenticator = new JwtAuthenticator(token);
-            var request = new RestRequest(ApiRequests.PostBloodRequest, Method.POST);
-            request.RequestFormat = DataFormat.Json;
-            request.AddHeader("Content-Type", "application/json");
+            var request = new RestRequest(ApiRequests.PostBloodRequest, Method.POST);            
+            request.AddHeader("Content-Type", "multipart/form-data");
+            //request.AddFile("prescription", requestCreate.PrescriptionDirectory);
+            //byte[] bytes = Encoding.ASCII.GetBytes(requestCreate.PrescriptionBase64);
+            var bytes = GetByteArray(requestCreate.PrescriptionImage.OpenReadStream());
+            request.AddFile("prescription", bytes, requestCreate.PrescriptionImage.FileName);
             request.AddHeader("Cache-Control", "no-cache");
-            request.AddJsonBody(requestCreate);
+            request.AddParameter("application/json", $"requestCreate={JsonConvert.SerializeObject(requestCreate)}", ParameterType.RequestBody);
+            //request.AddBody(requestCreate);
             try
             {
                 var queryResult = client.ExecuteAsync(request).Result;
@@ -120,6 +127,20 @@ namespace Una_Pinta.Services
             {
                 Debug.WriteLine(ex.Response);
                 return null;
+            }
+        }
+
+        public byte[] GetByteArray(Stream input)
+        {
+            byte[] buffer = new byte[16 * 1024];
+            using (MemoryStream ms = new MemoryStream())
+            {
+                int read;
+                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    ms.Write(buffer, 0, read);
+                }
+                return ms.ToArray();
             }
         }
     }

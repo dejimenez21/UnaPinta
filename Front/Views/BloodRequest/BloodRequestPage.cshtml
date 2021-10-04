@@ -3,9 +3,7 @@
     <div class="text-center">
         <p style="font-family: 'Roboto', sans-serif; font-size:30px;">Creación de solicitud</p>
     </div>
-    <form data-ajax="true"
-          data-ajax-method="POST"
-          data-ajax-success="OnSuccess" asp-action="TapBloodRequestCreate" asp-controller="BloodRequest" id="createRequest">
+    <form enctype="multipart/form-data" id="createRequest">
         <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);transition: 0.5s;">
             <div class="card-header">
                 <div class="float-right form-check">
@@ -30,13 +28,13 @@
                     <span data-valmsg-for="CenterAddress" class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Provincia:</label>
-                <select type="text" asp-for="ProvinceCode" id="provincesDropdown" data-val-required="La provincia es un campo obligatorio" placeholder="Santo Domingo" class="form-control">
+                <select type="text" asp-for="ProvinceCode" id="ProvinceCode" data-val-required="La provincia es un campo obligatorio" placeholder="Santo Domingo" class="form-control">
                 </select>
                 <div class="text-center">
-                    <span data-valmsg-for="ProvinceId" class="text-danger" data-valmsg-replace="true" />
+                    <span data-valmsg-for="ProvinceCode" class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Hemocomponentes:</label>
-                <select asp-for="BloodComponentId" id="bloodComplist" data-val-required="El componente es un campo obligatorio" data-val="true" class="form-control">
+                <select asp-for="BloodComponentId" id="BloodComponentId" data-val-required="El componente es un campo obligatorio" data-val="true" class="form-control">
                     <option selected="selected">Componente</option>
                     <option value="1">Plasma</option>
                     <option value="2">Plaquetas</option>
@@ -47,7 +45,7 @@
                     <span data-valmsg-for="BloodComponentId" class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label id="bloodTypeLabel" style="font-family: 'Roboto', sans-serif;">Tipo de sangre</label>
-                <select asp-for="BloodTypeId" id="bloodtypelist" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
+                <select asp-for="BloodTypeId" id="BloodTypeId" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
                     <option selected="selected">Tipo de sangre</option>
                     <option value="1">A+</option>
                     <option value="2">A-</option>
@@ -72,12 +70,12 @@
                     <span data-valmsg-for="BirthDate" class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Indicación:</label>
-                <input type="file" asp-for="PrescriptionBase64" id="filechooser" accept="image/*" data-val-required="La Indicación es un campo obligatorio" class="form-control" />
+                <input type="file" asp-for="PrescriptionImage" id="PrescriptionImage" accept="image/*" data-val-required="La Indicación es un campo obligatorio" class="form-control" />
                 <div class="text-center">
                     <span data-valmsg-for="PrescriptionBase64" class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Tipos de sangre a donar:</label>
-                <select asp-for="PossibleBloodTypes" id="possiblebloodtype" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
+                <select asp-for="PossibleBloodTypes" id="PossibleBloodTypes" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
                 </select>
                 <div class="text-center">
                     <span data-valmsg-for="PossibleBloodTypes" class="text-danger" data-valmsg-replace="true" />
@@ -88,14 +86,14 @@
                     <span data-valmsg-for="PatientStory" class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Fecha límite de respuesta:</label>
-                <select asp-for="ResponseDueDateId" id="stringDatesDropdown" data-val-required="La Fecha límite es un campo obligatorio" data-val="true" class="form-control">
+                <select asp-for="ResponseDueDateId" id="ResponseDueDateId" data-val-required="La Fecha límite es un campo obligatorio" data-val="true" class="form-control">
                 </select>
                 <div class="text-center">
                     <span data-valmsg-for="ResponseDueDate" class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <div class="justify-end">
                     <div>
-                        <button type="submit" class="btn btn-success float-right">Crear</button>
+                        <button type="submit" id="btnSubmit" class="btn btn-success float-right">Crear</button>
                     </div>
                 </div>
             </div>
@@ -104,22 +102,22 @@
     </form>
 </div>
 <script type="text/javascript">
-    let dropdown = $('#possiblebloodtype');
-    let dropdownbloodtypelist = $('#bloodtypelist');
-    let dropdownbloodComplist = $('#bloodComplist');
-    let dropdownProvince = $('#provincesDropdown');
+    let dropdown = $('#PossibleBloodTypes');
+    let dropdownBloodTypeId = $('#BloodTypeId');
+    let dropdownBloodComponentId = $('#BloodComponentId');
+    let dropdownProvince = $('#ProvinceCode');
     dropdownProvince.empty();
     dropdownProvince.append('<option selected="true" disabled>Provincia</option>');
     dropdownProvince.prop('selectedIndex', 0);
 
     $(document).ready(function () {
         dropdown.empty();
-        $("#bloodtypelist").change(function () {
+        $("#BloodTypeId").change(function () {
             dropdown.empty();
             dropdown.append('<option selected="true" disabled>Tipo de sangre compatible</option>');
             dropdown.prop('selectedIndex', 0);
             var strSelected = "";
-            $("#bloodtypelist option:selected").each(function () {
+            $("#BloodTypeId option:selected").each(function () {
                 strSelected += $(this)[0].value;
             });
             var url = "/BloodRequest/GetBloodTypes/" + strSelected;
@@ -146,8 +144,61 @@
         getStringDates();
     });
 
+    $("#createRequest").submit(function (event) {
+        event.preventDefault();
+        var form = $('#createRequest')[0];
+        var fd = new FormData(form);
+
+        var token = window.localStorage.getItem("tokenSession");
+        for (const entry of fd.entries()) {
+            console.log(entry);
+        }
+        $.ajax({
+            url: "https://localhost:44393/api/Requests",
+            enctype: 'multipart/form-data',
+            data: fd,
+            cache: false,
+            processData: false,
+            contentType: false,
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            type: 'POST',
+            success: function (dataofconfirm) {
+                Swal.fire({
+                    title: "Correcto",
+                    text: "Solicitud creada correctamente",
+                    icon: "success",
+                    showCancelButton: true,
+                    closeOnConfirm: true,
+                    closeOnCancel: true
+                });
+                document.getElementById("createRequest").reset();
+                document.getElementById("PossibleBloodTypes").reset();
+                $("#Name").fadeIn();
+                $("#nameLabel").fadeIn();
+                $("#BloodTypeId").fadeIn();
+                $("#bloodTypeLabel").fadeIn();
+                $("#birthLabel").hide();
+                $("#BirthDate").hide();
+                dropdown.empty();
+            },
+            error: function (dataofconfirm) {
+                Swal.fire({
+                    title: "Error",
+                    text: response.responseText,
+                    icon: "error",
+                    showCancelButton: true,
+                    closeOnConfirm: true,
+                    closeOnCancel: true
+                });
+            }
+        });
+    })
+    
     function getStringDates() {
-        let dropdown = $('#stringDatesDropdown');
+        let dropdown = $('#ResponseDueDateId');
         dropdown.empty();
         dropdown.append('<option selected="true" disabled>Fecha aproximada</option>');
         dropdown.prop('selectedIndex', 0);
@@ -168,7 +219,7 @@
             $("#nameLabel").hide();
             $("#birthLabel").hide();
             $("#BirthDate").hide();
-            $("#bloodtypelist").hide();
+            $("#BloodTypeId").hide();
             $("#bloodTypeLabel").hide();
             var bloodType = window.localStorage.getItem("bloodTypeUser");
             var url = "/BloodRequest/GetBloodTypes/" + bloodType;
@@ -183,15 +234,16 @@
         } else {
             $("#Name").fadeIn();
             $("#nameLabel").fadeIn();
-            $("#bloodtypelist").fadeIn();
+            $("#BloodTypeId").fadeIn();
             $("#bloodTypeLabel").fadeIn();
-            $("#birthLabel").hide();
-            $("#BirthDate").hide();
+            $("#birthLabel").fadeIn();
+            $("#BirthDate").fadeIn();
             dropdown.empty();
         }
     }
 
     function OnSuccess(response) {
+        console.log(response);
         if (response.code != 201) {
             Swal.fire({
                 title: "Error",
@@ -212,10 +264,10 @@
                 closeOnCancel: true
             });
             document.getElementById("createRequest").reset();
-            document.getElementById("possiblebloodtype").reset();
+            document.getElementById("PossibleBloodTypes").reset();
             $("#Name").fadeIn();
             $("#nameLabel").fadeIn();
-            $("#bloodtypelist").fadeIn();
+            $("#BloodTypeId").fadeIn();
             $("#bloodTypeLabel").fadeIn();
             $("#birthLabel").hide();
             $("#BirthDate").hide();

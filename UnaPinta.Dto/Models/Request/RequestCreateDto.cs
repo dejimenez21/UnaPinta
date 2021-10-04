@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -27,9 +28,8 @@ namespace UnaPinta.Dto.Models
         public DateTime BirthDate { get; set; }
 
         [Required]
-        public string PrescriptionBase64 { get; set; }
+        public IFormFile PrescriptionImage { get; set; }
 
-        [Required]
         public IEnumerable<int> PossibleBloodTypes { get; set; }
 
         public string PatientStory { get; set; }

@@ -26,7 +26,7 @@ namespace UnaPinta.Api.Controllers
 
         [HttpPost("")]
         [Authorize(Roles = "solicitante")]
-        public async Task<ActionResult<RequestCreateDto>> CreateRequest(RequestCreateDto requestCreate)
+        public async Task<ActionResult<RequestCreateDto>> CreateRequest([FromForm]RequestCreateDto requestCreate)
         {
 
             try
