@@ -36,14 +36,15 @@ namespace UnaPinta.Core.Services
             }
 
             var userAge = (DateTime.Now - User.BirthDate).TotalDays/365;
-            
-            if(waitList.Any(x=>x.ConditionId==ConditionEnum.Inaceptable) || User.Weight<50 || userAge<18 || userAge>65)
+
+            User.CanDonate = true;
+            if (waitList.Any(x=>x.ConditionId==ConditionEnum.Inaceptable) || User.Weight<50 || userAge<18 || userAge>65)
             {
                 User.CanDonate = false;
-                await _repo.SaveChangesAsync();
                 await SendUnableToDonateNotification(User);
                 return;
             }
+            await _repo.SaveChangesAsync();
 
             var availableAt = waitList.Max(x=>x.AvailableAt);
             await SendAvailabilityDateNotification(User, availableAt);

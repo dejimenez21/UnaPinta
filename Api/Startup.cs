@@ -78,6 +78,8 @@ namespace UnaPinta.Api
             services.AddScoped<IRequestNotificationService, RequestNotificationService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddSingleton<IEmailBroker, EmailBroker>();
+            services.AddScoped<IFileManager, FileManager>();
+            services.AddScoped<IFileRepository, FileRepository>();
             services.AddScoped<ICaseService, CaseService>();
             services.AddScoped<ICaseRepository, CaseRepository>();
 

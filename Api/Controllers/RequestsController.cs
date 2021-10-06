@@ -26,7 +26,7 @@ namespace UnaPinta.Api.Controllers
 
         [HttpPost("")]
         [Authorize(Roles = "solicitante")]
-        public async Task<ActionResult<RequestCreate>> CreateRequest(RequestCreate requestCreate)
+        public async Task<ActionResult<RequestCreateDto>> CreateRequest([FromForm]RequestCreateDto requestCreate)
         {
 
             try
@@ -60,5 +60,9 @@ namespace UnaPinta.Api.Controllers
             var requestsSummary = await _service.RetrieveRequestsSummaryByDonor(username);
             return Ok(requestsSummary);
         }
+
+        [HttpGet("stringDates")]
+        public async Task<ActionResult<IEnumerable<StringDate>>> GetStringDates() =>
+            Ok(await _service.RetrieveAllStringDates());
     }
 }

@@ -18,16 +18,6 @@ namespace UnaPinta.Data
             _context = context;
         }
 
-        public void AddConfirmationCode(ConfirmationCode code)
-        {
-            // _context.ConfirmationCodes.Add(code);
-        }
-
-        public void AddUser(User user)
-        {
-            _context.Users.Add(user);
-        }
-
         public void AddWaitListItem(WaitList item)
         {
             _context.WaitLists.Add(item);
@@ -50,15 +40,6 @@ namespace UnaPinta.Data
             return bloodTypes;
         }
 
-        public async Task<IEnumerable<User>> GetAllDonors()
-        {
-            // var donors = await _context.Users.Where(x=>x.RoleId == (int)RoleEnum.Donante)
-            //     .ToListAsync();
-
-            // return donors;
-            throw new NotImplementedException();
-        }
-
         public async Task<BloodComponent> GetBloodComponentById(BloodComponentEnum id)
         {
             return await _context.BloodComponents.SingleOrDefaultAsync(x=>x.Id==id);
@@ -70,39 +51,14 @@ namespace UnaPinta.Data
             return await _context.BloodTypes.SingleOrDefaultAsync(x=>x.Id==id);
         }
 
-        public async Task<ConfirmationCode> GetCodeByUser(string code, long id)
-        {
-            // return await _context.ConfirmationCodes.SingleOrDefaultAsync(x=>x.Code==code&&x.UserId==id);
-            throw new NotImplementedException();
-        }
-
         public async Task<Condition> GetConditionById(ConditionEnum id)
         {
             return await _context.Conditions.SingleOrDefaultAsync(x=>x.Id==id);
         }
 
-        public async Task<IEnumerable<User>> GetDonorsByBloodType(List<BloodTypeEnum> bloodTypes)
-        {
-            // foreach (var item in bloodTypes)
-            // {
-            //     System.Console.WriteLine(item);
-            // }
-            // var donors = await _context.Users
-            //     .Where(x=>x.RoleId == (int)RoleEnum.Donante && bloodTypes.Contains(x.BloodTypeId))
-            //     .ToListAsync();
-
-            // return donors;
-            throw new NotImplementedException();
-        }
-
         public async Task<Request> GetRequestById(long id)
         {
             return await _context.Requests.SingleOrDefaultAsync(x=>x.Id==id);
-        }
-
-        public async Task<bool> GetUserByEmail(string email)
-        {
-            return await _context.Users.AnyAsync(x => x.Email == email);
         }
 
         public Task<User> GetUserById(long id)
@@ -115,11 +71,6 @@ namespace UnaPinta.Data
         {
             bool saved = await _context.SaveChangesAsync() > -1;
             return saved;
-        }
-
-        public void UpdateUser(User user)
-        {
-            throw new System.NotImplementedException();
         }
 
         public async Task<DateTime> GetAvailabilityDateByDonorId(long id)

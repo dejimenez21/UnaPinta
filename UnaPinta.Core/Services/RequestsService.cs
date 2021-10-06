@@ -12,6 +12,9 @@ using UnaPinta.Dto.Models;
 using AutoMapper;
 using UnaPinta.Core.Exceptions.Request;
 using UnaPinta.Dto.Models.Request;
+using UnaPinta.Core.Exceptions;
+using Microsoft.AspNetCore.Http;
+using UnaPinta.Core.Extensions;
 
 namespace UnaPinta.Core.Services
 {
@@ -22,20 +25,32 @@ namespace UnaPinta.Core.Services
         private readonly IRequestRepository _requestRepository;
         private readonly IMapper _mapper;
         private readonly IRequestNotificationService _requestNotificationService;
+        private readonly IProvinceService _provinceService;
 
         public RequestsService(IUnaPintaRepository repo, UserManager<User> userManager, 
-            IRequestRepository requestRepository, IMapper mapper, IRequestNotificationService requestNotificationService)
+            IRequestRepository requestRepository, IMapper mapper, IRequestNotificationService requestNotificationService,
+            IProvinceService provinceService)
         {
             _repo = repo;
             _userManager = userManager;
             _requestRepository = requestRepository;
             _mapper = mapper;
             _requestNotificationService = requestNotificationService;
+            _provinceService = provinceService;
         }
 
-        public async Task<Func<Task>> CreateRequest(RequestCreate inputRequest, string userName)
+        public async Task<Func<Task>> CreateRequest(RequestCreateDto inputRequest, string userName)
         {
+            var stringDate = await _requestRepository.SelectStringDateById((int)inputRequest.ResponseDueDateId);
+            if (stringDate == null) throw new BaseDomainException("El intervalo de fecha especificado no existe.", 400);
+            
+            var province = await _provinceService.RetrieveProvinceByCode(inputRequest.ProvinceCode);
+            if (province == null) throw new BaseDomainException("La provincia especificada no existe.", 400);
+
             var request = _mapper.Map<Request>(inputRequest);
+            request.ResponseDueDate = stringDate.ToDateTime();
+            request.ProvinceId = province.Id;
+            request.Prescription = await inputRequest.PrescriptionImage.ToFileModel();
 
             var user = await _userManager.FindByNameAsync(userName);
             request.RequesterId = user.Id;
@@ -65,6 +80,9 @@ namespace UnaPinta.Core.Services
 
             return requestsSummary;
         }
+
+        public async Task<IEnumerable<StringDate>> RetrieveAllStringDates() =>
+            await _requestRepository.SelectAllStringDates();
 
     }
 }

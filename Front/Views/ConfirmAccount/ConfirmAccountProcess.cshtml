@@ -20,6 +20,7 @@
                 }
                 else if (response.roleUser == 2) {
                     window.location.href = "https://localhost:44308/BloodRequest/BloodRequestPage";
+                    window.localStorage.setItem("bloodTypeUser", response.blood);
                 }
             });
         }, 3000);

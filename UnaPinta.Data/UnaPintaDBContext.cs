@@ -27,6 +27,8 @@ namespace UnaPinta.Data
         public virtual DbSet<Request> Requests { get; set; }
         public virtual DbSet<BloodType> BloodTypes { get; set; }
         public virtual DbSet<Province> Provinces { get; set; }
+        public virtual DbSet<StringDate> StringDates { get; set; }
+        public virtual DbSet<File> Files { get; set; }
         public virtual DbSet<Case> Cases { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

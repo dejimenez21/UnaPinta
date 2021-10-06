@@ -1,10 +1,11 @@
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace UnaPinta.Dto.Models
 {
-    public class RequestCreate
+    public class RequestCreateDto
     {
         [Required]
         public int? BloodComponentId { get; set; }
@@ -27,18 +28,17 @@ namespace UnaPinta.Dto.Models
         public DateTime BirthDate { get; set; }
 
         [Required]
-        public string PrescriptionBase64 { get; set; }
+        public IFormFile PrescriptionImage { get; set; }
 
-        [Required]
         public IEnumerable<int> PossibleBloodTypes { get; set; }
 
         public string PatientStory { get; set; }
 
         [Required]
-        public string ResponseDueDate { get; set; }
+        public int? ResponseDueDateId { get; set; }
 
         [Required]
         public bool ForMe { get; set; }
-        public int ProvinceId { get; set; }
+        public string ProvinceCode { get; set; }
     }
 }

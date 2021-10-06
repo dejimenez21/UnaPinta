@@ -16,6 +16,7 @@ namespace Una_Pinta.Controllers
         readonly IHttpContextAccessor _httpContextAccessor;
         readonly Utilities _utilities;
         public RoleEnum RoleEnum;
+        public int BloodType;
         public ConfirmAccountController(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
         {
             _userRepository = userRepository;
@@ -45,8 +46,9 @@ namespace Una_Pinta.Controllers
             var tokenUser = _httpContextAccessor.HttpContext.Session.GetString("userToken");
             var tokenDecoded = _utilities.GetJwtToken(tokenUser);
             RoleEnum = _utilities.VerifyRole(tokenDecoded);
+            BloodType = _utilities.VerifyBloodType(tokenDecoded);
             var emailVerify = _utilities.VerifyEmail(tokenDecoded);
-            return Json(new { roleUser = ((int)RoleEnum), emailUser = emailVerify, token = tokenUser });
+            return Json(new { roleUser = ((int)RoleEnum), emailUser = emailVerify, token = tokenUser, blood = BloodType });
         }
 
         [HttpGet]
