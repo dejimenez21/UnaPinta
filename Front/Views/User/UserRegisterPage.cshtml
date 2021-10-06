@@ -1,4 +1,7 @@
 ﻿@model Una_Pinta.Models.UserSignUp
+@{
+    Layout = "LayoutUnaPinta";
+}
 <div class="container">
     <div class="text-center">
         <p style="font-family: 'Roboto', sans-serif; font-size:30px; font-weight:bold">Registro de Usuario</p>
@@ -114,7 +117,7 @@
         dropdown.empty();
         dropdown.append('<option selected="true" disabled>Provincia</option>');
         dropdown.prop('selectedIndex', 0);
-        
+
         var url = "/User/GetProvinces/";
 
         $.get(url, function (data) {
@@ -164,19 +167,15 @@
                 title: "Error",
                 text: response.responseText,
                 icon: "error",
-                showCancelButton: true,
-                closeOnConfirm: true,
-                closeOnCancel: true
+                closeOnConfirm: true
             });
         }
-        else {            
+        else {
             Swal.fire({
                 title: "Correcto",
                 text: "Usuario creado correctamente",
                 icon: "success",
-                showCancelButton: true,
-                closeOnConfirm: true,
-                closeOnCancel: true
+                closeOnConfirm: true
             });
             window.location.href = "/ConfirmAccount/ConfirmAccount"
         }

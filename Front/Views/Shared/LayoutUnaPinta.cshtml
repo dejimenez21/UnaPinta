@@ -45,11 +45,7 @@
             </button>
            
             <div class="col d-flex justify-content-end">
-                @if (string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("userName")))
-                {
-                    <button class="btn btn-outline-primary">Inicie sesión</button>
-                }
-                else
+                @if (!string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("userName")))
                 {
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -60,6 +56,7 @@
                         </div>
                     </div>
                 }
+                
             </div>
         </nav>
     </header>

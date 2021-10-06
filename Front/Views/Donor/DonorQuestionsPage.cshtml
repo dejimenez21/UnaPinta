@@ -389,9 +389,7 @@
                             title: "Error",
                             text: "Hubo un error inesperado" + err.status,
                             icon: "Error",
-                            showCancelButton: true,
-                            closeOnConfirm: true,
-                            closeOnCancel: true
+                            closeOnConfirm: true
                         });
                         break;
                     case "403":
@@ -407,7 +405,6 @@
                     title: "Correcto",
                     text: "Respuestas enviadas correctamente",
                     icon: "success",
-                    showCancelButton: false,
                     closeOnConfirm: true
                 }).then(function () {
                     redirectToDashboard();

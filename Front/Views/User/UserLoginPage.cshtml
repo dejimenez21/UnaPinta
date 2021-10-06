@@ -56,12 +56,10 @@
         if (response.code != 200) {
             Swal.fire({
                 title: "Advertencia",
-                text: "Este usuario no existe",
+                text: "Credenciales erroneos",
                 type: "warning",
                 icon: "warning",
-                showCancelButton: true,
-                closeOnConfirm: true,
-                closeOnCancel: true
+                closeOnConfirm: true
             });
         }
         else {
