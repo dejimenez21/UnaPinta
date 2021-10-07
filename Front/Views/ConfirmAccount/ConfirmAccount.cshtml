@@ -11,8 +11,34 @@
                 <p style="font-family:'Segoe UI'; font-size:20px;">Se le ha enviado un correo electrónico para confirmar su cuenta, favor de revisar.</p>
                 <br />
                 <p style="font-family:'Segoe UI'; font-size:15px;">En caso de no haber recibido el correo electrónico, favor haga clic en el siguiente boton:</p>
-                <a asp-action="SendEmailVerification" asp-controller="ConfirmAccount" class="btn btn-danger">Reenviar correo</a>
+                <button type="submit" onclick="resendMailVerification()" class="btn btn-danger">Reenviar correo</button>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    function resendMailVerification() {
+        var url = "/ConfirmAccount/SendEmailVerification/";
+
+        $.get(url, function (data) {
+            if (data.code == 200) {
+                Swal.fire({
+                    title: "Bien",
+                    text: "Correo reenviado correctamente",
+                    type: "success",
+                    icon: "success",
+                    closeOnConfirm: true
+                });
+            }
+            else {
+                Swal.fire({
+                    title: "Error",
+                    text: "Ha ocurrido un error al reenviar el correo",
+                    type: "error",
+                    icon: "error",
+                    closeOnConfirm: true
+                });
+            }
+        });
+    }
+</script>
