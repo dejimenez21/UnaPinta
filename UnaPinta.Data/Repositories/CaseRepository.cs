@@ -8,7 +8,7 @@ using UnaPinta.Data.Entities;
 
 namespace UnaPinta.Data.Repositories
 {
-    public class CaseRepository : RepositoryBase<Case>, ICaseRepository
+    public class CaseRepository : RepositoryBase<Case, long>, ICaseRepository
     {
         public CaseRepository(UnaPintaDBContext dBContext) : base(dBContext) { }
     }

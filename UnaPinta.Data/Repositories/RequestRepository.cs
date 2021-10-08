@@ -9,13 +9,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace UnaPinta.Data.Repositories
 {
-    public class RequestRepository : IRequestRepository
+    public class RequestRepository : RepositoryBase<Request, long>, IRequestRepository
     {
-        private readonly UnaPintaDBContext _dbContext;
 
-        public RequestRepository(UnaPintaDBContext dbContext)
+        public RequestRepository(UnaPintaDBContext dbContext) : base(dbContext)
         {
-            _dbContext = dbContext;   
+
         }
 
         public void CreateRequest(Request request)

@@ -7,7 +7,7 @@ using UnaPinta.Data.Entities;
 
 namespace UnaPinta.Data.Contracts
 {
-    public interface IRequestRepository
+    public interface IRequestRepository : IRepositoryBase<Request, long>
     {
         Task<Request> SelectRequestById(int id);
         Task<IEnumerable<Request>> SelectRequestsByDonor(User donor);
