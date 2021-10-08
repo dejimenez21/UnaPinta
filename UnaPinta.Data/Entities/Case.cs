@@ -14,7 +14,7 @@ namespace UnaPinta.Data.Entities
         public long RequestId { get; set; }
         public CaseStatusEnum StatusId { get; set; }
 
-        [ForeignKey("DonorID")]
+        [ForeignKey("DonorId")]
         public virtual User DonorNav { get; set; }
 
         [ForeignKey("RequestId")]
