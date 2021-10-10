@@ -51,7 +51,7 @@ namespace UnaPinta.Core.Services
 
             if (inputRequest.ForMe)
                 inputRequest = CompleteRequestForCurrentUser(inputRequest, user);
-            else if (string.IsNullOrEmpty(inputRequest.Name) || !inputRequest.BirthDate.HasValue || inputRequest.BloodTypeId < 1)
+            else if (string.IsNullOrEmpty(inputRequest.Name) || !inputRequest.BirthDate.HasValue || !inputRequest.BloodTypeId.HasValue)
                 throw new BaseDomainException("El modelo es invalido", 400);
 
             var request = _mapper.Map<Request>(inputRequest);
