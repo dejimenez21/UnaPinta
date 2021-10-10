@@ -25,7 +25,7 @@ namespace UnaPinta.Dto.Models
         [MaxLength(11)]
         public string Document { get; set; }
 
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
 
         [Required]
         public IFormFile PrescriptionImage { get; set; }
