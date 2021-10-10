@@ -8,7 +8,7 @@ using UnaPinta.Dto.Enums;
 
 namespace UnaPinta.Data.Entities
 {
-    public partial class Request : BaseEntity
+    public partial class Request : BaseEntity<long>
     {
         public Request()
         {
@@ -44,5 +44,6 @@ namespace UnaPinta.Data.Entities
         [ForeignKey("PrescriptionImageId")]
         public virtual File Prescription { get; set; }
         public ICollection<RequestPossibleBloodTypes> PossibleBloodTypes { get; set; }
+        public ICollection<Case> Cases { get; set; }
     }
 }

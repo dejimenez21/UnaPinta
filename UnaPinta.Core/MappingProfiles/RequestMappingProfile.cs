@@ -1,33 +1,23 @@
-﻿using UnaPinta.Data.Entities;
-using UnaPinta.Dto.Models;
-using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using UnaPinta.Dto.Enums;
+﻿using AutoMapper;
 using UnaPinta.Dto.Models.Request;
+using UnaPinta.Dto.Models;
+using UnaPinta.Data.Entities;
+using UnaPinta.Dto.Enums;
 using UnaPinta.Core.Extensions;
-using Microsoft.AspNetCore.Http;
 
-namespace UnaPinta.Core.Profiles
+namespace UnaPinta.Core.MappingProfiles
 {
-    public class MappingProfile : Profile
+    public class RequestMappingProfile : Profile
     {
-        public MappingProfile()
+        public RequestMappingProfile()
         {
-            //From DTO to Entity
+            #region To Entity
             CreateMap<RequestCreateDto, Request>();
             CreateMap<int, RequestPossibleBloodTypes>()
                 .ForMember(rpb => rpb.BloodTypeId, opt => opt.MapFrom(i => (BloodTypeEnum)i));
-            CreateMap<Register, User>();
-            CreateMap<Register, Role>();
-            CreateMap<WaitListItemCreate, WaitList>();
-            CreateMap<UserSignUp, User>();
+            #endregion
 
-            //From Entity to DTO
-            CreateMap<File, byte[]>().ConvertUsing((entity, dto) => entity.FileContent);
-            CreateMap<Role, RoleCreateResponseDto>();
+            #region To Dto
             CreateMap<Request, RequestDetailsDto>()
                 .ForMember(d => d.PatientName, opt => opt.MapFrom(x => x.Name))
                 .ForMember(d => d.PatientPhone, opt => opt.MapFrom(x => x.RequesterNav.PhoneNumber))
@@ -40,7 +30,7 @@ namespace UnaPinta.Core.Profiles
             CreateMap<Request, RequestSummaryDto>()
                 .ForMember(rs => rs.Province, opt => opt.MapFrom(r => r.ProvinceNav.Name))
                 .ForMember(rs => rs.ResponseDueDate, opt => opt.MapFrom(r => r.ResponseDueDate.ToStringSP()));
+            #endregion
         }
     }
-    
 }

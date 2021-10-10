@@ -46,4 +46,11 @@ namespace UnaPinta.Dto.Enums
         Solicitante = 2,
         Administrador = 3
     }
+
+    public enum CaseStatusEnum
+    {
+        En_Proceso = 1,
+        Completado = 2,
+        Cancelado = 3
+    }
 }

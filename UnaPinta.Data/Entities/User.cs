@@ -35,6 +35,7 @@ namespace UnaPinta.Data.Entities
 
         public virtual ICollection<WaitList> WaitLists { get; set; }
         public virtual ICollection<Request> Requests { get; set; }
-        //public virtual ICollection<ConfirmationCode> ConfirmationCodes { get; set; }
+        public virtual ICollection<Case> Cases { get; set; }
+        //public virtual ICollection<IdentityRole> Roles { get; set; } 
     }
 }

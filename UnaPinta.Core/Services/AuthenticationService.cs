@@ -16,6 +16,7 @@ using UnaPinta.Core.Exceptions.Role;
 using Microsoft.AspNetCore.WebUtilities;
 using UnaPinta.Core.Exceptions;
 using UnaPinta.Core.Exceptions.User;
+using UnaPinta.Dto.Models.Auth;
 
 namespace UnaPinta.Core.Services
 {
@@ -76,11 +77,11 @@ namespace UnaPinta.Core.Services
         {
             var claims = new List<Claim>
             {
-                new Claim("Name", $"{user.FirstName} {user.LastName}"),
-                new Claim("UserName", user.UserName),
-                new Claim("EmailConfirmed", user.EmailConfirmed.ToString()),
-                new Claim("BloodType", ((int)user.BloodTypeId).ToString()),
-                new Claim("BirthDate", user.BirthDate.ToString())
+                new Claim(nameof(UserJwtClaimsDto.Name), $"{user.FirstName} {user.LastName}"),
+                new Claim(nameof(UserJwtClaimsDto.UserName), user.UserName),
+                new Claim(nameof(UserJwtClaimsDto.EmailConfirmed), user.EmailConfirmed.ToString()),
+                new Claim(nameof(UserJwtClaimsDto.BloodType), ((int)user.BloodTypeId).ToString()),
+                new Claim(nameof(UserJwtClaimsDto.BirthDate), user.BirthDate.ToString())
             };
 
 

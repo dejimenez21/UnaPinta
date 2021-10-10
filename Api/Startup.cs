@@ -20,6 +20,8 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using UnaPinta.Api.Filters;
 using UnaPinta.Data.Repositories;
 using UnaPinta.Data.Brokers;
+using UnaPinta.Core.Contracts.Case;
+using UnaPinta.Api.Helpers;
 
 namespace UnaPinta.Api
 {
@@ -79,6 +81,11 @@ namespace UnaPinta.Api
             services.AddSingleton<IEmailBroker, EmailBroker>();
             services.AddScoped<IFileManager, FileManager>();
             services.AddScoped<IFileRepository, FileRepository>();
+            services.AddScoped<ICaseService, CaseService>();
+            services.AddScoped<ICaseRepository, CaseRepository>();
+            services.AddScoped<ITokenParams, TokenParams>();
+
+            services.AddHttpContextAccessor();
 
             //Remove
             services.AddScoped<EmailService>();

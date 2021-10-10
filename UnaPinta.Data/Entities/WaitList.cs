@@ -8,7 +8,7 @@ using UnaPinta.Dto.Enums;
 
 namespace UnaPinta.Data.Entities
 {
-    public partial class WaitList : BaseEntity
+    public partial class WaitList : BaseEntity<long>
     {
         public ConditionEnum ConditionId { get; set; }
         public long UserId { get; set; }
