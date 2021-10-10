@@ -22,7 +22,6 @@ namespace Una_Pinta.Controllers
         readonly IBloodRequestRepository _bloodRequestRepository;
         readonly IHttpContextAccessor _httpContextAccessor;
         readonly IProvincesRepository _provincesRepository;
-        readonly IHostingEnvironment _hostingEnvironment;
         readonly Utilities _utilities;
         public List<RequestSummary> RequestSummaries;
         public BloodRequestController(IBloodTypesRepository bloodTypesRepository, IBloodRequestRepository bloodRequestRepository, IHttpContextAccessor httpContextAccessor, IProvincesRepository provincesRepository, IHostingEnvironment hostingEnvironment)
@@ -31,7 +30,6 @@ namespace Una_Pinta.Controllers
             _bloodRequestRepository = bloodRequestRepository;
             _httpContextAccessor = httpContextAccessor;
             _provincesRepository = provincesRepository;
-            _hostingEnvironment = hostingEnvironment;
             _utilities = new Utilities(httpContextAccessor);
             RequestSummaries = new List<RequestSummary>();
         }
@@ -142,6 +140,18 @@ namespace Una_Pinta.Controllers
             }
             var dates = selectList.Select(elem => new { code = elem.Value, name = elem.Text });
             return Json(new { content = dates });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostCases(int id)
+        {
+            //TODO: Improve this code
+            Cases cases = new Cases();
+            cases.RequestId = id;
+
+            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var createCase = await _bloodRequestRepository.PostCase(cases, getToken);
+            return Json(new { code = (int)createCase.StatusCode, responseText = createCase.Content });
         }
     }
 }

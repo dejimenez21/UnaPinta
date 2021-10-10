@@ -15,6 +15,7 @@ namespace Una_Pinta.Helpers.Requests
         public static string GetBloodComponent = "api/BloodComponent";
         public static string GetRequestSummary = "api/Requests/summary";
         public static string GetStringDates = "api/Requests/stringDates";
+        public static string CreateCase = "api/cases";
 
         public static string ConfirmEmail(string id, string token) => $"api/auth/confirmemail?userid={id}&token={token}";
 

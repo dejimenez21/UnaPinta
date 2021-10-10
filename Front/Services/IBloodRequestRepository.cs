@@ -11,6 +11,7 @@ namespace Una_Pinta.Services
     public interface IBloodRequestRepository
     {
         Task<IRestResponse> PostBloodRequest(RequestCreateDto requestCreate, string token);
+        Task<IRestResponse> PostCase(Cases cases, string token);
         Task<RequestDetails> GetRequestDetails(int id, string token);
         Task<List<RequestSummary>> GetRequestSummary(string token);
         Task<List<StringDate>> GetStringDates();
