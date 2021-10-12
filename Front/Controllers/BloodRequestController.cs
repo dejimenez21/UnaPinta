@@ -13,6 +13,8 @@ using Una_Pinta.Models;
 using System.IO;
 using System;
 using Microsoft.AspNetCore.Hosting;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace Una_Pinta.Controllers
 {
@@ -89,10 +91,11 @@ namespace Una_Pinta.Controllers
             return Json(new { content = types });
         }
 
-        public async Task<IActionResult> BloodRequestDetail()
+        public async Task<IActionResult> BloodRequestDetail(int id)
         {
             var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
-            var result = await _bloodRequestRepository.GetRequestDetails(12, getToken);
+            var result = await _bloodRequestRepository.GetRequestDetails(id, getToken);
+            //var result = requestSummary.ToObject<RequestDetails>();
             TempData["resultRequest"] = result;
             return View();
         }
@@ -151,7 +154,13 @@ namespace Una_Pinta.Controllers
 
             var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
             var createCase = await _bloodRequestRepository.PostCase(cases, getToken);
-            return Json(new { code = (int)createCase.StatusCode, responseText = createCase.Content });
+
+            var jsonContentResult = createCase.Content;
+            var jo = JObject.Parse(jsonContentResult);
+            var obj = Convert.ToInt32(jo["request"]["id"]);
+
+
+            return Json(new { code = (int)createCase.StatusCode, responseText = createCase.Content, caseId = obj });
         }
     }
 }

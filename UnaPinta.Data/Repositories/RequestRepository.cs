@@ -27,6 +27,7 @@ namespace UnaPinta.Data.Repositories
             return await _dbContext.Requests
                 .Include(x => x.RequesterNav)
                 .Include(x => x.BloodComponentNav)
+                .Include(x => x.Prescription)
                 .Include(x => x.BloodTypeNav)
                 .SingleOrDefaultAsync(r => r.Id == id);
         }
