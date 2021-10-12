@@ -1,6 +1,8 @@
 ﻿@using Una_Pinta.Models
 @{ 
     var listData = @TempData["resultRequest"] as RequestDetails;
+    var base64 = Convert.ToBase64String(listData.Prescription);
+    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
     Layout = "LayoutUnaPinta";
 }
 <div class="container">
@@ -31,7 +33,7 @@
                                 <h6 class="mb-0">Nombre</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                 <label id="Name">@listData.PatientName</label>
+                                <label id="Name">@listData.PatientName</label>
                             </div>
                         </div>
                         <hr>
@@ -77,6 +79,15 @@
                             </div>
                             <div class="col-sm-9 text-secondary">
                                 <label id="BloodType">@listData.BloodType</label>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Receta Médica</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <img src="@imgSrc" />
                             </div>
                         </div>
                         <hr>

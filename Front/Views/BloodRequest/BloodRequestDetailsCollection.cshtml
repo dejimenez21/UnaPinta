@@ -73,7 +73,7 @@
                 $.post(url, function (data) {
                     var result = JSON.stringify(data.content)
                     if (data.code == 201) {
-                        window.location.href = '/BloodRequest/BloodRequestDetail/' + data.caseId;
+                        window.location.href = '/BloodRequest/BloodRequestDetail/';
                     }
                     else {
                         Swal.fire({

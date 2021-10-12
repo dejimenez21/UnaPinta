@@ -91,11 +91,12 @@ namespace Una_Pinta.Controllers
             return Json(new { content = types });
         }
 
-        public async Task<IActionResult> BloodRequestDetail(int id)
+        public async Task<IActionResult> BloodRequestDetail()
         {
-            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
-            var result = await _bloodRequestRepository.GetRequestDetails(id, getToken);
-            //var result = requestSummary.ToObject<RequestDetails>();
+            //var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            //var result = await _bloodRequestRepository.GetRequestDetails(id, getToken);
+            var request = _httpContextAccessor.HttpContext.Session.GetString("requestDetails");
+            var result = JsonConvert.DeserializeObject<RequestDetails>(request);
             TempData["resultRequest"] = result;
             return View();
         }
@@ -157,10 +158,10 @@ namespace Una_Pinta.Controllers
 
             var jsonContentResult = createCase.Content;
             var jo = JObject.Parse(jsonContentResult);
-            var obj = Convert.ToInt32(jo["request"]["id"]);
-
-
-            return Json(new { code = (int)createCase.StatusCode, responseText = createCase.Content, caseId = obj });
+            var resultContent = jo["request"];
+            var resultParsed = resultContent.ToObject<RequestDetails>();
+            _httpContextAccessor.HttpContext.Session.SetString("requestDetails", JsonConvert.SerializeObject(resultParsed));
+            return Json(new { code = (int)createCase.StatusCode, responseText = createCase.Content});
         }
     }
 }
