@@ -53,5 +53,27 @@ namespace UnaPinta.Data.Repositories
         {
             return await _dbContext.StringDates.ToListAsync();
         }
+
+        public async Task<IEnumerable<Request>> SelectRequestByRequesterId(long id, string filter = null)
+        {
+            var requestQuery = dbSet.Where(r => r.RequesterId == id);
+            if (!string.IsNullOrEmpty(filter))
+            {
+                requestQuery = requestQuery.Where(r => r.Name.StartsWith(filter));
+            }
+
+            return await requestQuery.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Request>> SelectRequestByRequester(string username, string filter = null)
+        {
+            var requestQuery = dbSet.Where(r => r.RequesterNav.UserName == username && !r.DeletedAt.HasValue);
+            if (!string.IsNullOrEmpty(filter))
+            {
+                requestQuery = requestQuery.Where(r => r.Name.StartsWith(filter));
+            }
+
+            return await requestQuery.ToListAsync();
+        }
     }
 }

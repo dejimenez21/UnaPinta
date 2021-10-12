@@ -13,5 +13,7 @@ namespace UnaPinta.Core.Contracts
         Task<Func<Task>> CreateRequest(RequestCreateDto request, string userName);
         Task<IEnumerable<RequestSummaryDto>> RetrieveRequestsSummaryByDonor(string username);
         Task<IEnumerable<StringDate>> RetrieveAllStringDates();
+        Task<IEnumerable<RequestSummaryDto>> RetrieveRequestsSummaryByRequester(string username, string name = null);
+
     }
 }
