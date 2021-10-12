@@ -7,6 +7,7 @@ using UnaPinta.Core.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using UnaPinta.Dto.Models.Request;
+using UnaPinta.Api.Helpers;
 
 namespace UnaPinta.Api.Controllers
 {
@@ -17,11 +18,13 @@ namespace UnaPinta.Api.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IRequestsService _service;
+        private readonly ITokenParams _tokenParams;
 
-        public RequestsController(IMapper mapper, IRequestsService service)
+        public RequestsController(IMapper mapper, IRequestsService service, ITokenParams tokenParams)
         {
             _mapper = mapper;
             _service = service;
+            _tokenParams = tokenParams;
         }
 
         [HttpPost("")]
@@ -64,5 +67,14 @@ namespace UnaPinta.Api.Controllers
         [HttpGet("stringDates")]
         public async Task<ActionResult<IEnumerable<StringDate>>> GetStringDates() =>
             Ok(await _service.RetrieveAllStringDates());
+
+        [HttpGet("datatable")]
+        [Authorize(Roles ="solicitante")]
+        public async Task<ActionResult<IEnumerable<RequestSummaryDto>>> GetRequestsForDatatable([FromQuery]string search = null)
+        {
+            var username = _tokenParams.UserName;
+            var requests = await _service.RetrieveRequestsSummaryByRequester(username, search);
+            return Ok(requests);
+        }
     }
 }

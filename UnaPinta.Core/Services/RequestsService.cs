@@ -84,5 +84,12 @@ namespace UnaPinta.Core.Services
         public async Task<IEnumerable<StringDate>> RetrieveAllStringDates() =>
             await _requestRepository.SelectAllStringDates();
 
+        public async Task<IEnumerable<RequestSummaryDto>> RetrieveRequestsSummaryByRequester(string username, string name = null)
+        {
+            //TODO: Validar que el usuario exista
+            var requests = await _requestRepository.SelectRequestByRequester(username, name);
+            var requestsSummary = _mapper.Map<IEnumerable<RequestSummaryDto>>(requests);
+            return requestsSummary;
+        }
     }
 }
