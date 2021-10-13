@@ -163,5 +163,10 @@ namespace Una_Pinta.Controllers
             _httpContextAccessor.HttpContext.Session.SetString("requestDetails", JsonConvert.SerializeObject(resultParsed));
             return Json(new { code = (int)createCase.StatusCode, responseText = createCase.Content});
         }
+
+        public async Task<IActionResult> BloodRequestList()
+        {
+            return View();
+        }
     }
 }
