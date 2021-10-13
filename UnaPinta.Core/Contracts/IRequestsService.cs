@@ -14,6 +14,8 @@ namespace UnaPinta.Core.Contracts
         Task<IEnumerable<RequestSummaryDto>> RetrieveRequestsSummaryByDonor(string username);
         Task<IEnumerable<StringDate>> RetrieveAllStringDates();
         Task<IEnumerable<RequestSummaryDto>> RetrieveRequestsSummaryByRequester(string username, string name = null);
+        Task DeleteRequestById(long id, string ownerUserName);
+        Task<string> GetRequestStatus(Request request);
 
     }
 }

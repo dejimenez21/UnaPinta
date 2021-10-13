@@ -15,6 +15,7 @@ using UnaPinta.Dto.Models.Request;
 using UnaPinta.Core.Exceptions;
 using Microsoft.AspNetCore.Http;
 using UnaPinta.Core.Extensions;
+using UnaPinta.Dto.Enumerations;
 
 namespace UnaPinta.Core.Services
 {
@@ -26,10 +27,12 @@ namespace UnaPinta.Core.Services
         private readonly IMapper _mapper;
         private readonly IRequestNotificationService _requestNotificationService;
         private readonly IProvinceService _provinceService;
+        private readonly ICaseRepository _caseRepository;
+        private readonly IFileRepository _fileRepository;
 
         public RequestsService(IUnaPintaRepository repo, UserManager<User> userManager, 
             IRequestRepository requestRepository, IMapper mapper, IRequestNotificationService requestNotificationService,
-            IProvinceService provinceService)
+            IProvinceService provinceService, ICaseRepository caseRepository, IFileRepository fileRepository)
         {
             _repo = repo;
             _userManager = userManager;
@@ -37,6 +40,8 @@ namespace UnaPinta.Core.Services
             _mapper = mapper;
             _requestNotificationService = requestNotificationService;
             _provinceService = provinceService;
+            _caseRepository = caseRepository;
+            _fileRepository = fileRepository;
         }
 
         public async Task<Func<Task>> CreateRequest(RequestCreateDto inputRequest, string userName)
@@ -90,6 +95,53 @@ namespace UnaPinta.Core.Services
             var requests = await _requestRepository.SelectRequestByRequester(username, name);
             var requestsSummary = _mapper.Map<IEnumerable<RequestSummaryDto>>(requests);
             return requestsSummary;
+        }
+
+        public async Task DeleteRequestById(long id, string ownerUserName)
+        {
+            var request = await _requestRepository.SelectByIdAsync(id);
+            //TODO: Create custom exception
+            if (request == null || request.DeletedAt.HasValue) throw new BaseDomainException($"La solicitud con el id {id} no existe", 404);
+
+            var owner = await _userManager.FindByNameAsync(ownerUserName);
+            if(owner == null || request.RequesterId != owner.Id) throw new BaseDomainException($"No tiene permisos para eliminar esta solicitud", 403);
+
+            var cases = await _caseRepository.SelectCasesByRequestId(request.Id);
+            request.Cases = cases.ToList();
+
+            var requestStatus = await GetRequestStatus(request);
+            //TODO: Create custom exception
+            if(requestStatus != RequestStatusEnumeration.REGISTERED) throw new BaseDomainException($"La solicitud no puede ser eliminada", 400);
+
+            _requestRepository.Delete(request);
+            _caseRepository.DeleteRange(cases);
+            var file = await _fileRepository.SelectById(request.PrescriptionImageId);
+            _fileRepository.Delete(file);
+
+            await _requestRepository.SaveChangesAsync();
+        }
+
+        public async Task<string> GetRequestStatus(Request request)
+        {
+            //TODO: Evaluar eficiencia
+            long completedCasesAmt;
+
+            if(request.Cases == null)
+            {
+                completedCasesAmt = await _caseRepository.CountAsync(c => c.RequestId == request.Id && c.StatusId == CaseStatusEnum.Completado);
+            }
+            else
+            {
+                completedCasesAmt = request.Cases.Count(c => c.StatusId == CaseStatusEnum.Completado);
+            }
+                
+            if (completedCasesAmt == 0)
+                return RequestStatusEnumeration.REGISTERED;
+            else if (completedCasesAmt < request.Amount)
+                return RequestStatusEnumeration.IN_PROCESS;
+            else
+                return RequestStatusEnumeration.COMPLETED;
+
         }
     }
 }
