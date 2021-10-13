@@ -84,6 +84,5 @@ namespace UnaPinta.Api.Controllers
             await _service.DeleteRequestById(id, _tokenParams.UserName);
             return Ok();
         }
-
     }
 }

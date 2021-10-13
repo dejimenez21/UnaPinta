@@ -82,6 +82,10 @@ namespace UnaPinta.Core.Services
             var requests = await _requestRepository.SelectRequestsByDonor(donor);
 
             var requestsSummary = _mapper.Map<IEnumerable<RequestSummaryDto>>(requests);
+            foreach(var request in requestsSummary)
+            {
+                request.Status = await GetRequestStatus(requests.First(r => r.Id == request.Id));
+            }
 
             return requestsSummary;
         }
@@ -94,6 +98,10 @@ namespace UnaPinta.Core.Services
             //TODO: Validar que el usuario exista
             var requests = await _requestRepository.SelectRequestByRequester(username, name);
             var requestsSummary = _mapper.Map<IEnumerable<RequestSummaryDto>>(requests);
+            foreach (var request in requestsSummary)
+            {
+                request.Status = await GetRequestStatus(requests.First(r => r.Id == request.Id));
+            }
             return requestsSummary;
         }
 
