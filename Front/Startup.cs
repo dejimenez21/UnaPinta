@@ -60,7 +60,7 @@ namespace Una_Pinta
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=HomePage}/{action=HomePageView}/{id?}");
+                    pattern: "{controller=User}/{action=UserLoginPage}/{id?}");
             });
         }
     }

@@ -14,6 +14,7 @@ namespace Una_Pinta.Services
         Task<IRestResponse> PostCase(Cases cases, string token);
         Task<RequestDetails> GetRequestDetails(int id, string token);
         Task<List<RequestSummary>> GetRequestSummary(string token);
+        Task<List<RequestSummary>> GetRequestSummaryToDatatable(string token);
         Task<List<StringDate>> GetStringDates();
     }
 }

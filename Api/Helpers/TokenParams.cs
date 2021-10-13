@@ -17,7 +17,7 @@ namespace UnaPinta.Api.Helpers
         public TokenParams(IHttpContextAccessor httpContextAccessor)
         {
             var user = httpContextAccessor?.HttpContext?.User;
-            if (user == null) return;
+            if (!user.Claims.Any()) return;
 
             Name = user.FindFirst(p => p.Type == nameof(Name)).Value;
             UserName = user.FindFirst(p => p.Type == nameof(UserName)).Value;

@@ -166,6 +166,9 @@ namespace Una_Pinta.Controllers
 
         public async Task<IActionResult> BloodRequestList()
         {
+            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var resultContent = await _bloodRequestRepository.GetRequestSummaryToDatatable(getToken);
+            TempData["requestSummaryList"] = resultContent;
             return View();
         }
     }

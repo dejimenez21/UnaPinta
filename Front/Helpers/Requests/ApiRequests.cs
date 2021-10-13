@@ -14,6 +14,7 @@ namespace Una_Pinta.Helpers.Requests
         public static string GetProvinces = "api/provinces";
         public static string GetBloodComponent = "api/BloodComponent";
         public static string GetRequestSummary = "api/Requests/summary";
+        public static string GetRequestSummaryDataTable = "api/Requests/datatable";
         public static string GetStringDates = "api/Requests/stringDates";
         public static string CreateCase = "api/cases";
 
