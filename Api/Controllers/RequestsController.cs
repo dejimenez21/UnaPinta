@@ -76,5 +76,13 @@ namespace UnaPinta.Api.Controllers
             var requests = await _service.RetrieveRequestsSummaryByRequester(username, search);
             return Ok(requests);
         }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "solicitante")]
+        public async Task<ActionResult> DeleteRequest(long id)
+        {
+            await _service.DeleteRequestById(id, _tokenParams.UserName);
+            return Ok();
+        }
     }
 }
