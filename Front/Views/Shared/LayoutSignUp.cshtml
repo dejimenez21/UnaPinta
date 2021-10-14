@@ -50,25 +50,6 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarhome" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-           
-            <div class="col d-flex justify-content-end">
-                @if (!string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("userName")))
-                {
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Bienvenido @HttpContextAccessor.HttpContext.Session.GetString("userName")
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" asp-controller="User" asp-action="UserLoginPage">Cerrar sesión</a>
-                        </div>
-                    </div>
-                }
-                else
-                {
-                    <a class="btn btn-primary" asp-controller="User" asp-action="UserLoginPage">Salir de la aplicación</a>
-                }
-
-            </div>
         </nav>
     </header>
 
