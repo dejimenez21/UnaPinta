@@ -74,7 +74,7 @@ namespace UnaPinta.Data.Repositories
                 requestQuery = requestQuery.Where(r => r.Name.StartsWith(filter));
             }
 
-            return await requestQuery.ToListAsync();
+            return await requestQuery.Include(e => e.ProvinceNav).ToListAsync();
         }
     }
 }

@@ -35,11 +35,20 @@
                                 </div>
                                 <br />
                                 <div>
-                                    @Html.ActionLink("Registrarse", // <-- Link text
+                                    @Html.ActionLink("Registrarse como Solicitante", // <-- Link text
                                                     "UserRegisterPage", // <-- Action Method Name
                                                     "User", // <-- Controller Name
                                                      null, // <-- Route value
-                                                     new { @class = "btn-block btn btn-secondary" } // <-- htmlArguments
+                                                     new { @class = "btn-block btn btn-success" } // <-- htmlArguments
+                                                     )
+                                </div>
+                                <br />
+                                <div>
+                                    @Html.ActionLink("Registrarse como Donante", // <-- Link text
+                                                    "DonorRegisterPage", // <-- Action Method Name
+                                                    "Donor", // <-- Controller Name
+                                                     null, // <-- Route value
+                                                     new { @class = "btn-block btn btn-info" } // <-- htmlArguments
                                                      )
                                 </div>
                             </div>
