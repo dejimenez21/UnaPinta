@@ -8,5 +8,3 @@ VALUES
 	(6, 'AB-'),
 	(7, 'O+'),
 	(8, 'O-')
-
-SELECT * FROM BloodTypes
