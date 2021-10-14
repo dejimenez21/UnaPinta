@@ -151,5 +151,21 @@ namespace UnaPinta.Core.Services
                 return RequestStatusEnumeration.COMPLETED;
 
         }
+
+
+        public async Task<RequestCasesDto> RetrieveRequestWithCases(long id, string ownerUserName)
+        {
+            var request = await _requestRepository.SelectByIdAsync(id);
+            //TODO: Create custom exception
+            if (request == null || request.DeletedAt.HasValue) throw new BaseDomainException($"La solicitud con el id {id} no existe", 404);
+
+            var owner = await _userManager.FindByNameAsync(ownerUserName);
+            if (owner == null || request.RequesterId != owner.Id) throw new BaseDomainException($"No tiene permisos para eliminar esta solicitud", 403);
+
+            var requestCases = _mapper.Map<RequestCasesDto>(request);
+            requestCases.Status = await GetRequestStatus(request);
+
+            return requestCases;
+        }
     }
 }

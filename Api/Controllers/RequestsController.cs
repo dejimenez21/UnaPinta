@@ -84,5 +84,14 @@ namespace UnaPinta.Api.Controllers
             await _service.DeleteRequestById(id, _tokenParams.UserName);
             return Ok();
         }
+
+        [HttpGet("withCases/{id}")]
+        [Authorize(Roles = "solicitante")]
+        public async Task<ActionResult<RequestCasesDto>> GetRequestDetailsForRequester(long id)
+        {
+            var username = _tokenParams.UserName;
+            var requestCases = await _service.RetrieveRequestWithCases(id, username);
+            return Ok(requestCases);
+        }
     }
 }
