@@ -1,5 +1,11 @@
-﻿@{
+﻿@using UnaPinta.Dto.Models.Request
+@using UnaPinta.Dto.Models.Case
+@{
     Layout = "LayoutUnaPinta";
+    var requestDetail = TempData["requestDetail"] as RequestCasesDto;
+    var listCases = TempData["listCases"] as List<CaseForRequestDto>;
+    var base64 = Convert.ToBase64String(requestDetail.Request.Prescription);
+    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
 }
 
 <div class="container">
@@ -24,46 +30,46 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">Full Name</h6>
+                                <h6 class="mb-0">Nombre</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                Kenneth Valdez
+                                @requestDetail.Request.PatientName
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">Email</h6>
+                                <h6 class="mb-0">Teléfono</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                fip@jukmuh.al
+                                @requestDetail.Request.PatientPhone
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">Phone</h6>
+                                <h6 class="mb-0">Centro Médico</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                (239) 816-9029
+                                @requestDetail.Request.CenterName
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">Mobile</h6>
+                                <h6 class="mb-0">Dirección de Centro Médico</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                (320) 380-4539
+                                @requestDetail.Request.CenterAddress
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">Address</h6>
+                                <h6 class="mb-0">Receta Médica</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                Bay Area, San Francisco, CA
+                                <img src="@imgSrc" height="80" width="80" />
                             </div>
                         </div>
                         <hr>
@@ -90,295 +96,37 @@
             </div>
 
             <div class="card-body px-3 px-md-5">
-                <div class="row">
-                    <div class="col-lg-6 col-xl-4 col-md-6 col-sm-12">
-                        <div class="card card-default p-4">
-                            <a href="javascript:0" class="media text-secondary" data-toggle="modal" data-target="#modal-contact">
-                                <div class="media-body">
-                                    <h5 class="mt-0 mb-2 text-dark">Emma Smith</h5>
-                                    <ul class="list-unstyled text-smoke text-smoke">
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-map mr-1"></i>
-                                            <span>Nulla vel metus 15/178</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-email mr-1"></i>
-                                            <span>exmaple@email.com</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-phone mr-1"></i>
-                                            <span>(123) 888 777 632</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
+                
+                      <div class="row">
+                            @foreach (var item in listCases)
+                            {
+                                    <div class="col-lg-6 col-xl-4 col-md-6 col-sm-12">
+                                            <div class="card card-default p-4">
+                                                <div class="media-body">
+                                                    <h5 class="mt-0 mb-2 text-dark">@item.Donor.FullName</h5>
+                                                    <ul class="list-unstyled text-smoke text-smoke">
+                                                        <li class="d-flex">
+                                                            <i class="mdi mdi-map mr-1"></i>
+                                                            <span>@item.Donor.BloodType</span>
+                                                        </li>
+                                                        <li class="d-flex">
+                                                            <i class="mdi mdi-email mr-1"></i>
+                                                            <span>@item.Donor.Email</span>
+                                                        </li>
+                                                        <li class="d-flex">
+                                                            <i class="mdi mdi-phone mr-1"></i>
+                                                            <span>@item.Donor.PhoneNumber</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                @*<a href="javascript:0" class="media text-secondary" data-toggle="modal" data-target="#modal-contact">
 
-                    <div class="col-lg-6 col-xl-4 col-md-6 col-sm-12">
-                        <div class="card card-default p-4">
-                            <a href="javascript:0" class="media text-secondary" data-toggle="modal" data-target="#modal-contact">
-                                <div class="media-body">
-                                    <h5 class="mt-0 mb-2 text-dark">Emma Smith</h5>
-                                    <ul class="list-unstyled text-smoke">
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-map mr-1"></i>
-                                            <span>Nulla vel metus 15/178</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-email mr-1"></i>
-                                            <span>exmaple@email.com</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-phone mr-1"></i>
-                                            <span>(123) 888 777 632</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </a>
-                        </div>
+                </a>*@
+                                            </div>
+                                    </div>
+                             }
                     </div>
-
-                    <div class="col-lg-6 col-xl-4 col-md-6 col-sm-12">
-                        <div class="card card-default p-4">
-                            <a href="javascript:0" class="media text-secondary" data-toggle="modal" data-target="#modal-contact">
-                                <div class="media-body">
-                                    <h5 class="mt-0 mb-2 text-dark">Emma Smith</h5>
-                                    <ul class="list-unstyled text-smoke">
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-map mr-1"></i>
-                                            <span>Nulla vel metus 15/178</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-email mr-1"></i>
-                                            <span>exmaple@email.com</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-phone mr-1"></i>
-                                            <span>(123) 888 777 632</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 col-xl-4 col-md-6 col-sm-12">
-                        <div class="card card-default p-4">
-                            <a href="javascript:0" class="media text-secondary" data-toggle="modal" data-target="#modal-contact">
-                                <div class="media-body">
-                                    <h5 class="mt-0 mb-2 text-dark">Emma Smith</h5>
-                                    <ul class="list-unstyled text-smoke">
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-map mr-1"></i>
-                                            <span>Nulla vel metus 15/178</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-email mr-1"></i>
-                                            <span>exmaple@email.com</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-phone mr-1"></i>
-                                            <span>(123) 888 777 632</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 col-xl-4 col-md-6 col-sm-12">
-                        <div class="card card-default p-4">
-                            <a href="javascript:0" class="media text-secondary" data-toggle="modal" data-target="#modal-contact">
-                                <div class="media-body">
-                                    <h5 class="mt-0 mb-2 text-dark">Emma Smith</h5>
-                                    <ul class="list-unstyled text-smoke">
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-map mr-1"></i>
-                                            <span>Nulla vel metus 15/178</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-email mr-1"></i>
-                                            <span>exmaple@email.com</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-phone mr-1"></i>
-                                            <span>(123) 888 777 632</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 col-xl-4 col-md-6 col-sm-12">
-                        <div class="card card-default p-4">
-                            <a href="javascript:0" class="media text-secondary" data-toggle="modal" data-target="#modal-contact">
-                                <div class="media-body">
-                                    <h5 class="mt-0 mb-2 text-dark">Emma Smith</h5>
-                                    <ul class="list-unstyled text-smoke">
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-map mr-1"></i>
-                                            <span>Nulla vel metus 15/178</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-email mr-1"></i>
-                                            <span>exmaple@email.com</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-phone mr-1"></i>
-                                            <span>(123) 888 777 632</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 col-xl-4 col-md-6 col-sm-12">
-                        <div class="card card-default p-4">
-                            <a href="javascript:0" class="media text-secondary" data-toggle="modal" data-target="#modal-contact">
-                                <div class="media-body">
-                                    <h5 class="mt-0 mb-2 text-dark">Emma Smith</h5>
-                                    <ul class="list-unstyled text-smoke">
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-map mr-1"></i>
-                                            <span>Nulla vel metus 15/178</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-email mr-1"></i>
-                                            <span>exmaple@email.com</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-phone mr-1"></i>
-                                            <span>(123) 888 777 632</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 col-xl-4 col-md-6 col-sm-12">
-                        <div class="card card-default p-4">
-                            <a href="javascript:0" class="media text-secondary" data-toggle="modal" data-target="#modal-contact">
-                                <div class="media-body">
-                                    <h5 class="mt-0 mb-2 text-dark">Emma Smith</h5>
-                                    <ul class="list-unstyled text-smoke">
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-map mr-1"></i>
-                                            <span>Nulla vel metus 15/178</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-email mr-1"></i>
-                                            <span>exmaple@email.com</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-phone mr-1"></i>
-                                            <span>(123) 888 777 632</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 col-xl-4 col-md-6 col-sm-12">
-                        <div class="card card-default p-4">
-                            <a href="javascript:0" class="media text-secondary" data-toggle="modal" data-target="#modal-contact">
-                                <div class="media-body">
-                                    <h5 class="mt-0 mb-2 text-dark">Emma Smith</h5>
-                                    <ul class="list-unstyled text-smoke">
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-map mr-1"></i>
-                                            <span>Nulla vel metus 15/178</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-email mr-1"></i>
-                                            <span>exmaple@email.com</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-phone mr-1"></i>
-                                            <span>(123) 888 777 632</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 col-xl-4 col-md-6 col-sm-12">
-                        <div class="card card-default p-4">
-                            <a href="javascript:0" class="media text-secondary" data-toggle="modal" data-target="#modal-contact">
-                                <div class="media-body">
-                                    <h5 class="mt-0 mb-2 text-dark">Emma Smith</h5>
-                                    <ul class="list-unstyled text-smoke">
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-map mr-1"></i>
-                                            <span>Nulla vel metus 15/178</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-email mr-1"></i>
-                                            <span>exmaple@email.com</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-phone mr-1"></i>
-                                            <span>(123) 888 777 632</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 col-xl-4 col-md-6 col-sm-12">
-                        <div class="card card-default p-4">
-                            <a href="javascript:0" class="media text-secondary" data-toggle="modal" data-target="#modal-contact">
-                                <div class="media-body">
-                                    <h5 class="mt-0 mb-2 text-dark">Emma Smith</h5>
-                                    <ul class="list-unstyled text-smoke">
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-map mr-1"></i>
-                                            <span>Nulla vel metus 15/178</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-email mr-1"></i>
-                                            <span>exmaple@email.com</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-phone mr-1"></i>
-                                            <span>(123) 888 777 632</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 col-xl-4 col-md-6 col-sm-12">
-                        <div class="card card-default p-4">
-                            <a href="javascript:0" class="media text-secondary" data-toggle="modal" data-target="#modal-contact">
-                                <div class="media-body">
-                                    <h5 class="mt-0 mb-2 text-dark">Emma Smith</h5>
-                                    <ul class="list-unstyled text-smoke">
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-map mr-1"></i>
-                                            <span>Nulla vel metus 15/178</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-email mr-1"></i>
-                                            <span>exmaple@email.com</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-phone mr-1"></i>
-                                            <span>(123) 888 777 632</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
 

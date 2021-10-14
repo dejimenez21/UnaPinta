@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Una_Pinta.Models;
 using UnaPinta.Dto.Models;
+using UnaPinta.Dto.Models.Request;
 
 namespace Una_Pinta.Services
 {
@@ -15,6 +16,7 @@ namespace Una_Pinta.Services
         Task<RequestDetails> GetRequestDetails(int id, string token);
         Task<List<RequestSummary>> GetRequestSummary(string token);
         Task<List<RequestSummary>> GetRequestSummaryToDatatable(string token);
+        Task<RequestCasesDto> GetRequestsWithDonors(string token, int id);
         Task<List<StringDate>> GetStringDates();
     }
 }

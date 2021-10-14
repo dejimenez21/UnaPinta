@@ -18,6 +18,8 @@ namespace Una_Pinta.Helpers.Requests
         public static string GetStringDates = "api/Requests/stringDates";
         public static string CreateCase = "api/cases";
 
+        public static string GetCasesWithDonors(int id) => $"api/Requests/withCases/{id}";
+
         public static string ConfirmEmail(string id, string token) => $"api/auth/confirmemail?userid={id}&token={token}";
 
         public static string GetBloodTypesPossibles(int idBlood) => $"api/BloodTypes/compatible/{idBlood}";

@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Una_Pinta.Helpers.Requests;
 using Una_Pinta.Models;
 using UnaPinta.Dto.Models;
+using UnaPinta.Dto.Models.Request;
 
 namespace Una_Pinta.Services
 {
@@ -157,6 +158,27 @@ namespace Una_Pinta.Services
                 request.AddHeader("Cache-Control", "no-cache");
                 var response = client.ExecuteAsync(request).Result.Content;
                 var content = JsonConvert.DeserializeObject<List<RequestSummary>>(response);
+                return Task.FromResult(content);
+            }
+            catch (WebException ex)
+            {
+                Debug.WriteLine(ex.Response);
+                return null;
+            }
+        }
+
+        public Task<RequestCasesDto> GetRequestsWithDonors(string token, int id)
+        {
+            try
+            {
+                var client = new RestClient(ApiRequests.HostUrl);
+                client.Authenticator = new JwtAuthenticator(token);
+                var request = new RestRequest(ApiRequests.GetCasesWithDonors(id), Method.GET);
+                request.RequestFormat = DataFormat.Json;
+                request.AddHeader("Content-Type", "application/json");
+                request.AddHeader("Cache-Control", "no-cache");
+                var response = client.ExecuteAsync(request).Result.Content;
+                var content = JsonConvert.DeserializeObject<RequestCasesDto>(response);
                 return Task.FromResult(content);
             }
             catch (WebException ex)
