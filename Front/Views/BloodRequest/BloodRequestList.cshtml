@@ -18,6 +18,7 @@
                     <th>Tiempo de respuesta</th>
                     <th>Provincia</th>
                     <th>Estado</th>
+                    <th>Más detalles</th>
                 </tr>
             </thead>
         </table>
@@ -48,10 +49,11 @@
             { "data": "createdAt", "name": "Fecha de creación", "autoWidth": true },
             { "data": "responseDueDate", "name": "Tiempo de respuesta", "autoWidth": true },
             { "data": "province", "name": "Provincia", "autoWidth": true },
-            { "data": "status", "name": "Estado", "autoWidth": true }
-            //{
-            //    "render": function (data, row) { return "<a href='#' class='btn btn-danger' onclick=DeleteCustomer('" + row.id + "'); >Delete</a>"; }
-            //},
+            { "data": "status", "name": "Estado", "autoWidth": true },
+            {
+                "render": function (data, type, full, meta)
+                { return '<a class="btn btn-info" href="/BloodRequest/BloodRequestSummaryDetails/' + full.id + '">Más detalles</a>'; }
+            },
         ]
     });
 </script>  

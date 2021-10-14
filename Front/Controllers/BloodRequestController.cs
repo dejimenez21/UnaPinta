@@ -93,8 +93,6 @@ namespace Una_Pinta.Controllers
 
         public async Task<IActionResult> BloodRequestDetail()
         {
-            //var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
-            //var result = await _bloodRequestRepository.GetRequestDetails(id, getToken);
             var request = _httpContextAccessor.HttpContext.Session.GetString("requestDetails");
             var result = JsonConvert.DeserializeObject<RequestDetails>(request);
             TempData["resultRequest"] = result;
@@ -203,6 +201,11 @@ namespace Una_Pinta.Controllers
             {
                 throw;
             }
+        }
+
+        public async Task<IActionResult> BloodRequestSummaryDetails(int id)
+        {
+            return View();
         }
     }
 }
