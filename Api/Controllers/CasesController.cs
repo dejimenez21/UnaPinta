@@ -33,5 +33,14 @@ namespace UnaPinta.Api.Controllers
             var caseDetails = await _caseService.CreateCase(createCaseDto, userName);
             return Created($"api/cases/{caseDetails.Id}", caseDetails); 
         }
+
+        [HttpPut("complete/{id}")]
+        [Authorize(Roles ="solicitante")]
+        public async Task<ActionResult<CaseForRequestDto>> MarkAsCompleted(long id)
+        {
+            var username = _tokenParams.UserName;
+            var completedCase = await _caseService.MarkCaseAsCompleted(id, username);
+            return Ok(completedCase);
+        }
     }
 }
