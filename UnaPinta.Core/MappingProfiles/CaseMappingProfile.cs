@@ -33,6 +33,16 @@ namespace UnaPinta.Core.MappingProfiles
 
                 return dto;
             });
+            CreateMap<Case, CaseForRequestDto>().ConvertUsing((entity, dto, cfg) =>
+            {
+                if (dto == null) dto = new CaseForRequestDto();
+                dto.Id = entity.Id;
+                dto.CreatedAt = entity.CreatedAt;
+                dto.Status = entity.StatusNav.Description;
+                dto.Donor = cfg.Mapper.Map<DonorInfoDto>(entity.DonorNav);
+
+                return dto;
+            });
             #endregion
         }
     }

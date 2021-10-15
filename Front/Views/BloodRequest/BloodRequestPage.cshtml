@@ -175,9 +175,11 @@
                     title: "Correcto",
                     text: "Solicitud creada correctamente",
                     icon: "success",
-                    showCancelButton: true,
-                    closeOnConfirm: true,
-                    closeOnCancel: true
+                    closeOnConfirm: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/BloodRequest/BloodRequestSummaryDetails/';
+                    }
                 });
                 $("#createRequest").reset();
                 dropdown.empty();

@@ -14,6 +14,7 @@ namespace Una_Pinta.Models
         public string CenterName { get; set; }
         public string CenterAddress { get; set; }
         public string ResponseDueDate { get; set; }
+        public string Status { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

@@ -48,11 +48,9 @@ namespace UnaPinta.Api.Controllers
             foreach (var item in EntityWaitList.Where(x=>x.ConditionId!=ConditionEnum.SinCondicion))
             {
                 item.UserId = userId;
-                System.Console.WriteLine(item.ConditionId);
-                System.Console.WriteLine(item.UserId);
                 var months = waitList.Conditions.Single(x=>x.ConditionId==item.ConditionId).Months;
                 if (months == null) months = 0;
-                item.AvailableAt = await _services.CalculateAvailableAtDate(item, (int)months);
+                item.AvailableAt = await _services.CalculateAvailableAtDate(item.ConditionId, (int)months);
                 _repo.AddWaitListItem(item);
             }
             //EntityItem.AvailableAt = await _services.CalculateAvailableAtDate(EntityItem, item.Months);

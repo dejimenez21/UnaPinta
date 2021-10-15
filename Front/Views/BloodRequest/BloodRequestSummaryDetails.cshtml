@@ -1,0 +1,232 @@
+﻿@using UnaPinta.Dto.Models.Request
+@using UnaPinta.Dto.Models.Case
+@using UnaPinta.Dto.Enumerations
+@{
+    Layout = "LayoutUnaPinta";
+    var requestDetail = TempData["requestDetail"] as RequestCasesDto;
+    var listCases = TempData["listCases"] as List<CaseForRequestDto>;
+    var base64 = Convert.ToBase64String(requestDetail.Request.Prescription);
+    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+}
+
+<div class="container">
+    <div class="main-body">
+        <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+                <div class="card card-default">
+                    <div class="card-header align-items-center px-3 px-md-5">
+                        <h2>Estado</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                            <lottie-player src="https://assets9.lottiefiles.com/packages/lf20_ej9qnvlt/Pediatra.json" background="transparent" speed="1" style="width: 300px; height: 300px;" autoplay></lottie-player>
+                        </div>
+                        <div>
+                            @requestDetail.Status
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Nombre</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                @requestDetail.Request.PatientName
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Teléfono</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                @requestDetail.Request.PatientPhone
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Centro Médico</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                @requestDetail.Request.CenterName
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Dirección de Centro Médico</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                @requestDetail.Request.CenterAddress
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Receta Médica</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <img src="@imgSrc" height="100" width="100" />
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Cantidad solicitada</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <span>@requestDetail.Amount</span> Pintas
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                @switch (requestDetail.Status)
+                                {
+                                    case RequestStatusEnumeration.IN_PROCESS:
+                                        <button id="completeButton" onclick="completeRequest(@requestDetail.Request.Id, @requestDetail.Amount, @requestDetail.Cases.Count(elem => elem.Status == "Finalizado"))" class="btn btn-primary" type="submit">Marcar como completado</button>
+                                        break;
+
+                                    case RequestStatusEnumeration.REGISTERED:
+                                        <button id="cancelButton" class="btn btn-danger" href="#">Eliminar</button>
+                                        break;
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css" integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc=" crossorigin="anonymous" />
+<div class="container">
+    <div class="content contact-list">
+        <div class="card card-default">
+            <div class="card-header align-items-center px-3 px-md-5">
+                <h2>Donantes asociados a esta solicitud</h2>
+            </div>
+
+            <div class="card-body px-3 px-md-5">
+
+                <div class="row">
+                    @foreach (var item in listCases)
+                    {
+                        @if (item.Status != "Cancelado")
+                        {
+                            <div class="col-lg-6 col-xl-4 col-md-6 col-sm-12">
+                                <div class="card card-default p-4">
+                                    <div class="media-body">
+                                        <h5 class="mt-0 mb-2 text-dark">@item.Donor.FullName</h5>
+                                        <ul class="list-unstyled text-smoke text-smoke">
+                                            <li class="d-flex">
+                                                <i class="mdi mdi-map mr-1"></i>
+                                                <span>@item.Donor.BloodType</span>
+                                            </li>
+                                            <li class="d-flex">
+                                                <i class="mdi mdi-email mr-1"></i>
+                                                <span>@item.Donor.Email</span>
+                                            </li>
+                                            <li class="d-flex">
+                                                <i class="mdi mdi-phone mr-1"></i>
+                                                <span>@item.Donor.PhoneNumber</span>
+                                            </li>
+                                        </ul>
+                                        <div class="text-center">
+                                            <p class="text-secondary mb-1">Caso de donacion se encuentra en estado <span id="statusTag" style="font-weight:bold;">@item.Status</span></p>
+                                        </div>
+                                        <div class="float-right">
+                                            @if (item.Status != "Finalizado")
+                                            {
+                                                <button onclick="cancelCase(@item.Id)" class="btn btn-danger">Cancelar</button>
+                                                <button onclick="completeCase(@item.Id)" class="btn btn-success">Completado</button>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function completeCase(id) {
+        var url = "/BloodRequest/CompleteCase/" + id;
+        $.post(url, function (response) {
+            Swal.fire({
+                title: 'Información',
+                text: "¿Está seguro que desea completar este caso?",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#38b000',
+                cancelButtonColor: '#c1121f',
+                confirmButtonText: 'Si',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.post(url, function (response) {
+                        if (response.statusCode == 200) {
+                            location.reload();
+                        }
+                    });
+                }
+            });
+        });
+    }
+
+    function cancelCase(id) {
+        var url = "/BloodRequest/CancelCase/" + id;
+        Swal.fire({
+            title: 'Información',
+            text: "¿Está seguro que desea cancelar este caso? Una vez cancelado no podrá acceder a la información del donante",
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#38b000',
+            cancelButtonColor: '#c1121f',
+            confirmButtonText: 'Si',
+            cancelButtonText: 'No'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.post(url, function (response) {
+                    if (response.statusCode == 200) {
+                        location.reload();   
+                    }
+                });
+            }
+        });
+    }
+
+    function completeRequest(id, amount, finished) {
+        var url = "/BloodRequest/CompleteRequest/" + id;
+        Swal.fire({
+            title: 'Información',
+            text: "Solamente se han donado " + finished + " pintas de las " + amount + " solicitadas. ¿Está seguro que desea marcar la solicitud como completada? Al hacerlo se dejara de dar seguimiento a la misma.",
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#38b000',
+            cancelButtonColor: '#c1121f',
+            confirmButtonText: 'Si',
+            cancelButtonText: 'No'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.post(url, function (response) {
+                    if (response.statusCode == 200) {
+                        location.reload();
+                    }
+                });
+            }
+        });
+    }
+</script>

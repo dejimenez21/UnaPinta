@@ -17,6 +17,12 @@ namespace UnaPinta.Data.Repositories
         {
             _dBContext = dBContext;
         }
+
+        public void Delete(File file)
+        {
+            _dBContext.Files.Remove(file);
+        }
+
         public async Task<File> SelectById(long id)
         {
             return await _dBContext.Files.SingleOrDefaultAsync(f => f.Id == id);

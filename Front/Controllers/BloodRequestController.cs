@@ -13,6 +13,8 @@ using Una_Pinta.Models;
 using System.IO;
 using System;
 using Microsoft.AspNetCore.Hosting;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace Una_Pinta.Controllers
 {
@@ -22,7 +24,6 @@ namespace Una_Pinta.Controllers
         readonly IBloodRequestRepository _bloodRequestRepository;
         readonly IHttpContextAccessor _httpContextAccessor;
         readonly IProvincesRepository _provincesRepository;
-        readonly IHostingEnvironment _hostingEnvironment;
         readonly Utilities _utilities;
         public List<RequestSummary> RequestSummaries;
         public BloodRequestController(IBloodTypesRepository bloodTypesRepository, IBloodRequestRepository bloodRequestRepository, IHttpContextAccessor httpContextAccessor, IProvincesRepository provincesRepository, IHostingEnvironment hostingEnvironment)
@@ -31,7 +32,6 @@ namespace Una_Pinta.Controllers
             _bloodRequestRepository = bloodRequestRepository;
             _httpContextAccessor = httpContextAccessor;
             _provincesRepository = provincesRepository;
-            _hostingEnvironment = hostingEnvironment;
             _utilities = new Utilities(httpContextAccessor);
             RequestSummaries = new List<RequestSummary>();
         }
@@ -93,8 +93,8 @@ namespace Una_Pinta.Controllers
 
         public async Task<IActionResult> BloodRequestDetail()
         {
-            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
-            var result = await _bloodRequestRepository.GetRequestDetails(12, getToken);
+            var request = _httpContextAccessor.HttpContext.Session.GetString("requestDetails");
+            var result = JsonConvert.DeserializeObject<RequestDetails>(request);
             TempData["resultRequest"] = result;
             return View();
         }
@@ -142,6 +142,98 @@ namespace Una_Pinta.Controllers
             }
             var dates = selectList.Select(elem => new { code = elem.Value, name = elem.Text });
             return Json(new { content = dates });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostCases(int id)
+        {
+            //TODO: Improve this code
+            Cases cases = new Cases();
+            cases.RequestId = id;
+
+            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var createCase = await _bloodRequestRepository.PostCase(cases, getToken);
+
+            var jsonContentResult = createCase.Content;
+            var jo = JObject.Parse(jsonContentResult);
+            var resultContent = jo["request"];
+            var resultParsed = resultContent.ToObject<RequestDetails>();
+            _httpContextAccessor.HttpContext.Session.SetString("requestDetails", JsonConvert.SerializeObject(resultParsed));
+            return Json(new { code = (int)createCase.StatusCode, responseText = createCase.Content});
+        }
+
+        public async Task<IActionResult> BloodRequestList()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetSummariesRequests()
+        {
+            try
+            {
+                var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+                var resultContent = await _bloodRequestRepository.GetRequestSummaryToDatatable(getToken);
+                var draw = Request.Form["draw"].FirstOrDefault();
+                var start = Request.Form["start"].FirstOrDefault();
+                var length = Request.Form["length"].FirstOrDefault();
+                var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
+                var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
+                var searchValue = Request.Form["search[value]"].FirstOrDefault();
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+                int skip = start != null ? Convert.ToInt32(start) : 0;
+                int recordsTotal = 0;
+                var customerData = resultContent;
+                //if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
+                //{
+                //    customerData = customerData.OrderBy(sortColumn + " " + sortColumnDirection);
+                //}
+                if (!string.IsNullOrEmpty(searchValue))
+                {
+                    customerData = customerData.Where(m => m.Name.Contains(searchValue)).ToList();
+                }
+                recordsTotal = customerData.Count();
+                var data = customerData.Skip(skip).Take(pageSize).ToList();
+                var jsonData = new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data };
+                return Ok(jsonData);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task<IActionResult> BloodRequestSummaryDetails(int id)
+        {
+            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var resultContent = await _bloodRequestRepository.GetRequestsWithDonors(getToken, id);
+            TempData["requestDetail"] = resultContent;
+            TempData["listCases"] = resultContent.Cases.ToList();
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CompleteCase(int id)
+        {
+            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var resultContent = await _bloodRequestRepository.PostCaseComplete(id, getToken);
+            return Json(new { content = resultContent.Content, statusCode = resultContent.StatusCode });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CancelCase(int id)
+        {
+            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var resultContent = await _bloodRequestRepository.PostCaseCanceled(id, getToken);
+            return Json(new { content = resultContent.Content, statusCode = resultContent.StatusCode });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CompleteRequest(int id)
+        {
+            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var resultContent = await _bloodRequestRepository.PostRequestCompleted(id, getToken);
+            return Json(new { content = resultContent.Content, statusCode = resultContent.StatusCode });
         }
     }
 }

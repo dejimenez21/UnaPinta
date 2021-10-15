@@ -1,4 +1,7 @@
 ﻿@model Una_Pinta.Models.UserSignUp
+@{ 
+    Layout = "LayoutSignUp";
+}
 <div class="container">
     <div class="text-center">
         <p style="font-family: 'Roboto', sans-serif; font-size:30px; font-weight:bold">Inicio de Sesión</p>
@@ -35,11 +38,20 @@
                                 </div>
                                 <br />
                                 <div>
-                                    @Html.ActionLink("Registrarse", // <-- Link text
+                                    @Html.ActionLink("Registrarse como Solicitante", // <-- Link text
                                                     "UserRegisterPage", // <-- Action Method Name
                                                     "User", // <-- Controller Name
                                                      null, // <-- Route value
-                                                     new { @class = "btn-block btn btn-secondary" } // <-- htmlArguments
+                                                     new { @class = "btn-block btn btn-success" } // <-- htmlArguments
+                                                     )
+                                </div>
+                                <br />
+                                <div>
+                                    @Html.ActionLink("Registrarse como Donante", // <-- Link text
+                                                    "DonorRegisterPage", // <-- Action Method Name
+                                                    "Donor", // <-- Controller Name
+                                                     null, // <-- Route value
+                                                     new { @class = "btn-block btn btn-info" } // <-- htmlArguments
                                                      )
                                 </div>
                             </div>
@@ -67,7 +79,7 @@
                 window.location.href = "/BloodRequest/BloodRequestDetailsCollection"
             }
             else if (response.roleUser == 2) {
-                window.location.href = "/BloodRequest/BloodRequestPage"
+                window.location.href = "/BloodRequest/BloodRequestList"
                 window.localStorage.setItem("bloodTypeUser", response.blood);
                 window.localStorage.setItem("tokenSession", response.token);
                 window.localStorage.setItem("nameofuser", response.nameOfUser);

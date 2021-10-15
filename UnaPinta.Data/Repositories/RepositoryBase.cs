@@ -7,11 +7,12 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using UnaPinta.Data.Contracts;
+using UnaPinta.Data.Entities;
 using UnaPinta.Data.Extensions;
-
+//OJASO: REVISAR ASUNTO DE LAZY LOADING Y ASNOTRACKING
 namespace UnaPinta.Data.Repositories
 {
-    public abstract class RepositoryBase<TEntity, TKey> : IRepositoryBase<TEntity, TKey> where TEntity : class
+    public abstract class RepositoryBase<TEntity, TKey> : IRepositoryBase<TEntity, TKey> where TEntity : BaseEntity<TKey>
     {
         protected readonly UnaPintaDBContext _dbContext;
         protected DbSet<TEntity> dbSet => _dbContext.Set<TEntity>();
@@ -40,13 +41,13 @@ namespace UnaPinta.Data.Repositories
 
         #region Retrieve
         #region Querys
-        public virtual IQueryable<TEntity> QueryAll(bool trackChanges=false) => 
-            !trackChanges ? dbSet.AsNoTracking() : dbSet;
+        public virtual IQueryable<TEntity> QueryAll(bool trackChanges=true) => 
+            !trackChanges ? dbSet.Where(e => !e.DeletedAt.HasValue).AsNoTracking() : dbSet.Where(e => !e.DeletedAt.HasValue);
 
         public virtual IQueryable<TEntity> QueryByCondition(Expression<Func<TEntity, bool>> where,
-            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null, bool trackChanges=false)
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null, bool trackChanges=true)
         {
-            var query = dbSet.IncludeMany(includes);
+            var query = dbSet.IncludeMany(includes).Where(e => !e.DeletedAt.HasValue);
             if (where != null) query = query.Where(where);
 
             return !trackChanges ?
@@ -58,7 +59,7 @@ namespace UnaPinta.Data.Repositories
         public async Task<TEntity> SelectByIdAsync(TKey id) => await dbSet.FindAsync(id);
 
         public async Task<TEntity> SelectOneAsync(Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, 
-            IIncludableQueryable<TEntity, object>> includes = null, bool trackChanges = false)
+            IIncludableQueryable<TEntity, object>> includes = null, bool trackChanges = true)
         {
             var query = QueryByCondition(where, includes, trackChanges);
             return await query.FirstOrDefaultAsync();
@@ -69,9 +70,10 @@ namespace UnaPinta.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<TEntity>> SelectAsync(Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null, bool trackChanges = false)
+        public async Task<IEnumerable<TEntity>> SelectAsync(Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null, bool trackChanges = true)
         {
-            throw new NotImplementedException();
+            var query = QueryByCondition(where, includes, trackChanges);
+            return await query.ToListAsync();
         }
         #endregion
 
@@ -98,9 +100,17 @@ namespace UnaPinta.Data.Repositories
         }
         #endregion
 
-        public Task<long> CountAsync(Expression<Func<TEntity, bool>> where) => dbSet.LongCountAsync(where);
+        public Task<long> CountAsync(Expression<Func<TEntity, bool>> where) 
+        {
+            var active = dbSet.Where(e => !e.DeletedAt.HasValue);
+            return active.LongCountAsync(where);
+        }
 
-        public Task<long> CountAsync() => dbSet.LongCountAsync();
+        public Task<long> CountAsync()
+        {
+            var active = dbSet.Where(e => !e.DeletedAt.HasValue);
+            return active.LongCountAsync();
+        }
 
         public Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> where) => dbSet.AnyAsync(where);
     }

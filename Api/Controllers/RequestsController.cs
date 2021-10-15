@@ -7,6 +7,7 @@ using UnaPinta.Core.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using UnaPinta.Dto.Models.Request;
+using UnaPinta.Api.Helpers;
 
 namespace UnaPinta.Api.Controllers
 {
@@ -15,13 +16,13 @@ namespace UnaPinta.Api.Controllers
     
     public class RequestsController : ControllerBase
     {
-        private readonly IMapper _mapper;
         private readonly IRequestsService _service;
+        private readonly ITokenParams _tokenParams;
 
-        public RequestsController(IMapper mapper, IRequestsService service)
+        public RequestsController(IRequestsService service, ITokenParams tokenParams)
         {
-            _mapper = mapper;
             _service = service;
+            _tokenParams = tokenParams;
         }
 
         [HttpPost("")]
@@ -47,7 +48,7 @@ namespace UnaPinta.Api.Controllers
         [Authorize(Roles = "donante")]
         public async Task<ActionResult<IEnumerable<RequestSummaryDto>>> GetRequestsSummary()
         {
-            var username = HttpContext.User.FindFirst("UserName").Value;
+            var username = _tokenParams.UserName;
             var requestsSummary = await _service.RetrieveRequestsSummaryByDonor(username);
             return Ok(requestsSummary);
         }
@@ -55,5 +56,40 @@ namespace UnaPinta.Api.Controllers
         [HttpGet("stringDates")]
         public async Task<ActionResult<IEnumerable<StringDate>>> GetStringDates() =>
             Ok(await _service.RetrieveAllStringDates());
+
+        [HttpGet("datatable")]
+        [Authorize(Roles ="solicitante")]
+        public async Task<ActionResult<IEnumerable<RequestSummaryDto>>> GetRequestsForDatatable([FromQuery]string search = null)
+        {
+            var username = _tokenParams.UserName;
+            var requests = await _service.RetrieveRequestsSummaryByRequester(username, search);
+            return Ok(requests);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "solicitante")]
+        public async Task<ActionResult> DeleteRequest(long id)
+        {
+            await _service.DeleteRequestById(id, _tokenParams.UserName);
+            return Ok();
+        }
+
+        [HttpGet("withCases/{id}")]
+        [Authorize(Roles = "solicitante")]
+        public async Task<ActionResult<RequestCasesDto>> GetRequestDetailsForRequester(long id)
+        {
+            var username = _tokenParams.UserName;
+            var requestCases = await _service.RetrieveRequestWithCases(id, username);
+            return Ok(requestCases);
+        }
+
+        [HttpPut("markAsCompleted/{id}")]
+        [Authorize(Roles = "solicitante")]
+        public async Task<ActionResult> MarkAsCompleted(long id)
+        {
+            var username = _tokenParams.UserName;
+            await _service.MarkRequestAsCompleted(id, username);
+            return Ok();
+        }
     }
 }

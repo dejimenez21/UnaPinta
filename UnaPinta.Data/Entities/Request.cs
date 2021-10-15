@@ -43,7 +43,7 @@ namespace UnaPinta.Data.Entities
         public virtual Province ProvinceNav { get; set; }
         [ForeignKey("PrescriptionImageId")]
         public virtual File Prescription { get; set; }
-        public ICollection<RequestPossibleBloodTypes> PossibleBloodTypes { get; set; }
-        public ICollection<Case> Cases { get; set; }
+        public virtual ICollection<RequestPossibleBloodTypes> PossibleBloodTypes { get; set; }
+        public virtual ICollection<Case> Cases { get; set; }
     }
 }
