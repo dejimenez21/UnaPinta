@@ -7,6 +7,7 @@ using UnaPinta.Core.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using UnaPinta.Dto.Models.Request;
+using UnaPinta.Api.Helpers;
 
 namespace UnaPinta.Api.Controllers
 {
@@ -15,13 +16,13 @@ namespace UnaPinta.Api.Controllers
     
     public class RequestsController : ControllerBase
     {
-        private readonly IMapper _mapper;
         private readonly IRequestsService _service;
+        private readonly ITokenParams _tokenParams;
 
-        public RequestsController(IMapper mapper, IRequestsService service)
+        public RequestsController(IRequestsService service, ITokenParams tokenParams)
         {
-            _mapper = mapper;
             _service = service;
+            _tokenParams = tokenParams;
         }
 
         [HttpPost("")]
@@ -56,7 +57,7 @@ namespace UnaPinta.Api.Controllers
         [Authorize(Roles = "donante")]
         public async Task<ActionResult<IEnumerable<RequestSummaryDto>>> GetRequestsSummary()
         {
-            var username = HttpContext.User.FindFirst("UserName").Value;
+            var username = _tokenParams.UserName;
             var requestsSummary = await _service.RetrieveRequestsSummaryByDonor(username);
             return Ok(requestsSummary);
         }
