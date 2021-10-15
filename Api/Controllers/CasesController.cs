@@ -42,5 +42,14 @@ namespace UnaPinta.Api.Controllers
             var completedCase = await _caseService.MarkCaseAsCompleted(id, username);
             return Ok(completedCase);
         }
+
+        [HttpPut("cancel/{id}")]
+        [Authorize(Roles = "solicitante")]
+        public async Task<ActionResult<CaseForRequestDto>> Cancel(long id)
+        {
+            var username = _tokenParams.UserName;
+            await _caseService.CancelCase(id, username);
+            return Ok();
+        }
     }
 }
