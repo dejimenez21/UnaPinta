@@ -12,5 +12,6 @@ namespace UnaPinta.Dto.Models.Request
         public RequestDetailsDto Request { get; set; }
         public IEnumerable<CaseForRequestDto> Cases { get; set; }
         public string Status { get; set; }
+        public double Amount { get; set; }
     }
 }
