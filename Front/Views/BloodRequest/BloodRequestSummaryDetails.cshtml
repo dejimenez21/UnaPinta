@@ -19,9 +19,6 @@
                     <div class="card-body">
                         <div class="d-flex flex-column align-items-center text-center">
                             <lottie-player src="https://assets9.lottiefiles.com/packages/lf20_ej9qnvlt/Pediatra.json" background="transparent" speed="1" style="width: 300px; height: 300px;" autoplay></lottie-player>
-                            <div class="mt-3">
-                                <p class="text-secondary mb-1">Este caso de donacion se encuentra en estado <span id="statusTag" style="font-weight:bold;">@listCases.First().Status</span></p>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -101,27 +98,40 @@
                 <div class="row">
                     @foreach (var item in listCases)
                     {
-                        <div class="col-lg-6 col-xl-4 col-md-6 col-sm-12">
-                            <div class="card card-default p-4">
-                                <div class="media-body">
-                                    <h5 class="mt-0 mb-2 text-dark">@item.Donor.FullName</h5>
-                                    <ul class="list-unstyled text-smoke text-smoke">
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-map mr-1"></i>
-                                            <span>@item.Donor.BloodType</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-email mr-1"></i>
-                                            <span>@item.Donor.Email</span>
-                                        </li>
-                                        <li class="d-flex">
-                                            <i class="mdi mdi-phone mr-1"></i>
-                                            <span>@item.Donor.PhoneNumber</span>
-                                        </li>
-                                    </ul>
+                        @if (item.Status != "Cancelado")
+                        {
+                            <div class="col-lg-6 col-xl-4 col-md-6 col-sm-12">
+                                <div class="card card-default p-4">
+                                    <div class="media-body">
+                                        <h5 class="mt-0 mb-2 text-dark">@item.Donor.FullName</h5>
+                                        <ul class="list-unstyled text-smoke text-smoke">
+                                            <li class="d-flex">
+                                                <i class="mdi mdi-map mr-1"></i>
+                                                <span>@item.Donor.BloodType</span>
+                                            </li>
+                                            <li class="d-flex">
+                                                <i class="mdi mdi-email mr-1"></i>
+                                                <span>@item.Donor.Email</span>
+                                            </li>
+                                            <li class="d-flex">
+                                                <i class="mdi mdi-phone mr-1"></i>
+                                                <span>@item.Donor.PhoneNumber</span>
+                                            </li>
+                                        </ul>
+                                        <div class="text-center">
+                                            <p class="text-secondary mb-1">Caso de donacion se encuentra en estado <span id="statusTag" style="font-weight:bold;">@item.Status</span></p>
+                                        </div>
+                                        <div class="float-right">
+                                            @if (item.Status != "Finalizado")
+                                            {
+                                                <button onclick="cancelCase(@item.Id)" class="btn btn-danger">Cancelar</button>
+                                                <button onclick="completeCase(@item.Id)" class="btn btn-success">Completado</button>
+                                            }
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        }
                     }
                 </div>
 
@@ -145,6 +155,37 @@
                 document.getElementById("statusTag").innerHTML = "Finalizado"
                 $("#completeButton").prop("disabled", true);
                 $("#cancelButton").prop("disabled", true);
+            }
+        });
+    }
+
+    function cancelCase(id) {
+        var url = "/BloodRequest/CancelCase/" + id;
+        Swal.fire({
+            title: 'Información',
+            text: "Al cancelar este caso no podrá acceder a la información de este",
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#38b000',
+            cancelButtonColor: '#c1121f',
+            confirmButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.post(url, function (response) {
+                    if (response.statusCode == 200) {
+                        Swal.fire({
+                            title: "Excelente",
+                            text: "Caso cancelado exitosamente",
+                            type: "success",
+                            icon: "success",
+                            closeOnConfirm: true
+                        });
+
+                        document.getElementById("statusTag").innerHTML = "Finalizado"
+                        $("#completeButton").prop("disabled", true);
+                        $("#cancelButton").prop("disabled", true);
+                    }
+                });
             }
         });
     }

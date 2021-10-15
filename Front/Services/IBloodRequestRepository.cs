@@ -19,5 +19,6 @@ namespace Una_Pinta.Services
         Task<RequestCasesDto> GetRequestsWithDonors(string token, int id);
         Task<List<StringDate>> GetStringDates();
         Task<IRestResponse> PostCaseComplete(int id, string token);
+        Task<IRestResponse> PostCaseCanceled(int id, string token);
     }
 }
