@@ -17,6 +17,7 @@ namespace UnaPinta.Core.Contracts
         Task DeleteRequestById(long id, string ownerUserName);
         Task<string> GetRequestStatus(Request request);
         Task<RequestCasesDto> RetrieveRequestWithCases(long id, string ownerUserName);
+        Task MarkRequestAsCompleted(long id, string ownerUserName);
 
     }
 }

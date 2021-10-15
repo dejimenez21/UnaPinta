@@ -93,5 +93,14 @@ namespace UnaPinta.Api.Controllers
             var requestCases = await _service.RetrieveRequestWithCases(id, username);
             return Ok(requestCases);
         }
+
+        [HttpPut("markAsCompleted/{id}")]
+        [Authorize(Roles = "solicitante")]
+        public async Task<ActionResult> MarkAsCompleted(long id)
+        {
+            var username = _tokenParams.UserName;
+            await _service.MarkRequestAsCompleted(id, username);
+            return Ok();
+        }
     }
 }
