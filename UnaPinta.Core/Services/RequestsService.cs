@@ -152,7 +152,6 @@ namespace UnaPinta.Core.Services
 
         }
 
-
         public async Task<RequestCasesDto> RetrieveRequestWithCases(long id, string ownerUserName)
         {
             var request = await _requestRepository.SelectByIdAsync(id);
@@ -166,6 +165,30 @@ namespace UnaPinta.Core.Services
             requestCases.Status = await GetRequestStatus(request);
 
             return requestCases;
+        }
+
+        public async Task MarkRequestAsCompleted(long id, string ownerUserName)
+        {
+            var request = await _requestRepository.SelectByIdAsync(id);
+            //TODO: Create custom exception
+            if (request == null || request.DeletedAt.HasValue) throw new BaseDomainException($"La solicitud con el id {id} no existe", 404);
+
+            var owner = await _userManager.FindByNameAsync(ownerUserName);
+            if (owner == null || request.RequesterId != owner.Id) throw new BaseDomainException($"No tiene permisos para editar esta solicitud", 403);
+
+            var completedCases = request.Cases.Where(c => !c.DeletedAt.HasValue && c.StatusId == CaseStatusEnum.Completado);
+
+            if (!completedCases.Any())
+                throw new BaseDomainException($"No se puede completar esta solicitud, ya que no tiene ningun caso finalizado", 403);
+
+            request.Amount = completedCases.Count();
+
+            foreach(var caseToCancel in request.Cases.Where(c => !c.DeletedAt.HasValue && c.StatusId == CaseStatusEnum.En_Proceso))
+            {
+                caseToCancel.StatusId = CaseStatusEnum.Cancelado;
+            }
+
+            await _requestRepository.SaveChangesAsync();
         }
     }
 }
