@@ -15,5 +15,6 @@ namespace UnaPinta.Data.Contracts
         Task<IEnumerable<StringDate>> SelectAllStringDates();
         Task<IEnumerable<Request>> SelectRequestByRequesterId(long id, string filter = null);
         Task<IEnumerable<Request>> SelectRequestByRequester(string username, string filter = null);
+        Task<Request> SelectRequestForDonorById(long id, User donor);
     }
 }

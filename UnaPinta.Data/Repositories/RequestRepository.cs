@@ -73,5 +73,19 @@ namespace UnaPinta.Data.Repositories
 
             return await requestQuery.Include(e => e.ProvinceNav).ToListAsync();
         }
+
+        public Task<Request> SelectRequestForDonorById(long id, User donor)
+        {
+            Expression<Func<Request, bool>> where = r =>
+                    r.Id == id
+                    && r.ProvinceId == donor.ProvinceId
+                    && r.PossibleBloodTypes.Select(p => p.BloodTypeId).Contains(donor.BloodTypeId);
+
+            Func<IQueryable<Request>, IIncludableQueryable<Request, object>> includes = r => r
+                    .Include(p => p.ProvinceNav)
+                    .Include(p => p.PossibleBloodTypes);
+
+            return base.SelectOneAsync(where, includes);
+        }
     }
 }

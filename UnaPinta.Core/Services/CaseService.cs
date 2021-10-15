@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnaPinta.Core.Contracts;
 using UnaPinta.Core.Contracts.Case;
 using UnaPinta.Core.Exceptions;
 using UnaPinta.Data.Contracts;
@@ -21,13 +22,18 @@ namespace UnaPinta.Core.Services
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
         private readonly IRequestRepository _requestRepository;
+        private readonly IWaitListServices _waitListServices;
+        private readonly IWaitListRepository _waitListRepository;
 
-        public CaseService(ICaseRepository caseRepository, IMapper mapper, UserManager<User> userManager, IRequestRepository requestRepository)
+        public CaseService(ICaseRepository caseRepository, IMapper mapper, UserManager<User> userManager, 
+            IRequestRepository requestRepository, IWaitListServices waitListServices, IWaitListRepository waitListRepository)
         {
             _caseRepository = caseRepository;
             _mapper = mapper;
             _userManager = userManager;
             _requestRepository = requestRepository;
+            _waitListServices = waitListServices;
+            _waitListRepository = waitListRepository;
         }
 
         public async Task<CaseDetailsDto> CreateCase(CreateCaseDto inputCase, string userName)
@@ -35,18 +41,30 @@ namespace UnaPinta.Core.Services
             //TODO: Validar que el donante no tenga un caso en proceso
             #region Validations
             var donor = await _userManager.FindByNameAsync(userName);
-            if(donor == null)
+            if(donor == null || !await _userManager.IsInRoleAsync(donor, RoleEnum.Donante.ToString()))
             {
                 //TODO: Add new custom exception for this case
-                throw new BaseDomainException($"El usuario {userName} no existe.", 400);
+                throw new BaseDomainException($"El donante {userName} no existe.", 400);
             }
-            if(!await _requestRepository.ExistsAsync(r => r.Id == inputCase.RequestId))
+
+            if(!await _waitListServices.IsDonorAvailable(donor))
             {
                 //TODO: Add new custom exception for this case
-                throw new BaseDomainException($"El request especificado no existe.", 400);
+                throw new BaseDomainException($"El donante {userName} no está disponible.", 400);
             }
+
+            var request = await _requestRepository.SelectRequestForDonorById(inputCase.RequestId, donor);
+            if (request == null)
+            {
+                //TODO: Add new custom exception for this case
+                throw new BaseDomainException($"La solicitud especificada no existe, o no es compatible con el donante.", 400);
+            }
+
+            if(request.Cases.Count(c => !c.DeletedAt.HasValue && c.StatusId != CaseStatusEnum.Cancelado) == request.Amount) 
+                throw new BaseDomainException($"La solicitud especificada ya cuenta con suficientes donantes.", 400);
+
             #endregion
-            //TODO: Validar que request no este lleno
+
             var caseEntity = _mapper.Map<Case>(inputCase);
             caseEntity.DonorId = donor.Id;
             caseEntity.StatusId = CaseStatusEnum.En_Proceso;
