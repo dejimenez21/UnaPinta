@@ -12,10 +12,6 @@ namespace UnaPinta.Data.Contracts
 
         Task<User> GetUserById(long id);
 
-        //Request table methods
-        void CreateRequest(Request request);
-        Task<Request> GetRequestById(long id);
-
         //BloodTypes table methods
         Task<IEnumerable<BloodType>> GetAllBloodTypes();
         Task<BloodType> GetBloodTypeById(BloodTypeEnum id);

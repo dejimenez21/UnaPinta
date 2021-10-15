@@ -55,8 +55,8 @@ namespace UnaPinta.Core.Services
             var user = await _userManager.FindByNameAsync(userName);
             request.RequesterId = user.Id;
 
-            _repo.CreateRequest(request);
-            await _repo.SaveChangesAsync();
+            _requestRepository.Insert(request);
+            await _requestRepository.SaveChangesAsync();
 
             return async () => await _requestNotificationService.SendRequestNotification(request);
         }

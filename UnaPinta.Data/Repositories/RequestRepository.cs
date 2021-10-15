@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using UnaPinta.Data.Contracts;
 using UnaPinta.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
+using System.Linq.Expressions;
 
 namespace UnaPinta.Data.Repositories
 {
@@ -15,11 +17,6 @@ namespace UnaPinta.Data.Repositories
         public RequestRepository(UnaPintaDBContext dbContext) : base(dbContext)
         {
 
-        }
-
-        public void CreateRequest(Request request)
-        {
-            _dbContext.Requests.Add(request);
         }
 
         public async Task<Request> SelectRequestById(int id)

@@ -23,11 +23,6 @@ namespace UnaPinta.Data
             _context.WaitLists.Add(item);
         }
 
-        public void CreateRequest(Request request)
-        {
-            _context.Requests.Add(request);
-        }
-
         public async Task<IEnumerable<BloodComponent>> GetAllBloodComponents()
         {
             var bloodComponents = await _context.BloodComponents.ToListAsync();
@@ -54,11 +49,6 @@ namespace UnaPinta.Data
         public async Task<Condition> GetConditionById(ConditionEnum id)
         {
             return await _context.Conditions.SingleOrDefaultAsync(x=>x.Id==id);
-        }
-
-        public async Task<Request> GetRequestById(long id)
-        {
-            return await _context.Requests.SingleOrDefaultAsync(x=>x.Id==id);
         }
 
         public Task<User> GetUserById(long id)
