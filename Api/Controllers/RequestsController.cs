@@ -28,19 +28,10 @@ namespace UnaPinta.Api.Controllers
         [Authorize(Roles = "solicitante")]
         public async Task<ActionResult<RequestCreateDto>> CreateRequest([FromForm]RequestCreateDto requestCreate)
         {
+            var callback = await _service.CreateRequest(requestCreate, HttpContext.User.FindFirst("UserName").Value);
+            Response.OnCompleted(callback);
 
-            try
-            {
-                var callback = await _service.CreateRequest(requestCreate, HttpContext.User.FindFirst("UserName").Value);
-                Response.OnCompleted(callback);
-
-                return Created("api/requests", requestCreate);
-            }
-            catch
-            {
-                return BadRequest();
-            }
-            
+            return Created("api/requests", requestCreate);
         }
 
 

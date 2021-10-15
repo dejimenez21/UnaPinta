@@ -47,18 +47,32 @@ namespace UnaPinta.Core.Services
             var province = await _provinceService.RetrieveProvinceByCode(inputRequest.ProvinceCode);
             if (province == null) throw new BaseDomainException("La provincia especificada no existe.", 400);
 
+            var user = await _userManager.FindByNameAsync(userName); //TODO: Add validation if the user returns null
+
+            if (inputRequest.ForMe)
+                inputRequest = CompleteRequestForCurrentUser(inputRequest, user);
+            else if (string.IsNullOrEmpty(inputRequest.Name) || !inputRequest.BirthDate.HasValue || !inputRequest.BloodTypeId.HasValue)
+                throw new BaseDomainException("El modelo es invalido", 400);
+
             var request = _mapper.Map<Request>(inputRequest);
             request.ResponseDueDate = stringDate.ToDateTime();
             request.ProvinceId = province.Id;
             request.Prescription = await inputRequest.PrescriptionImage.ToFileModel();
-
-            var user = await _userManager.FindByNameAsync(userName);
             request.RequesterId = user.Id;
 
             _repo.CreateRequest(request);
             await _repo.SaveChangesAsync();
 
             return async () => await _requestNotificationService.SendRequestNotification(request);
+        }
+
+        private RequestCreateDto CompleteRequestForCurrentUser(RequestCreateDto inputRequest, User user)
+        {
+            inputRequest.Name = $"{user.FirstName} {user.LastName}";
+            inputRequest.BirthDate = user.BirthDate;
+            inputRequest.BloodTypeId = (int)user.BloodTypeId;
+
+            return inputRequest;
         }
 
         public async Task<RequestDetailsDto> RetrieveRequestDetailsById(int id)

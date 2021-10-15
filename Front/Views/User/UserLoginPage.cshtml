@@ -56,12 +56,10 @@
         if (response.code != 200) {
             Swal.fire({
                 title: "Advertencia",
-                text: "Este usuario no existe",
+                text: "Credenciales erroneos",
                 type: "warning",
                 icon: "warning",
-                showCancelButton: true,
-                closeOnConfirm: true,
-                closeOnCancel: true
+                closeOnConfirm: true
             });
         }
         else {
@@ -72,6 +70,8 @@
                 window.location.href = "/BloodRequest/BloodRequestPage"
                 window.localStorage.setItem("bloodTypeUser", response.blood);
                 window.localStorage.setItem("tokenSession", response.token);
+                window.localStorage.setItem("nameofuser", response.nameOfUser);
+                window.localStorage.setItem("birthdate", response.birthDate);
             }             
         }
     }

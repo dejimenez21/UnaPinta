@@ -64,8 +64,7 @@ namespace Una_Pinta.Controllers
                 requestCreate.Name = _utilities.GetUserInfo(token).name;
                 requestCreate.BloodTypeId = _utilities.GetUserInfo(token).bloodType;
                 requestCreate.BirthDate = _utilities.GetUserInfo(token).birthDate;
-                //requestCreate.PrescriptionDirectory = GetFullFilePathUploaded(requestCreate.PrescriptionImage);
-                //requestCreate.PrescriptionBase64 = System.Text.Encoding.UTF8.GetString(GetByteArrayFromImage(requestCreate.PrescriptionImage), 0, GetByteArrayFromImage(requestCreate.PrescriptionImage).Length);
+                
                 var result = await _bloodRequestRepository.PostBloodRequest(requestCreate, getToken);
                 return Json(new { code = (int)result.StatusCode, responseText = result.Content });
             }
@@ -73,8 +72,7 @@ namespace Una_Pinta.Controllers
             {
                 var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
                 var result = await _bloodRequestRepository.PostBloodRequest(requestCreate, getToken);
-                //requestCreate.PrescriptionDirectory = GetFullFilePathUploaded(requestCreate.PrescriptionImage);
-                //requestCreate.PrescriptionBase64 = System.Text.Encoding.UTF8.GetString(GetByteArrayFromImage(requestCreate.PrescriptionImage), 0, GetByteArrayFromImage(requestCreate.PrescriptionImage).Length);
+                
                 return Json(new { code = (int)result.StatusCode, responseText = result.Content });
             }
         }
@@ -144,33 +142,6 @@ namespace Una_Pinta.Controllers
             }
             var dates = selectList.Select(elem => new { code = elem.Value, name = elem.Text });
             return Json(new { content = dates });
-        }
-
-        public byte[] GetByteArrayFromImage(IFormFile file)
-        {
-            using (var target = new MemoryStream())
-            {
-                file.CopyTo(target);
-                return target.ToArray();
-            }
-        }
-
-        public string GetFullFilePathUploaded(IFormFile formFile)
-        {
-            var uniqueFileName = GetUniqueFileName(formFile.FileName);
-            var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
-            var filePath = Path.Combine(uploads, uniqueFileName);
-            formFile.CopyTo(new FileStream(filePath, FileMode.Create));
-            return filePath;
-        }
-
-        public string GetUniqueFileName(string fileName)
-        {
-            fileName = Path.GetFileName(fileName);
-            return Path.GetFileNameWithoutExtension(fileName)
-                      + "_"
-                      + Guid.NewGuid().ToString().Substring(0, 4)
-                      + Path.GetExtension(fileName);
         }
     }
 }

@@ -43,34 +43,24 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarhome" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarhome">
-                <a asp-controller="HomePage" asp-action="HomePageView">
-                    <img src="~/Pics/pic-logo.png" class="img-responsive" style="width:120px" />
-                </a>
-                <div class="dropdown">
-                    <button class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">Sobre nosotros</button>
-                    <div class="dropdown-menu" role="menu">
-                        <a class="dropdown-item" role="presentation" href="#infoPop" data-toggle="modal">Contacto</a>
-                        <a class="dropdown-item" role="presentation" href="#">Valores</a>
-                        <a class="dropdown-item" role="presentation" href="#">Sample sample</a>
+           
+            <div class="col d-flex justify-content-end">
+                @if (!string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("userName")))
+                {
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Bienvenido @HttpContextAccessor.HttpContext.Session.GetString("userName")
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" asp-controller="HomePage" asp-action="HomePageView">Cerrar sesión</a>
+                        </div>
                     </div>
-                </div>
-                <div class="dropdown">
-                    <button class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">Testimonios</button>
-                    <div class="dropdown-menu" role="menu">
-                        <a class="dropdown-item" role="presentation" href="#">First Item</a>
-                        <a class="dropdown-item" role="presentation" href="#">Second Item</a>
-                        <a class="dropdown-item" role="presentation" href="#">Third Item</a>
-                    </div>
-                </div>
-                <div class="dropdown">
-                    <button class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">Eventos</button>
-                    <div class="dropdown-menu" role="menu">
-                        <a class="dropdown-item" role="presentation" href="#">First Item</a>
-                        <a class="dropdown-item" role="presentation" href="#">Second Item</a>
-                        <a class="dropdown-item" role="presentation" href="#">Third Item</a>
-                    </div>
-                </div>
+                }
+                else
+                {
+                    <a class="btn btn-primary" asp-controller="HomePage" asp-action="HomePageView">Salir de la aplicación</a>
+                }
+
             </div>
         </nav>
     </header>
@@ -79,33 +69,6 @@
         @RenderBody()
     </main>
 
-    <div class="modal fade" id="infoPop" role="dialog">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Contacto</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="text-center">
-                        <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_cq2ykkjy.json" background="transparent" speed="1" style="width: 220px; height: 220px; margin-left:auto; margin-right: auto;" loop autoplay></lottie-player>
-                        <table class="table" style="border:none">
-                            <tbody>
-                                <tr>
-                                    <td><label style="font-size:20px"><i class="fa fa-phone" style="font-size:24px"></i> 809-333-4588</label></td>
-                                    <td><label style="font-size:20px"><i class="fa fa-envelope" style="font-size:24px"></i> unapintard</label></td>
-                                    <td><label style="font-size:20px"><i class="fa fa-facebook" style="font-size:24px"></i> unapintard</label></td>
-                                    <td><label style="font-size:20px"><i class="fa fa-instagram" style="font-size:24px"></i> unapintard</label></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <footer class="border-top footer text-muted">
     </footer>

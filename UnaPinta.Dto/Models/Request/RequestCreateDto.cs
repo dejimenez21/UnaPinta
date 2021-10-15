@@ -20,16 +20,16 @@ namespace UnaPinta.Dto.Models
         [Required]
         public string CenterAddress { get; set; }
 
-        public int BloodTypeId { get; set; }
+        public int? BloodTypeId { get; set; }
 
         [MaxLength(11)]
         public string Document { get; set; }
 
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
 
         [Required]
         public IFormFile PrescriptionImage { get; set; }
-
+        [Required]
         public IEnumerable<int> PossibleBloodTypes { get; set; }
 
         public string PatientStory { get; set; }
@@ -39,6 +39,7 @@ namespace UnaPinta.Dto.Models
 
         [Required]
         public bool ForMe { get; set; }
+        [Required]
         public string ProvinceCode { get; set; }
     }
 }
