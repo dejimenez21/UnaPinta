@@ -1,5 +1,6 @@
 ﻿@using UnaPinta.Dto.Models.Request
 @using UnaPinta.Dto.Models.Case
+@using UnaPinta.Dto.Enumerations
 @{
     Layout = "LayoutUnaPinta";
     var requestDetail = TempData["requestDetail"] as RequestCasesDto;
@@ -19,6 +20,9 @@
                     <div class="card-body">
                         <div class="d-flex flex-column align-items-center text-center">
                             <lottie-player src="https://assets9.lottiefiles.com/packages/lf20_ej9qnvlt/Pediatra.json" background="transparent" speed="1" style="width: 300px; height: 300px;" autoplay></lottie-player>
+                        </div>
+                        <div>
+                            @requestDetail.Status
                         </div>
                     </div>
                 </div>
@@ -82,15 +86,16 @@
                         <hr>
                         <div class="row">
                             <div class="col-sm-12">
-                                @if (requestDetail.Cases.Count(elem => elem.Status == "Finalizado") > 0)
+                                @switch (requestDetail.Status)
                                 {
-                                    <button id="completeButton" onclick="completeRequest(@requestDetail.Request.Id, @requestDetail.Amount, @requestDetail.Cases.Count(elem => elem.Status == "Finalizado"))" class="btn btn-primary" type="submit">Marcar como completado</button>
-                                }
-                                else
-                                {
-                                    <button id="cancelButton" class="btn btn-danger" href="#">Cancelar</button>
-                                }
+                                    case RequestStatusEnumeration.IN_PROCESS:
+                                        <button id="completeButton" onclick="completeRequest(@requestDetail.Request.Id, @requestDetail.Amount, @requestDetail.Cases.Count(elem => elem.Status == "Finalizado"))" class="btn btn-primary" type="submit">Marcar como completado</button>
+                                        break;
 
+                                    case RequestStatusEnumeration.REGISTERED:
+                                        <button id="cancelButton" class="btn btn-danger" href="#">Eliminar</button>
+                                        break;
+                                }
                             </div>
                         </div>
                     </div>
@@ -204,7 +209,7 @@
     }
 
     function completeRequest(id, amount, finished) {
-        var url = "/BloodRequest/CancelCase/" + id;
+        var url = "/BloodRequest/CompleteRequest/" + id;
         Swal.fire({
             title: 'Información',
             text: "Solamente se han donado " + finished + " pintas de las " + amount + " solicitadas. ¿Está seguro que desea marcar la solicitud como completada? Al hacerlo se dejara de dar seguimiento a la misma.",

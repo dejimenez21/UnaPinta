@@ -24,6 +24,8 @@ namespace Una_Pinta.Helpers.Requests
 
         public static string CompleteCase(int id) => $"api/Cases/complete/{id}";
 
+        public static string CompleteRequest(int id) => $"api/Requests/markAsCompleted/{id}";
+
         public static string CancelCase(int id) => $"api/Cases/cancel/{id}";
 
         public static string GetBloodTypesPossibles(int idBlood) => $"api/BloodTypes/compatible/{idBlood}";
