@@ -84,13 +84,27 @@ namespace UnaPinta.Core.Services
             if (caseEntity == null || caseEntity.DeletedAt.HasValue) throw new BaseDomainException($"No existe un caso con id {id}", 404);
 
             var requester = await _userManager.FindByNameAsync(requesterUsername);
-            if(caseEntity.RequestNav.RequesterId != requester.Id) throw new BaseDomainException($"No tiene permisos para modificar el estado de este caso", 403);
+            if(requester == null || caseEntity.RequestNav.RequesterId != requester.Id) throw new BaseDomainException($"No tiene permisos para modificar el estado de este caso", 403);
 
             caseEntity.StatusId = CaseStatusEnum.Completado;
             await _caseRepository.SaveChangesAsync();
 
             var completedCase = _mapper.Map<CaseForRequestDto>(caseEntity);
             return completedCase;
+        }
+
+        public async Task CancelCase(long caseId, string username)
+        {
+            //TODO: Evaluar que sea un caso que este en estado en proceso
+            var caseEntity = await _caseRepository.SelectByIdAsync(caseId);
+            //TODO: Create custom exception
+            if (caseEntity == null || caseEntity.DeletedAt.HasValue) throw new BaseDomainException($"No existe un caso con id {caseId}", 404);
+
+            var owner = await _userManager.FindByNameAsync(username);
+            if (owner == null || (caseEntity.RequestNav.RequesterId != owner.Id && caseEntity.DonorId != owner.Id)) throw new BaseDomainException($"No tiene permisos para modificar el estado de este caso", 403);
+
+            caseEntity.StatusId = CaseStatusEnum.Cancelado;
+            await _caseRepository.SaveChangesAsync();
         }
     }
 }
