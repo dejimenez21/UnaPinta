@@ -75,6 +75,15 @@ namespace UnaPinta.Core.Services
             return await RetrieveCaseDetails(caseEntity.Id);
         }
 
+        private async Task<WaitList> JustDonateCondition(long? donorId = null)
+        {
+            var waitlist = new WaitList();
+            waitlist.ConditionId = ConditionEnum.Donado;
+            waitlist.AvailableAt = await _waitListServices.CalculateAvailableAtDate(waitlist.ConditionId, 0);
+            waitlist.UserId = donorId ?? waitlist.UserId;
+            return waitlist;
+        }
+
         public async Task<CaseDetailsDto> RetrieveCaseDetails(long id)
         {
             var caseEntity = await _caseRepository.SelectOneAsync(c => c.Id == id, 
@@ -105,6 +114,7 @@ namespace UnaPinta.Core.Services
             if(requester == null || caseEntity.RequestNav.RequesterId != requester.Id) throw new BaseDomainException($"No tiene permisos para modificar el estado de este caso", 403);
 
             caseEntity.StatusId = CaseStatusEnum.Completado;
+            _waitListRepository.Insert(await JustDonateCondition(caseEntity.DonorId));
             await _caseRepository.SaveChangesAsync();
 
             var completedCase = _mapper.Map<CaseForRequestDto>(caseEntity);
