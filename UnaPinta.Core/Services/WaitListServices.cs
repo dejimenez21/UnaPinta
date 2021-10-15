@@ -20,9 +20,9 @@ namespace UnaPinta.Core.Services
             _waitListRepository = waitListRepository;
         }
 
-        public async Task<DateTime> CalculateAvailableAtDate(WaitList item, int months)
+        public async Task<DateTime> CalculateAvailableAtDate(ConditionEnum conditionId, int months)
         {
-            var condition = await _repo.GetConditionById(item.ConditionId);
+            var condition = await _repo.GetConditionById(conditionId);
             var diff = condition.MonthsToWait - months;
             return DateTime.Now.AddMonths(diff);
         }
