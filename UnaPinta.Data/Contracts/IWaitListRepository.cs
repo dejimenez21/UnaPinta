@@ -7,7 +7,7 @@ using UnaPinta.Data.Entities;
 
 namespace UnaPinta.Data.Contracts
 {
-    public interface IWaitListRepository
+    public interface IWaitListRepository : IRepositoryBase<WaitList, long>
     {
         Task<IEnumerable<WaitList>> SelectWaitListItemsByDonorId(long id);
     }
