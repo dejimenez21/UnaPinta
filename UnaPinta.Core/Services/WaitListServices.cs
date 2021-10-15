@@ -12,10 +12,12 @@ namespace UnaPinta.Core.Services
     public class WaitListServices : IWaitListServices
     {
         private readonly IUnaPintaRepository _repo;
+        private readonly IWaitListRepository _waitListRepository;
 
-        public WaitListServices(IUnaPintaRepository repo)
+        public WaitListServices(IUnaPintaRepository repo, IWaitListRepository waitListRepository)
         {
             _repo = repo;
+            _waitListRepository = waitListRepository;
         }
 
         public async Task<DateTime> CalculateAvailableAtDate(WaitList item, int months)
@@ -48,6 +50,21 @@ namespace UnaPinta.Core.Services
 
             var availableAt = waitList.Max(x=>x.AvailableAt);
             await SendAvailabilityDateNotification(User, availableAt);
+
+        }
+
+        public async Task<bool> IsDonorAvailable(User donor)
+        {
+            if (!donor.CanDonate)
+                return false;
+
+            var items = await _waitListRepository.SelectWaitListItemsByDonorId(donor.Id);
+
+            if (!items.Any(x => x.ConditionId != ConditionEnum.SinCondicion)) return true;
+
+            var availableAt = items.Max(x => x.AvailableAt);
+
+            return !(availableAt > DateTime.Now);
 
         }
 

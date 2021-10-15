@@ -9,6 +9,7 @@ namespace UnaPinta.Core.Contracts
     {
         Task<DateTime> CalculateAvailableAtDate(WaitList item, int months);
         Task ReviewDonorAvailability(int userId, List<WaitList> waitList);
+        Task<bool> IsDonorAvailable(User donor);
 
     }
 }

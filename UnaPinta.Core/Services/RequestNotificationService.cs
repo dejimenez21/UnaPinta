@@ -19,21 +19,23 @@ namespace UnaPinta.Core.Services
         private readonly IEmailBroker _emailBroker;
         private readonly IEmailService _emailService;
         private readonly IWaitListRepository _waitListRepository;
+        private readonly IWaitListServices _waitListServices;
 
         public RequestNotificationService(IUserRepository userRepository, IEmailBroker emailBroker, 
-            IEmailService emailService, IWaitListRepository waitListRepository)
+            IEmailService emailService, IWaitListRepository waitListRepository, IWaitListServices waitListServices)
         {
             _userRepository = userRepository;
             _emailBroker = emailBroker;
             _emailService = emailService;
             _waitListRepository = waitListRepository;
+            _waitListServices = waitListServices;
         }
 
         public async Task SendRequestNotification(Request request)
         {
             var compatibleDonors = await _userRepository.SelectDonorsForNotification(request);
 
-            var availableDonors = await compatibleDonors.WhereAsync(async x => await IsAvailable(x));
+            var availableDonors = await compatibleDonors.WhereAsync(async x => await _waitListServices.IsDonorAvailable(x));
 
             if (!availableDonors.Any())
                 return;
@@ -49,20 +51,7 @@ namespace UnaPinta.Core.Services
             await _emailBroker.SendToMany(to, subject, messageBody);
         }
 
-        private async Task<bool> IsAvailable(User donor)
-        {
-            if (!donor.CanDonate)
-                return false;
-
-            var items = await _waitListRepository.SelectWaitListItemsByDonorId(donor.Id);
-
-            if (!items.Any(x => x.ConditionId != ConditionEnum.SinCondicion)) return true;
-
-            var availableAt = items.Max(x => x.AvailableAt);
-
-            return !(availableAt > DateTime.Now);
-
-        }
+        
 
     }
 }
