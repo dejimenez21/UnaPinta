@@ -144,18 +144,24 @@
     function completeCase(id) {
         var url = "/BloodRequest/CompleteCase/" + id;
         $.post(url, function (response) {
-            if (response.statusCode == 200) {
-                Swal.fire({
-                    title: "Excelente",
-                    text: "Caso completado exitosamente",
-                    type: "success",
-                    icon: "success",
-                    closeOnConfirm: true
-                });
-                document.getElementById("statusTag").innerHTML = "Finalizado"
-                $("#completeButton").prop("disabled", true);
-                $("#cancelButton").prop("disabled", true);
-            }
+            Swal.fire({
+                title: 'Información',
+                text: "¿Está seguro que desea completar este caso?",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#38b000',
+                cancelButtonColor: '#c1121f',
+                confirmButtonText: 'Si',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.post(url, function (response) {
+                        if (response.statusCode == 200) {
+                            location.reload();
+                        }
+                    });
+                }
+            });
         });
     }
 
@@ -163,27 +169,18 @@
         var url = "/BloodRequest/CancelCase/" + id;
         Swal.fire({
             title: 'Información',
-            text: "Al cancelar este caso no podrá acceder a la información de este",
+            text: "¿Está seguro que desea cancelar este caso? Una vez cancelado no podrá acceder a la información del donante",
             icon: 'info',
             showCancelButton: true,
             confirmButtonColor: '#38b000',
             cancelButtonColor: '#c1121f',
-            confirmButtonText: 'Cancelar'
+            confirmButtonText: 'Si',
+            cancelButtonText: 'No'
         }).then((result) => {
             if (result.isConfirmed) {
                 $.post(url, function (response) {
                     if (response.statusCode == 200) {
-                        Swal.fire({
-                            title: "Excelente",
-                            text: "Caso cancelado exitosamente",
-                            type: "success",
-                            icon: "success",
-                            closeOnConfirm: true
-                        });
-
-                        document.getElementById("statusTag").innerHTML = "Finalizado"
-                        $("#completeButton").prop("disabled", true);
-                        $("#cancelButton").prop("disabled", true);
+                        location.reload();   
                     }
                 });
             }

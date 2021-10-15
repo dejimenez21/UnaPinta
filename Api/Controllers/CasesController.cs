@@ -44,7 +44,7 @@ namespace UnaPinta.Api.Controllers
         }
 
         [HttpPut("cancel/{id}")]
-        [Authorize(Roles = "solicitante")]
+        [Authorize(Roles = "solicitante, donante")]
         public async Task<ActionResult<CaseForRequestDto>> Cancel(long id)
         {
             var username = _tokenParams.UserName;
