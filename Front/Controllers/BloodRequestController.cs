@@ -13,6 +13,8 @@ using Una_Pinta.Models;
 using System.IO;
 using System;
 using Microsoft.AspNetCore.Hosting;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace Una_Pinta.Controllers
 {
@@ -22,7 +24,6 @@ namespace Una_Pinta.Controllers
         readonly IBloodRequestRepository _bloodRequestRepository;
         readonly IHttpContextAccessor _httpContextAccessor;
         readonly IProvincesRepository _provincesRepository;
-        readonly IHostingEnvironment _hostingEnvironment;
         readonly Utilities _utilities;
         public List<RequestSummary> RequestSummaries;
         public BloodRequestController(IBloodTypesRepository bloodTypesRepository, IBloodRequestRepository bloodRequestRepository, IHttpContextAccessor httpContextAccessor, IProvincesRepository provincesRepository, IHostingEnvironment hostingEnvironment)
@@ -31,7 +32,6 @@ namespace Una_Pinta.Controllers
             _bloodRequestRepository = bloodRequestRepository;
             _httpContextAccessor = httpContextAccessor;
             _provincesRepository = provincesRepository;
-            _hostingEnvironment = hostingEnvironment;
             _utilities = new Utilities(httpContextAccessor);
             RequestSummaries = new List<RequestSummary>();
         }
@@ -64,8 +64,7 @@ namespace Una_Pinta.Controllers
                 requestCreate.Name = _utilities.GetUserInfo(token).name;
                 requestCreate.BloodTypeId = _utilities.GetUserInfo(token).bloodType;
                 requestCreate.BirthDate = _utilities.GetUserInfo(token).birthDate;
-                //requestCreate.PrescriptionDirectory = GetFullFilePathUploaded(requestCreate.PrescriptionImage);
-                //requestCreate.PrescriptionBase64 = System.Text.Encoding.UTF8.GetString(GetByteArrayFromImage(requestCreate.PrescriptionImage), 0, GetByteArrayFromImage(requestCreate.PrescriptionImage).Length);
+                
                 var result = await _bloodRequestRepository.PostBloodRequest(requestCreate, getToken);
                 return Json(new { code = (int)result.StatusCode, responseText = result.Content });
             }
@@ -73,8 +72,7 @@ namespace Una_Pinta.Controllers
             {
                 var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
                 var result = await _bloodRequestRepository.PostBloodRequest(requestCreate, getToken);
-                //requestCreate.PrescriptionDirectory = GetFullFilePathUploaded(requestCreate.PrescriptionImage);
-                //requestCreate.PrescriptionBase64 = System.Text.Encoding.UTF8.GetString(GetByteArrayFromImage(requestCreate.PrescriptionImage), 0, GetByteArrayFromImage(requestCreate.PrescriptionImage).Length);
+                
                 return Json(new { code = (int)result.StatusCode, responseText = result.Content });
             }
         }
@@ -95,8 +93,8 @@ namespace Una_Pinta.Controllers
 
         public async Task<IActionResult> BloodRequestDetail()
         {
-            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
-            var result = await _bloodRequestRepository.GetRequestDetails(12, getToken);
+            var request = _httpContextAccessor.HttpContext.Session.GetString("requestDetails");
+            var result = JsonConvert.DeserializeObject<RequestDetails>(request);
             TempData["resultRequest"] = result;
             return View();
         }
@@ -146,31 +144,96 @@ namespace Una_Pinta.Controllers
             return Json(new { content = dates });
         }
 
-        public byte[] GetByteArrayFromImage(IFormFile file)
+        [HttpPost]
+        public async Task<IActionResult> PostCases(int id)
         {
-            using (var target = new MemoryStream())
+            //TODO: Improve this code
+            Cases cases = new Cases();
+            cases.RequestId = id;
+
+            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var createCase = await _bloodRequestRepository.PostCase(cases, getToken);
+
+            var jsonContentResult = createCase.Content;
+            var jo = JObject.Parse(jsonContentResult);
+            var resultContent = jo["request"];
+            var resultParsed = resultContent.ToObject<RequestDetails>();
+            _httpContextAccessor.HttpContext.Session.SetString("requestDetails", JsonConvert.SerializeObject(resultParsed));
+            return Json(new { code = (int)createCase.StatusCode, responseText = createCase.Content});
+        }
+
+        public async Task<IActionResult> BloodRequestList()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetSummariesRequests()
+        {
+            try
             {
-                file.CopyTo(target);
-                return target.ToArray();
+                var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+                var resultContent = await _bloodRequestRepository.GetRequestSummaryToDatatable(getToken);
+                var draw = Request.Form["draw"].FirstOrDefault();
+                var start = Request.Form["start"].FirstOrDefault();
+                var length = Request.Form["length"].FirstOrDefault();
+                var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
+                var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
+                var searchValue = Request.Form["search[value]"].FirstOrDefault();
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+                int skip = start != null ? Convert.ToInt32(start) : 0;
+                int recordsTotal = 0;
+                var customerData = resultContent;
+                //if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
+                //{
+                //    customerData = customerData.OrderBy(sortColumn + " " + sortColumnDirection);
+                //}
+                if (!string.IsNullOrEmpty(searchValue))
+                {
+                    customerData = customerData.Where(m => m.Name.Contains(searchValue)).ToList();
+                }
+                recordsTotal = customerData.Count();
+                var data = customerData.Skip(skip).Take(pageSize).ToList();
+                var jsonData = new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data };
+                return Ok(jsonData);
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
 
-        public string GetFullFilePathUploaded(IFormFile formFile)
+        public async Task<IActionResult> BloodRequestSummaryDetails(int id)
         {
-            var uniqueFileName = GetUniqueFileName(formFile.FileName);
-            var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
-            var filePath = Path.Combine(uploads, uniqueFileName);
-            formFile.CopyTo(new FileStream(filePath, FileMode.Create));
-            return filePath;
+            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var resultContent = await _bloodRequestRepository.GetRequestsWithDonors(getToken, id);
+            TempData["requestDetail"] = resultContent;
+            TempData["listCases"] = resultContent.Cases.ToList();
+            return View();
         }
 
-        public string GetUniqueFileName(string fileName)
+        [HttpPost]
+        public async Task<IActionResult> CompleteCase(int id)
         {
-            fileName = Path.GetFileName(fileName);
-            return Path.GetFileNameWithoutExtension(fileName)
-                      + "_"
-                      + Guid.NewGuid().ToString().Substring(0, 4)
-                      + Path.GetExtension(fileName);
+            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var resultContent = await _bloodRequestRepository.PostCaseComplete(id, getToken);
+            return Json(new { content = resultContent.Content, statusCode = resultContent.StatusCode });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CancelCase(int id)
+        {
+            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var resultContent = await _bloodRequestRepository.PostCaseCanceled(id, getToken);
+            return Json(new { content = resultContent.Content, statusCode = resultContent.StatusCode });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CompleteRequest(int id)
+        {
+            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var resultContent = await _bloodRequestRepository.PostRequestCompleted(id, getToken);
+            return Json(new { content = resultContent.Content, statusCode = resultContent.StatusCode });
         }
     }
 }

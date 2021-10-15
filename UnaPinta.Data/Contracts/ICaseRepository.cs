@@ -9,6 +9,6 @@ namespace UnaPinta.Data.Contracts
 {
     public interface ICaseRepository : IRepositoryBase<Case, long>
     {
-
+        Task<IEnumerable<Case>> SelectCasesByRequestId(long id);
     }
 }

@@ -1,4 +1,7 @@
 ﻿@model UnaPinta.Dto.Models.RequestCreateDto
+@{ 
+    Layout = "LayoutUnaPinta";
+}
 <div class="container" style="margin-top:20px;">
     <div class="text-center">
         <p style="font-family: 'Roboto', sans-serif; font-size:30px;">Creación de solicitud</p>
@@ -91,6 +94,7 @@
                 <div class="text-center">
                     <span data-valmsg-for="ResponseDueDate" class="text-danger" data-valmsg-replace="true" />
                 </div>
+                <br/>
                 <div class="justify-end">
                     <div>
                         <button type="submit" id="btnSubmit" class="btn btn-success float-right">Crear</button>
@@ -166,28 +170,25 @@
             },
             type: 'POST',
             success: function (dataofconfirm) {
+                console.log(dataofconfirm);
                 Swal.fire({
                     title: "Correcto",
                     text: "Solicitud creada correctamente",
                     icon: "success",
-                    showCancelButton: true,
-                    closeOnConfirm: true,
-                    closeOnCancel: true
+                    closeOnConfirm: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/BloodRequest/BloodRequestSummaryDetails/';
+                    }
                 });
-                document.getElementById("createRequest").reset();
-                document.getElementById("PossibleBloodTypes").reset();
-                $("#Name").fadeIn();
-                $("#nameLabel").fadeIn();
-                $("#BloodTypeId").fadeIn();
-                $("#bloodTypeLabel").fadeIn();
-                $("#birthLabel").hide();
-                $("#BirthDate").hide();
+                $("#createRequest").reset();
                 dropdown.empty();
             },
             error: function (dataofconfirm) {
+                console.log(dataofconfirm);
                 Swal.fire({
                     title: "Error",
-                    text: response.responseText,
+                    text: dataofconfirm.responseText,
                     icon: "error",
                     showCancelButton: true,
                     closeOnConfirm: true,
@@ -222,6 +223,9 @@
             $("#BloodTypeId").hide();
             $("#bloodTypeLabel").hide();
             var bloodType = window.localStorage.getItem("bloodTypeUser");
+            var nameOfUser = window.localStorage.getItem("nameofuser");
+            var birthOfUser = window.localStorage.getItem("birthdate");
+
             var url = "/BloodRequest/GetBloodTypes/" + bloodType;
 
             $.post(url, function (data) {
@@ -231,6 +235,10 @@
                 })
                 // do something if necessary
             });
+
+            $("#Name").val(nameOfUser);
+            $("#BirthDate").val(birthOfUser);
+
         } else {
             $("#Name").fadeIn();
             $("#nameLabel").fadeIn();
@@ -238,6 +246,8 @@
             $("#bloodTypeLabel").fadeIn();
             $("#birthLabel").fadeIn();
             $("#BirthDate").fadeIn();
+            $("#Name").empty();
+            $("#BirthDate").empty();
             dropdown.empty();
         }
     }

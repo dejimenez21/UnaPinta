@@ -30,6 +30,8 @@ namespace UnaPinta.Core.MappingProfiles
             CreateMap<Request, RequestSummaryDto>()
                 .ForMember(rs => rs.Province, opt => opt.MapFrom(r => r.ProvinceNav.Name))
                 .ForMember(rs => rs.ResponseDueDate, opt => opt.MapFrom(r => r.ResponseDueDate.ToStringSP()));
+            CreateMap<Request, RequestCasesDto>()
+                .ForMember(r => r.Request, opt => opt.MapFrom(r => r));
             #endregion
         }
     }

@@ -32,6 +32,7 @@ namespace UnaPinta.Core.Services
 
         public async Task<CaseDetailsDto> CreateCase(CreateCaseDto inputCase, string userName)
         {
+            //TODO: Validar que el donante no tenga un caso en proceso
             #region Validations
             var donor = await _userManager.FindByNameAsync(userName);
             if(donor == null)
@@ -45,7 +46,7 @@ namespace UnaPinta.Core.Services
                 throw new BaseDomainException($"El request especificado no existe.", 400);
             }
             #endregion
-            
+            //TODO: Validar que request no este lleno
             var caseEntity = _mapper.Map<Case>(inputCase);
             caseEntity.DonorId = donor.Id;
             caseEntity.StatusId = CaseStatusEnum.En_Proceso;
@@ -74,6 +75,36 @@ namespace UnaPinta.Core.Services
 
             var caseDetails = _mapper.Map<CaseDetailsDto>(caseEntity);
             return caseDetails;
+        }
+
+        public async Task<CaseForRequestDto> MarkCaseAsCompleted(long id, string requesterUsername)
+        {
+            var caseEntity = await _caseRepository.SelectByIdAsync(id);
+            //TODO: Create custom exception
+            if (caseEntity == null || caseEntity.DeletedAt.HasValue) throw new BaseDomainException($"No existe un caso con id {id}", 404);
+
+            var requester = await _userManager.FindByNameAsync(requesterUsername);
+            if(requester == null || caseEntity.RequestNav.RequesterId != requester.Id) throw new BaseDomainException($"No tiene permisos para modificar el estado de este caso", 403);
+
+            caseEntity.StatusId = CaseStatusEnum.Completado;
+            await _caseRepository.SaveChangesAsync();
+
+            var completedCase = _mapper.Map<CaseForRequestDto>(caseEntity);
+            return completedCase;
+        }
+
+        public async Task CancelCase(long caseId, string username)
+        {
+            //TODO: Evaluar que sea un caso que este en estado en proceso
+            var caseEntity = await _caseRepository.SelectByIdAsync(caseId);
+            //TODO: Create custom exception
+            if (caseEntity == null || caseEntity.DeletedAt.HasValue) throw new BaseDomainException($"No existe un caso con id {caseId}", 404);
+
+            var owner = await _userManager.FindByNameAsync(username);
+            if (owner == null || (caseEntity.RequestNav.RequesterId != owner.Id && caseEntity.DonorId != owner.Id)) throw new BaseDomainException($"No tiene permisos para modificar el estado de este caso", 403);
+
+            caseEntity.StatusId = CaseStatusEnum.Cancelado;
+            await _caseRepository.SaveChangesAsync();
         }
     }
 }

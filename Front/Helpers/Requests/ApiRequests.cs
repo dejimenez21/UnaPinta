@@ -14,9 +14,19 @@ namespace Una_Pinta.Helpers.Requests
         public static string GetProvinces = "api/provinces";
         public static string GetBloodComponent = "api/BloodComponent";
         public static string GetRequestSummary = "api/Requests/summary";
+        public static string GetRequestSummaryDataTable = "api/Requests/datatable";
         public static string GetStringDates = "api/Requests/stringDates";
+        public static string CreateCase = "api/cases";
+
+        public static string GetCasesWithDonors(int id) => $"api/Requests/withCases/{id}";
 
         public static string ConfirmEmail(string id, string token) => $"api/auth/confirmemail?userid={id}&token={token}";
+
+        public static string CompleteCase(int id) => $"api/Cases/complete/{id}";
+
+        public static string CompleteRequest(int id) => $"api/Requests/markAsCompleted/{id}";
+
+        public static string CancelCase(int id) => $"api/Cases/cancel/{id}";
 
         public static string GetBloodTypesPossibles(int idBlood) => $"api/BloodTypes/compatible/{idBlood}";
 

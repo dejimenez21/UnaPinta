@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Una_Pinta.Helpers.Requests;
 using Una_Pinta.Models;
 using UnaPinta.Dto.Models;
+using UnaPinta.Dto.Models.Request;
 
 namespace Una_Pinta.Services
 {
@@ -79,17 +80,12 @@ namespace Una_Pinta.Services
         /// </summary>
         /// <returns>HttpResponseMessage</returns>
         /// <exception cref="System.WebException">Thrown when status code of response are different to 200 (OK)</exception>
-        [Obsolete]
         public Task<IRestResponse> PostBloodRequest(RequestCreateDto requestCreate, string token)
         {
             var client = new RestClient(ApiRequests.HostUrl);
             client.Authenticator = new JwtAuthenticator(token);
             var request = new RestRequest(ApiRequests.PostBloodRequest, Method.POST);            
             request.AddHeader("Content-Type", "multipart/form-data");
-            //request.AddFile("prescription", requestCreate.PrescriptionDirectory);
-            //byte[] bytes = Encoding.ASCII.GetBytes(requestCreate.PrescriptionBase64);
-            var bytes = GetByteArray(requestCreate.PrescriptionImage.OpenReadStream());
-            request.AddFile("prescription", bytes, requestCreate.PrescriptionImage.FileName);
             request.AddHeader("Cache-Control", "no-cache");
             request.AddParameter("application/json", $"requestCreate={JsonConvert.SerializeObject(requestCreate)}", ParameterType.RequestBody);
             //request.AddBody(requestCreate);
@@ -130,17 +126,124 @@ namespace Una_Pinta.Services
             }
         }
 
-        public byte[] GetByteArray(Stream input)
+        public Task<IRestResponse> PostCase(Cases cases, string token)
         {
-            byte[] buffer = new byte[16 * 1024];
-            using (MemoryStream ms = new MemoryStream())
+            var client = new RestClient(ApiRequests.HostUrl);
+            client.Authenticator = new JwtAuthenticator(token);
+            var request = new RestRequest(ApiRequests.CreateCase, Method.POST);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddJsonBody(cases);
+            try
             {
-                int read;
-                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
-                {
-                    ms.Write(buffer, 0, read);
-                }
-                return ms.ToArray();
+                var queryResult = client.ExecuteAsync(request).Result;
+                return Task.FromResult(queryResult);
+            }
+            catch (WebException ex)
+            {
+                Debug.WriteLine(ex.Response);
+                return null;
+            }
+        }
+
+        public Task<List<RequestSummary>> GetRequestSummaryToDatatable(string token)
+        {
+            try
+            {
+                var client = new RestClient(ApiRequests.HostUrl);
+                client.Authenticator = new JwtAuthenticator(token);
+                var request = new RestRequest(ApiRequests.GetRequestSummaryDataTable, Method.GET);
+                request.RequestFormat = DataFormat.Json;
+                request.AddHeader("Content-Type", "application/json");
+                request.AddHeader("Cache-Control", "no-cache");
+                var response = client.ExecuteAsync(request).Result.Content;
+                var content = JsonConvert.DeserializeObject<List<RequestSummary>>(response);
+                return Task.FromResult(content);
+            }
+            catch (WebException ex)
+            {
+                Debug.WriteLine(ex.Response);
+                return null;
+            }
+        }
+
+        public Task<RequestCasesDto> GetRequestsWithDonors(string token, int id)
+        {
+            try
+            {
+                var client = new RestClient(ApiRequests.HostUrl);
+                client.Authenticator = new JwtAuthenticator(token);
+                var request = new RestRequest(ApiRequests.GetCasesWithDonors(id), Method.GET);
+                request.RequestFormat = DataFormat.Json;
+                request.AddHeader("Content-Type", "application/json");
+                request.AddHeader("Cache-Control", "no-cache");
+                var response = client.ExecuteAsync(request).Result.Content;
+                var content = JsonConvert.DeserializeObject<RequestCasesDto>(response);
+                return Task.FromResult(content);
+            }
+            catch (WebException ex)
+            {
+                Debug.WriteLine(ex.Response);
+                return null;
+            }
+        }
+        public Task<IRestResponse> PostCaseComplete(int id, string token)
+        {
+            var client = new RestClient(ApiRequests.HostUrl);
+            client.Authenticator = new JwtAuthenticator(token);
+            var request = new RestRequest(ApiRequests.CompleteCase(id), Method.PUT);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddJsonBody(id);
+            try
+            {
+                var queryResult = client.ExecuteAsync(request).Result;
+                return Task.FromResult(queryResult);
+            }
+            catch (WebException ex)
+            {
+                Debug.WriteLine(ex.Response);
+                return null;
+            }
+        }
+
+        public Task<IRestResponse> PostCaseCanceled(int id, string token)
+        {
+            var client = new RestClient(ApiRequests.HostUrl);
+            client.Authenticator = new JwtAuthenticator(token);
+            var request = new RestRequest(ApiRequests.CancelCase(id), Method.PUT);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddJsonBody(id);
+            try
+            {
+                var queryResult = client.ExecuteAsync(request).Result;
+                return Task.FromResult(queryResult);
+            }
+            catch (WebException ex)
+            {
+                Debug.WriteLine(ex.Response);
+                return null;
+            }
+        }
+
+        public Task<IRestResponse> PostRequestCompleted(int id, string token)
+        {
+            var client = new RestClient(ApiRequests.HostUrl);
+            client.Authenticator = new JwtAuthenticator(token);
+            var request = new RestRequest(ApiRequests.CompleteRequest(id), Method.PUT);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddJsonBody(id);
+            try
+            {
+                var queryResult = client.ExecuteAsync(request).Result;
+                return Task.FromResult(queryResult);
+            }
+            catch (WebException ex)
+            {
+                Debug.WriteLine(ex.Response);
+                return null;
             }
         }
     }

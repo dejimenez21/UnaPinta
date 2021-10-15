@@ -54,6 +54,8 @@ namespace Una_Pinta.Controllers
         public async Task<IActionResult> UserTapLogin(UserSignUp userSignUp)
         {
             var tokenSession = "";
+            var name = "";
+            DateTime date = new DateTime();
             var result = await _userRepository.GetUser(userSignUp);            
             RoleEnum = new RoleEnum();
             if (((int)result.StatusCode) == 200)
@@ -63,8 +65,17 @@ namespace Una_Pinta.Controllers
                 BloodType = _utilities.VerifyBloodType(token);
                 RoleEnum = _utilities.VerifyRole(token);
                 _utilities.SetUserName(token);
+                name = _utilities.GetUserInfo(token).name;
+                date = _utilities.GetUserInfo(token).birthDate;
             }
-            return Json(new { code = (int)result.StatusCode, responseText = result.Content, roleUser = ((int)RoleEnum), blood = BloodType, token = tokenSession });
+            return Json(new { code = (int)result.StatusCode, 
+                responseText = result.Content, 
+                roleUser = ((int)RoleEnum), 
+                blood = BloodType, 
+                token = tokenSession,
+                nameOfUser = name,
+                birthDate = date
+            });
             
         }
 

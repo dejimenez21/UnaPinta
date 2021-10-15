@@ -50,10 +50,11 @@ namespace UnaPinta.Api.Extensions
 
             if (isAzure)
             {
-                services.AddDbContext<UnaPintaDBContext>(
-                    options => options.UseSqlServer(
-                        configuration.GetConnectionString("AzureConnection"), b => b.MigrationsAssembly("UnaPinta.Api")
-                    )
+                services.AddDbContext<UnaPintaDBContext>(options => 
+                    options.UseLazyLoadingProxies()
+                        .UseSqlServer(
+                            configuration.GetConnectionString("AzureConnection"), b => b.MigrationsAssembly("UnaPinta.Api")
+                        )
                 );
 
                 return;
@@ -62,7 +63,7 @@ namespace UnaPinta.Api.Extensions
             if (isLocal)
             {
                 services.AddDbContext<UnaPintaDBContext>(
-                    options => options.UseSqlServer(
+                    options => options.UseLazyLoadingProxies().UseSqlServer(
                         configuration.GetConnectionString("LocalConnection"), b => b.MigrationsAssembly("UnaPinta.Api")
                     )
                 );
@@ -72,7 +73,7 @@ namespace UnaPinta.Api.Extensions
 
             services.AddDbContext<UnaPintaDBContext>(
 
-                options => options.UseSqlite(
+                options => options.UseLazyLoadingProxies().UseSqlite(
                     configuration.GetConnectionString("SQLiteConnection"), b => b.MigrationsAssembly("UnaPinta.Api")
                 )
             );

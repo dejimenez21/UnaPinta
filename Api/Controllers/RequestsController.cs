@@ -65,5 +65,40 @@ namespace UnaPinta.Api.Controllers
         [HttpGet("stringDates")]
         public async Task<ActionResult<IEnumerable<StringDate>>> GetStringDates() =>
             Ok(await _service.RetrieveAllStringDates());
+
+        [HttpGet("datatable")]
+        [Authorize(Roles ="solicitante")]
+        public async Task<ActionResult<IEnumerable<RequestSummaryDto>>> GetRequestsForDatatable([FromQuery]string search = null)
+        {
+            var username = _tokenParams.UserName;
+            var requests = await _service.RetrieveRequestsSummaryByRequester(username, search);
+            return Ok(requests);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "solicitante")]
+        public async Task<ActionResult> DeleteRequest(long id)
+        {
+            await _service.DeleteRequestById(id, _tokenParams.UserName);
+            return Ok();
+        }
+
+        [HttpGet("withCases/{id}")]
+        [Authorize(Roles = "solicitante")]
+        public async Task<ActionResult<RequestCasesDto>> GetRequestDetailsForRequester(long id)
+        {
+            var username = _tokenParams.UserName;
+            var requestCases = await _service.RetrieveRequestWithCases(id, username);
+            return Ok(requestCases);
+        }
+
+        [HttpPut("markAsCompleted/{id}")]
+        [Authorize(Roles = "solicitante")]
+        public async Task<ActionResult> MarkAsCompleted(long id)
+        {
+            var username = _tokenParams.UserName;
+            await _service.MarkRequestAsCompleted(id, username);
+            return Ok();
+        }
     }
 }

@@ -11,5 +11,10 @@ namespace UnaPinta.Data.Repositories
     public class CaseRepository : RepositoryBase<Case, long>, ICaseRepository
     {
         public CaseRepository(UnaPintaDBContext dBContext) : base(dBContext) { }
+
+        public Task<IEnumerable<Case>> SelectCasesByRequestId(long id)
+        {
+            return SelectAsync(c => c.RequestId == id);
+        }
     }
 }

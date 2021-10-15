@@ -10,5 +10,7 @@ namespace UnaPinta.Data.Contracts
     public interface IFileRepository
     {
         Task<File> SelectById(long id);
+
+        void Delete(File file);
     }
 }

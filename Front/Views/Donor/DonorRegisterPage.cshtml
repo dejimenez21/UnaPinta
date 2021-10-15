@@ -1,4 +1,7 @@
 ﻿@model Una_Pinta.Models.UserSignUp
+@{
+    Layout = "LayoutUnaPinta";
+}
 <div class="container">
     <div class="text-center">
         <p style="font-family: 'Roboto', sans-serif; font-size:30px; font-weight:bold">Registro de Donante</p>
@@ -142,9 +145,7 @@
                 text: "Las contraseñas no coinciden",
                 type: "error",
                 icon: "error",
-                showCancelButton: true,
-                closeOnConfirm: true,
-                closeOnCancel: true
+                closeOnConfirm: true
             });
             return false;
         }
@@ -156,9 +157,7 @@
                 text: "El número de teléfono, no es válido",
                 type: "error",
                 icon: "error",
-                showCancelButton: true,
-                closeOnConfirm: true,
-                closeOnCancel: true
+                closeOnConfirm: true
             });
             return false;
         }
@@ -171,13 +170,11 @@
                 title: "Error",
                 text: response.responseText,
                 icon: "error",
-                showCancelButton: true,
-                closeOnConfirm: true,
-                closeOnCancel: true
+                closeOnConfirm: true
             });
         }
         else {
-            window.location.href ="/ConfirmAccount/ConfirmAccount"
+            window.location.href = "/ConfirmAccount/ConfirmAccount"
         }
     }
 </script>
