@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using UnaPinta.Data.Contracts;
 using UnaPinta.Data.Entities;
 using UnaPinta.Data.Extensions;
-
+//OJASO: REVISAR ASUNTO DE LAZY LOADING Y ASNOTRACKING
 namespace UnaPinta.Data.Repositories
 {
     public abstract class RepositoryBase<TEntity, TKey> : IRepositoryBase<TEntity, TKey> where TEntity : BaseEntity<TKey>
@@ -41,11 +41,11 @@ namespace UnaPinta.Data.Repositories
 
         #region Retrieve
         #region Querys
-        public virtual IQueryable<TEntity> QueryAll(bool trackChanges=false) => 
+        public virtual IQueryable<TEntity> QueryAll(bool trackChanges=true) => 
             !trackChanges ? dbSet.Where(e => !e.DeletedAt.HasValue).AsNoTracking() : dbSet.Where(e => !e.DeletedAt.HasValue);
 
         public virtual IQueryable<TEntity> QueryByCondition(Expression<Func<TEntity, bool>> where,
-            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null, bool trackChanges=false)
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null, bool trackChanges=true)
         {
             var query = dbSet.IncludeMany(includes).Where(e => !e.DeletedAt.HasValue);
             if (where != null) query = query.Where(where);
@@ -59,7 +59,7 @@ namespace UnaPinta.Data.Repositories
         public async Task<TEntity> SelectByIdAsync(TKey id) => await dbSet.FindAsync(id);
 
         public async Task<TEntity> SelectOneAsync(Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, 
-            IIncludableQueryable<TEntity, object>> includes = null, bool trackChanges = false)
+            IIncludableQueryable<TEntity, object>> includes = null, bool trackChanges = true)
         {
             var query = QueryByCondition(where, includes, trackChanges);
             return await query.FirstOrDefaultAsync();
@@ -70,7 +70,7 @@ namespace UnaPinta.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<TEntity>> SelectAsync(Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null, bool trackChanges = false)
+        public async Task<IEnumerable<TEntity>> SelectAsync(Expression<Func<TEntity, bool>> where, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null, bool trackChanges = true)
         {
             var query = QueryByCondition(where, includes, trackChanges);
             return await query.ToListAsync();
