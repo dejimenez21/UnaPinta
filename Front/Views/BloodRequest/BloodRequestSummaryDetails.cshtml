@@ -72,9 +72,25 @@
                         </div>
                         <hr>
                         <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Cantidad solicitada</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <span>@requestDetail.Amount</span> Pintas
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
                             <div class="col-sm-12">
-                                <button id="cancelButton" class="btn btn-danger" href="#">Cancelar</button>
-                                <button id="completeButton" onclick="completeCase(@requestDetail.Cases.FirstOrDefault().Id)" class="btn btn-success" type="submit">Marcar como completado</button>
+                                @if (requestDetail.Cases.Count(elem => elem.Status == "Finalizado") > 0)
+                                {
+                                    <button id="completeButton" onclick="completeRequest(@requestDetail.Request.Id, @requestDetail.Amount, @requestDetail.Cases.Count(elem => elem.Status == "Finalizado"))" class="btn btn-primary" type="submit">Marcar como completado</button>
+                                }
+                                else
+                                {
+                                    <button id="cancelButton" class="btn btn-danger" href="#">Cancelar</button>
+                                }
+
                             </div>
                         </div>
                     </div>
@@ -181,6 +197,28 @@
                 $.post(url, function (response) {
                     if (response.statusCode == 200) {
                         location.reload();   
+                    }
+                });
+            }
+        });
+    }
+
+    function completeRequest(id, amount, finished) {
+        var url = "/BloodRequest/CancelCase/" + id;
+        Swal.fire({
+            title: 'Información',
+            text: "Solamente se han donado " + finished + " pintas de las " + amount + " solicitadas. ¿Está seguro que desea marcar la solicitud como completada? Al hacerlo se dejara de dar seguimiento a la misma.",
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#38b000',
+            cancelButtonColor: '#c1121f',
+            confirmButtonText: 'Si',
+            cancelButtonText: 'No'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.post(url, function (response) {
+                    if (response.statusCode == 200) {
+                        location.reload();
                     }
                 });
             }
