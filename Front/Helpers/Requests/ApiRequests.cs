@@ -22,6 +22,8 @@ namespace Una_Pinta.Helpers.Requests
 
         public static string ConfirmEmail(string id, string token) => $"api/auth/confirmemail?userid={id}&token={token}";
 
+        public static string CompleteCase(int id) => $"api/Cases/complete/{id}";
+
         public static string GetBloodTypesPossibles(int idBlood) => $"api/BloodTypes/compatible/{idBlood}";
 
         public static string GetRequestDetails(int idRequest) => $"api/Requests/{idRequest}/details";

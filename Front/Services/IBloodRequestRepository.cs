@@ -18,5 +18,6 @@ namespace Una_Pinta.Services
         Task<List<RequestSummary>> GetRequestSummaryToDatatable(string token);
         Task<RequestCasesDto> GetRequestsWithDonors(string token, int id);
         Task<List<StringDate>> GetStringDates();
+        Task<IRestResponse> PostCaseComplete(int id, string token);
     }
 }
