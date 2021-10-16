@@ -21,5 +21,6 @@ namespace Una_Pinta.Services
         Task<IRestResponse> PostCaseComplete(int id, string token);
         Task<IRestResponse> PostCaseCanceled(int id, string token);
         Task<IRestResponse> PostRequestCompleted(int id, string token);
+        Task<IRestResponse> PostRequestCanceled(int id, string token);
     }
 }

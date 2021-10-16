@@ -235,5 +235,13 @@ namespace Una_Pinta.Controllers
             var resultContent = await _bloodRequestRepository.PostRequestCompleted(id, getToken);
             return Json(new { content = resultContent.Content, statusCode = resultContent.StatusCode });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CancelRequest(int id)
+        {
+            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var resultContent = await _bloodRequestRepository.PostRequestCanceled(id, getToken);
+            return Json(new { content = resultContent.Content, statusCode = resultContent.StatusCode });
+        }
     }
 }
