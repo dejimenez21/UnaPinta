@@ -111,9 +111,10 @@ namespace Una_Pinta.Controllers
             return View();
         }
 
-        public async Task<IActionResult> SendEmail(UserSignUp userSignUp)
+        [HttpGet]
+        public async Task<IActionResult> SendEmail(string email)
         {
-            var resultContent = await _userRepository.SendEmail(userSignUp.Email);
+            var resultContent = await _userRepository.SendEmail(email);
             return Json(new { content = resultContent.Content, statusCode = resultContent.StatusCode });
         }
     }
