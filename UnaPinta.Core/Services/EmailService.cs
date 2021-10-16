@@ -63,5 +63,32 @@ namespace UnaPinta.Core.Services
             var body = bodyBuilder.ToMessageBody();
             return body;
         }
+
+        public async Task SendPasswordResetLinkEmailAsync(User user, string url)
+        {
+            MailboxAddress to = new MailboxAddress(
+                $"{user.FirstName} {user.LastName}", user.Email);
+
+            string subject = "Recuperación de contraseña";
+
+            BodyBuilder bodyBuilder = new BodyBuilder();
+            var imagePath = "../API/wwwroot/images/UnaPinta.png";
+            var image = bodyBuilder.LinkedResources.Add(imagePath);
+            image.ContentId = MimeUtils.GenerateMessageId();
+            var preBody = await GetPasswordResetBody(url, user.UserName);
+            bodyBuilder.HtmlBody = preBody.Replace("Images/UnaPinta.png", "cid:" + image.ContentId);
+            var body = bodyBuilder.ToMessageBody();
+
+            await _broker.Send(to, subject, body);
+        }
+
+        private async Task<string> GetPasswordResetBody(string url, string userName)
+        {
+            string path = "../API/Templates/ResetPasswordEmail.html";
+            string body = await System.IO.File.ReadAllTextAsync(path);
+            body = body.Replace("@Url", url);
+            body = body.Replace("@userName", userName);
+            return body;
+        }
     }
 }
