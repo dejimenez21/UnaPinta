@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -27,8 +28,8 @@ namespace UnaPinta.Data.Repositories
                             INNER JOIN RequestPossibleBloodTypes rp ON rp.RequestId = r.Id AND rp.BloodTypeId = u.BloodTypeId
                         WHERE u.EmailConfirmed = 1 AND u.CanDonate = 1";
 
-            var sqlParameters = new List<SqliteParameter>();
-            sqlParameters.Add(new SqliteParameter("@requestId", request.Id));
+            var sqlParameters = new List<SqlParameter>();
+            sqlParameters.Add(new SqlParameter("@requestId", request.Id));
             var donors = await _dbContext.Users.FromSqlRaw(sql, sqlParameters.ToArray()).ToListAsync();
 
             return donors;
