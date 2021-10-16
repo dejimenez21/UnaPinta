@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnaPinta.Data.Entities;
 using UnaPinta.Dto.Models;
+using UnaPinta.Dto.Models.Auth;
 
 namespace UnaPinta.Core.Contracts
 {
@@ -16,5 +17,6 @@ namespace UnaPinta.Core.Contracts
 
         Task<RoleCreateResponseDto> CreateRole(RoleCreate roleCreate);
         Task SendPasswordResetLinkAsync(string email, string action);
+        Task ResetPasswordAsync(PasswordResetDto passwordResetDto);
     }
 }
