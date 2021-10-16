@@ -181,14 +181,42 @@ namespace UnaPinta.Core.Services
 
             //TODO: Agregar logica para cuando el email no este confimado
 
-            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
             var encodedToken = Encoding.UTF8.GetBytes(token);
             var validToken = WebEncoders.Base64UrlEncode(encodedToken);
 
-            var url = string.Concat(action, $"?id={user.Id}&token={validToken}");
+            var url = string.Concat(action, $"?userName={user.UserName}&token={validToken}");
 
             await _emailService.SendPasswordResetLinkEmailAsync(user, url);
+        }
+
+        public async Task ResetPasswordAsync(PasswordResetDto passwordResetDto)
+        {
+            var user = await _userManager.FindByNameAsync(passwordResetDto.UserName);
+
+            if (user == null)
+                throw new BaseDomainException("El usuario no existe", 400);
+
+            byte[] decodedToken;
+            try
+            {
+                decodedToken = WebEncoders.Base64UrlDecode(passwordResetDto.Token);
+            }
+            catch (Exception e)
+            {
+                throw new TokenBadFormatException(e.Message);
+            }
+
+            var normalToken = Encoding.UTF8.GetString(decodedToken);
+
+            var result = await _userManager.ResetPasswordAsync(user, normalToken, passwordResetDto.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                throw new BaseDomainException("Ha ocurrido un error al cambiar la contraseña", 400);
+            }
+
         }
     }
 }

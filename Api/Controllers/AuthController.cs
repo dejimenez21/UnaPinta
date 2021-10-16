@@ -14,6 +14,7 @@ using UnaPinta.Core.Exceptions;
 using UnaPinta.Api.Filters;
 using Microsoft.AspNetCore.Authorization;
 using UnaPinta.Api.Helpers;
+using UnaPinta.Dto.Models.Auth;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -165,6 +166,13 @@ namespace UnaPinta.Api.Controllers
 
             await _authService.SendPasswordResetLinkAsync(email, link);
 
+            return Ok();
+        }
+
+        [HttpPost("resetPassword")]
+        public async Task<ActionResult> ResetPassword(PasswordResetDto passwordResetDto)
+        {
+            await _authService.ResetPasswordAsync(passwordResetDto);
             return Ok();
         }
     }
