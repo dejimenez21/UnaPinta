@@ -21,7 +21,7 @@
                         <div class="d-flex flex-column align-items-center text-center">
                             <lottie-player src="https://assets9.lottiefiles.com/packages/lf20_ej9qnvlt/Pediatra.json" background="transparent" speed="1" style="width: 300px; height: 300px;" autoplay></lottie-player>
                         </div>
-                        <div>
+                        <div class="text-center">
                             @requestDetail.Status
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                                         break;
 
                                     case RequestStatusEnumeration.REGISTERED:
-                                        <button id="cancelButton" onclick="deletRequest(@requestDetail.Request.Id)" class="btn btn-danger" href="#">Eliminar</button>
+                                        <button id="cancelButton" onclick="deletRequest(@requestDetail.Request.Id, @requestDetail.Amount, @requestDetail.Cases.Count(elem => elem.Status == "Finalizado"))" class="btn btn-danger" type="submit">Eliminar</button>
                                         break;
                                 }
                             </div>
@@ -230,7 +230,7 @@
         });
     }
 
-    function deletRequest(id) {
+    function deletRequest(id, amount, finished) {
         var url = "/BloodRequest/CancelRequest/" + id;
         Swal.fire({
             title: 'Información',

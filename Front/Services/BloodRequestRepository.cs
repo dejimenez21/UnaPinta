@@ -251,7 +251,7 @@ namespace Una_Pinta.Services
         {
             var client = new RestClient(ApiRequests.HostUrl);
             client.Authenticator = new JwtAuthenticator(token);
-            var request = new RestRequest(ApiRequests.DeleteRequest(id), Method.PUT);
+            var request = new RestRequest(ApiRequests.DeleteRequest(id), Method.DELETE);
             request.AddHeader("Content-Type", "application/json");
             request.AddHeader("Cache-Control", "no-cache");
             request.AddJsonBody(id);
