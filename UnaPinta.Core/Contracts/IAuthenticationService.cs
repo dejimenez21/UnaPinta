@@ -15,5 +15,6 @@ namespace UnaPinta.Core.Contracts
         Task<string> AuthenticateAsync(UserLogin login);
 
         Task<RoleCreateResponseDto> CreateRole(RoleCreate roleCreate);
+        Task SendPasswordResetLinkAsync(string email, string action);
     }
 }

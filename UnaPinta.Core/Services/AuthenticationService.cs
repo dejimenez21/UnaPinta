@@ -169,5 +169,26 @@ namespace UnaPinta.Core.Services
 
             return token;
         }
+
+        public async Task SendPasswordResetLinkAsync(string email, string action)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                throw new BaseDomainException("No existe ningun usuario con este correo.", 404);
+            }
+
+            //TODO: Agregar logica para cuando el email no este confimado
+
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            var encodedToken = Encoding.UTF8.GetBytes(token);
+            var validToken = WebEncoders.Base64UrlEncode(encodedToken);
+
+            var url = string.Concat(action, $"?id={user.Id}&token={validToken}");
+
+            await _emailService.SendPasswordResetLinkEmailAsync(user, url);
+        }
     }
 }
