@@ -105,5 +105,15 @@ namespace Una_Pinta.Controllers
                 return RedirectToAction("ConfirmAccount", "ConfirmAccount");
             }
         }
+
+        public async Task<IActionResult> MailCredentials()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> SetNewCredentials()
+        {
+            return View();
+        }
     }
 }
