@@ -93,7 +93,7 @@
                                         break;
 
                                     case RequestStatusEnumeration.REGISTERED:
-                                        <button id="cancelButton" class="btn btn-danger" href="#">Eliminar</button>
+                                        <button id="cancelButton" onclick="deletRequest(@requestDetail.Request.Id)" class="btn btn-danger" href="#">Eliminar</button>
                                         break;
                                 }
                             </div>
@@ -224,6 +224,28 @@
                 $.post(url, function (response) {
                     if (response.statusCode == 200) {
                         location.reload();
+                    }
+                });
+            }
+        });
+    }
+
+    function deletRequest(id) {
+        var url = "/BloodRequest/CancelRequest/" + id;
+        Swal.fire({
+            title: 'Información',
+            text: "Solamente se han donado " + finished + " pintas de las " + amount + " solicitadas. ¿Está seguro que desea eliminar la solicitud? Al hacerlo se dejará de dar seguimiento a la misma.",
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#38b000',
+            cancelButtonColor: '#c1121f',
+            confirmButtonText: 'Si',
+            cancelButtonText: 'No'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.post(url, function (response) {
+                    if (response.statusCode == 200) {
+                        window.location.href = "/BloodRequest/BloodRequestList"
                     }
                 });
             }
