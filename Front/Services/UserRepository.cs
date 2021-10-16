@@ -105,5 +105,23 @@ namespace Una_Pinta.Services
                 return null;
             }
         }
+
+        public Task<IRestResponse> SendEmail(string email)
+        {
+            var client = new RestClient(ApiRequests.HostUrl);
+            var request = new RestRequest(ApiRequests.SendEmailForResetPassword(email), Method.GET);
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("Cache-Control", "no-cache");
+            try
+            {
+                var queryResult = client.ExecuteAsync(request).Result;
+                return Task.FromResult(queryResult);
+            }
+            catch (WebException ex)
+            {
+                Debug.WriteLine(ex.Response);
+                return null;
+            }
+        }
     }
 }

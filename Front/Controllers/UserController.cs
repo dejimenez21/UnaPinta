@@ -111,9 +111,10 @@ namespace Una_Pinta.Controllers
             return View();
         }
 
-        public async Task<IActionResult> SetNewCredentials()
+        public async Task<IActionResult> SendEmail(UserSignUp userSignUp)
         {
-            return View();
+            var resultContent = await _userRepository.SendEmail(userSignUp.Email);
+            return Json(new { content = resultContent.Content, statusCode = resultContent.StatusCode });
         }
     }
 }
