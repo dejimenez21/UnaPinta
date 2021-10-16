@@ -21,7 +21,7 @@
                     <span data-valmsg-for="Name" class="text-danger" data-valmsg-replace="true" />
                 </div>
                 <label style="font-family: 'Roboto', sans-serif;">Centro de donación:</label>
-                <input type="text" asp-for="CenterName" id="CenterName" data-val-required="El centro de donacióñ es un campo obligatorio" placeholder="Clinica Independencia" class="form-control" />
+                <input type="text" asp-for="CenterName" id="CenterName" data-val-required="El centro de donación es un campo obligatorio" placeholder="Clinica Independencia" class="form-control" />
                 <div class="text-center">
                     <span data-valmsg-for="CenterName" class="text-danger" data-valmsg-replace="true" />
                 </div>
@@ -175,6 +175,8 @@
                     title: "Correcto",
                     text: "Solicitud creada correctamente",
                     icon: "success",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                     closeOnConfirm: true
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -188,11 +190,9 @@
                 console.log(dataofconfirm);
                 Swal.fire({
                     title: "Error",
-                    text: dataofconfirm.responseText,
+                    text: "Existen uno o mas campos sin completar",
                     icon: "error",
-                    showCancelButton: true,
-                    closeOnConfirm: true,
-                    closeOnCancel: true
+                    closeOnConfirm: true
                 });
             }
         });
@@ -257,7 +257,7 @@
         if (response.code != 201) {
             Swal.fire({
                 title: "Error",
-                text: response.responseText,
+                text: "Ha ocurrido un error en el proceso",
                 icon: "error",
                 showCancelButton: true,
                 closeOnConfirm: true,
