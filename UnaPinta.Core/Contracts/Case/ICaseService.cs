@@ -16,5 +16,6 @@ namespace UnaPinta.Core.Contracts.Case
         Task<CaseForRequestDto> MarkCaseAsCompleted(long id, string requesterUsername);
 
         Task CancelCase(long caseId, string username);
+        Task<CaseDetailsDto> RetrieveCaseDetailsByDonor(string userName);
     }
 }

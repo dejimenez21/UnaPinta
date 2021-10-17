@@ -34,6 +34,15 @@ namespace UnaPinta.Api.Controllers
             return Created($"api/cases/{caseDetails.Id}", caseDetails); 
         }
 
+        [HttpGet("inprocess")]
+        [Authorize(Roles = "donante")]
+        public async Task<ActionResult<CaseDetailsDto>> GetInProcess()
+        {
+            var userName = _tokenParams.UserName;
+            var caseDetails = await _caseService.RetrieveCaseDetailsByDonor(userName);
+            return Ok(caseDetails);
+        }
+
         [HttpPut("complete/{id}")]
         [Authorize(Roles ="solicitante")]
         public async Task<ActionResult<CaseForRequestDto>> MarkAsCompleted(long id)

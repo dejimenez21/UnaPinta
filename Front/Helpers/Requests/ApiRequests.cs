@@ -17,6 +17,7 @@ namespace Una_Pinta.Helpers.Requests
         public static string GetRequestSummaryDataTable = "api/Requests/datatable";
         public static string GetStringDates = "api/Requests/stringDates";
         public static string CreateCase = "api/cases";
+        public static string DonorWithActiveCase = "api/cases/inprocess";
 
         public static string ResetPassword = "api/Auth/resetPassword";
 

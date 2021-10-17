@@ -37,6 +37,7 @@ namespace UnaPinta.Data.Repositories
                 .Where(r =>
                     r.ProvinceId == donor.ProvinceId
                     && r.PossibleBloodTypes.Select(p => p.BloodTypeId).Contains(donor.BloodTypeId)
+                    && r.Amount > r.Cases.Count(c => !c.DeletedAt.HasValue && c.StatusId != Dto.Enums.CaseStatusEnum.Cancelado)
                 )
                 .ToListAsync();
             return requests;

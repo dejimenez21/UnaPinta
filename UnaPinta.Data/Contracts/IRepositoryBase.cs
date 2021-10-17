@@ -13,15 +13,15 @@ namespace UnaPinta.Data.Contracts
 
         Task<TEntity> SelectByIdAsync(TKey id);
         Task<TEntity> SelectOneAsync(Expression<Func<TEntity, bool>> where, 
-            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null, bool trackChanges = false);
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null, bool trackChanges = true);
         
         Task<IEnumerable<TEntity>> SelectAllAsync();
         Task<IEnumerable<TEntity>> SelectAsync(Expression<Func<TEntity, bool>> where,
-            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null, bool trackChanges = false);
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null, bool trackChanges = true);
         
         IQueryable<TEntity> QueryAll(bool trackChanges=false);
         IQueryable<TEntity> QueryByCondition(Expression<Func<TEntity, bool>> where,
-            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null, bool trackChanges=false);
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null, bool trackChanges= true);
         
         void Insert(TEntity entity);
         void InsertRange(IEnumerable<TEntity> entities);

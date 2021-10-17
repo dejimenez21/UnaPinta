@@ -27,15 +27,18 @@ namespace UnaPinta.Core.Services
         private readonly RoleManager<Role> _roleManager;
         private readonly IMapper _mapper;
         private readonly IEmailService _emailService;
+        private readonly IWaitListServices _waitListServices;
+
         //private User _user;
         public AuthenticationService(UserManager<User> userManager, IConfiguration configuration, 
-             RoleManager<Role> roleManager, IMapper mapper, IEmailService emailService)
+             RoleManager<Role> roleManager, IMapper mapper, IEmailService emailService, IWaitListServices waitListServices)
         {
             _userManager = userManager;
             _configuration = configuration;
             _roleManager = roleManager;
             _mapper = mapper;
             _emailService = emailService;
+            _waitListServices = waitListServices;
         }
 
         public async Task<RoleCreateResponseDto> CreateRole(RoleCreate roleCreate)
@@ -82,7 +85,7 @@ namespace UnaPinta.Core.Services
                 new Claim(nameof(UserJwtClaimsDto.EmailConfirmed), user.EmailConfirmed.ToString()),
                 new Claim(nameof(UserJwtClaimsDto.BloodType), ((int)user.BloodTypeId).ToString()),
                 new Claim(nameof(UserJwtClaimsDto.BirthDate), user.BirthDate.ToString()),
-                new Claim(nameof(UserJwtClaimsDto.CanDonate), user.CanDonate.ToString())
+                new Claim(nameof(UserJwtClaimsDto.CanDonate), (await IsDonorAvailableAsync(user)).ToString())
             };
 
 
@@ -93,7 +96,12 @@ namespace UnaPinta.Core.Services
             }
 
             return claims;
-        }   
+        }
+
+        private async Task<bool> IsDonorAvailableAsync(User user)
+        {
+            return await _waitListServices.IsDonorAvailable(user);
+        }
 
         private JwtSecurityToken GenerateTokenOptions(SigningCredentials credentials, List<Claim> claims)
         {

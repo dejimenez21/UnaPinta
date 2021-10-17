@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Una_Pinta.Models;
 using UnaPinta.Dto.Models;
+using UnaPinta.Dto.Models.Case;
 using UnaPinta.Dto.Models.Request;
 
 namespace Una_Pinta.Services
@@ -22,5 +23,6 @@ namespace Una_Pinta.Services
         Task<IRestResponse> PostCaseCanceled(int id, string token);
         Task<IRestResponse> PostRequestCompleted(int id, string token);
         Task<IRestResponse> PostRequestCanceled(int id, string token);
+        Task<CaseDetailsDto> GetCasesByDonor(string token);
     }
 }
