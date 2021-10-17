@@ -81,7 +81,8 @@ namespace UnaPinta.Core.Services
                 new Claim(nameof(UserJwtClaimsDto.UserName), user.UserName),
                 new Claim(nameof(UserJwtClaimsDto.EmailConfirmed), user.EmailConfirmed.ToString()),
                 new Claim(nameof(UserJwtClaimsDto.BloodType), ((int)user.BloodTypeId).ToString()),
-                new Claim(nameof(UserJwtClaimsDto.BirthDate), user.BirthDate.ToString())
+                new Claim(nameof(UserJwtClaimsDto.BirthDate), user.BirthDate.ToString()),
+                new Claim(nameof(UserJwtClaimsDto.CanDonate), user.CanDonate.ToString())
             };
 
 

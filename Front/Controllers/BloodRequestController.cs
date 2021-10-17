@@ -112,18 +112,32 @@ namespace Una_Pinta.Controllers
             return Json(new { content = provinces });
         }
 
+        public async Task<IActionResult> DonorErrorDonate()
+        {
+            return View();
+        }
+        
         public async Task<IActionResult> BloodRequestDetailsCollection()
         {
             var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
             var token = _utilities.GetJwtToken(getToken);
             var validateToken = _utilities.VerifyEmail(token: token);
+            var canDonate = _utilities.GetUserInfo(token).canDonateBlood;
 
             if (validateToken == true)
             {
-                var requestSummary = await _bloodRequestRepository.GetRequestSummary(getToken);
-                RequestSummaries = requestSummary;
-                TempData["requestSummary"] = requestSummary;
-                return View();
+                if (canDonate != false)
+                {
+                    var requestSummary = await _bloodRequestRepository.GetRequestSummary(getToken);
+                    RequestSummaries = requestSummary;
+                    TempData["requestSummary"] = requestSummary;
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("DonorErrorDonate", "BloodRequest");
+                }
+                
             }
             else
             {

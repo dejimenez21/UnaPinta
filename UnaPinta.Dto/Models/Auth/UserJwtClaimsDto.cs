@@ -13,5 +13,6 @@ namespace UnaPinta.Dto.Models.Auth
         public string EmailConfirmed { get; set; }
         public string BloodType { get; set; }
         public string BirthDate { get; set; }
+        public string CanDonate { get; set; }
     }
 }
