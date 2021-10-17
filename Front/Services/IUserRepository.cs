@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Una_Pinta.Models;
+using UnaPinta.Dto.Models.Auth;
 
 namespace Una_Pinta.Services
 {
@@ -15,5 +16,6 @@ namespace Una_Pinta.Services
         Task<IRestResponse> ConfirmEmail(string id, string token);
         Task<IRestResponse> ResendEmail(string token);
         Task<IRestResponse> SendEmail(string email);
+        Task<IRestResponse> ResetPassword(PasswordResetDto passwordResetDto);
     }
 }
