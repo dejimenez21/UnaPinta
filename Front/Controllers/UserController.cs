@@ -110,9 +110,10 @@ namespace Una_Pinta.Controllers
         }
 
         [HttpGet("resetPassword")]
-        public async Task<IActionResult> UserNewPassword(string id, string token)
+        public async Task<IActionResult> UserNewPassword(string userName, string token)
         {
             _httpContextAccessor.HttpContext.Session.SetString("userToken", token);
+            _httpContextAccessor.HttpContext.Session.SetString("userName", userName);
             return RedirectToAction("ResetCredentials", "User");
         }
 
@@ -134,11 +135,11 @@ namespace Una_Pinta.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostNewCredentials(string username, string password)
+        public async Task<IActionResult> PostNewCredentials(string password)
         {
             PasswordResetDto passwordResetDto = new PasswordResetDto();
-            passwordResetDto.UserName = username;
             passwordResetDto.NewPassword = password;
+            passwordResetDto.UserName = _httpContextAccessor.HttpContext.Session.GetString("userName");
             passwordResetDto.Token = _httpContextAccessor.HttpContext.Session.GetString("userToken");
             var resultContent = await _userRepository.ResetPassword(passwordResetDto);
             return Json(new {content = resultContent.Content, StatusCode = resultContent.StatusCode});
