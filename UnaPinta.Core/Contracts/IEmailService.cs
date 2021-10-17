@@ -12,5 +12,6 @@ namespace UnaPinta.Core.Contracts
     {
         Task SendEmailVerificationAsync(User receiver, string message);
         Task<MimeEntity> GetRequestNotificationBody(Request request);
+        Task SendPasswordResetLinkEmailAsync(User user, string url);
     }
 }

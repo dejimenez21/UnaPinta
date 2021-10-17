@@ -15,6 +15,7 @@ using Una_Pinta.Helpers.Requests;
 using Una_Pinta.Helpers.Utilities;
 using Una_Pinta.Models;
 using Una_Pinta.Services;
+using UnaPinta.Dto.Models.Auth;
 
 namespace Una_Pinta.Controllers
 {
@@ -22,6 +23,7 @@ namespace Una_Pinta.Controllers
     {
         readonly IUserRepository _userRepository;
         readonly IProvincesRepository _provincesRepository;
+        readonly IHttpContextAccessor _httpContextAccessor;
         readonly Utilities _utilities;
         public RoleEnum RoleEnum;
         public int BloodType;
@@ -31,6 +33,7 @@ namespace Una_Pinta.Controllers
             _userRepository = userRepository;
             _provincesRepository = provincesRepository;
             _utilities = new Utilities(httpContextAccessor);
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult UserLoginPage()
@@ -104,6 +107,41 @@ namespace Una_Pinta.Controllers
             {
                 return RedirectToAction("ConfirmAccount", "ConfirmAccount");
             }
+        }
+
+        [HttpGet("resetPassword")]
+        public async Task<IActionResult> UserNewPassword(string id, string token)
+        {
+            _httpContextAccessor.HttpContext.Session.SetString("userToken", token);
+            return RedirectToAction("ResetCredentials", "User");
+        }
+
+        public async Task<IActionResult> MailCredentials()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SendEmail(string email)
+        {
+            var resultContent = await _userRepository.SendEmail(email);
+            return Json(new { content = resultContent.Content, statusCode = resultContent.StatusCode });
+        }
+
+        public async Task<IActionResult> ResetCredentials()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostNewCredentials(string username, string password)
+        {
+            PasswordResetDto passwordResetDto = new PasswordResetDto();
+            passwordResetDto.UserName = username;
+            passwordResetDto.NewPassword = password;
+            passwordResetDto.Token = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var resultContent = await _userRepository.ResetPassword(passwordResetDto);
+            return Json(new {content = resultContent.Content, StatusCode = resultContent.StatusCode});
         }
     }
 }

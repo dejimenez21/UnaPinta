@@ -12,6 +12,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Una_Pinta.Services;
 using UnaPinta.Dto.Enums;
+using UnaPinta.Dto.Models.Auth;
 
 namespace Una_Pinta.Helpers.Utilities
 {
@@ -78,7 +79,7 @@ namespace Una_Pinta.Helpers.Utilities
             return Convert.ToInt32(selectBloodType.Value);
         }
 
-        public (RoleEnum role, string userName, string name, int bloodType, bool emailVerified, DateTime birthDate) GetUserInfo(JwtSecurityToken token)
+        public (RoleEnum role, string userName, string name, int bloodType, bool emailVerified, DateTime birthDate, bool canDonateBlood) GetUserInfo(JwtSecurityToken token)
         {
             if (token.Claims.First(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Value.Contains("solicitante"))
             {
@@ -100,7 +101,9 @@ namespace Una_Pinta.Helpers.Utilities
 
             var birth = Convert.ToDateTime(token.Claims.First(c => c.Type == "BirthDate").Value);
 
-            return new (roleEnum, userName, name, bloodType, emailVerified, birth);
+            var canDonate = token.Claims.First(c => c.Type == "CanDonate").Value.Contains("True");
+
+            return new (roleEnum, userName, name, bloodType, emailVerified, birth, canDonate);
         }
     }
 }

@@ -81,7 +81,8 @@ namespace UnaPinta.Core.Services
                 new Claim(nameof(UserJwtClaimsDto.UserName), user.UserName),
                 new Claim(nameof(UserJwtClaimsDto.EmailConfirmed), user.EmailConfirmed.ToString()),
                 new Claim(nameof(UserJwtClaimsDto.BloodType), ((int)user.BloodTypeId).ToString()),
-                new Claim(nameof(UserJwtClaimsDto.BirthDate), user.BirthDate.ToString())
+                new Claim(nameof(UserJwtClaimsDto.BirthDate), user.BirthDate.ToString()),
+                new Claim(nameof(UserJwtClaimsDto.CanDonate), user.CanDonate.ToString())
             };
 
 
@@ -168,6 +169,55 @@ namespace UnaPinta.Core.Services
             var token = await CreateToken(user);
 
             return token;
+        }
+
+        public async Task SendPasswordResetLinkAsync(string email, string action)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                throw new BaseDomainException("No existe ningun usuario con este correo.", 404);
+            }
+
+            //TODO: Agregar logica para cuando el email no este confimado
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            var encodedToken = Encoding.UTF8.GetBytes(token);
+            var validToken = WebEncoders.Base64UrlEncode(encodedToken);
+
+            var url = string.Concat(action, $"?userName={user.UserName}&token={validToken}");
+
+            await _emailService.SendPasswordResetLinkEmailAsync(user, url);
+        }
+
+        public async Task ResetPasswordAsync(PasswordResetDto passwordResetDto)
+        {
+            var user = await _userManager.FindByNameAsync(passwordResetDto.UserName);
+
+            if (user == null)
+                throw new BaseDomainException("El usuario no existe", 400);
+
+            byte[] decodedToken;
+            try
+            {
+                decodedToken = WebEncoders.Base64UrlDecode(passwordResetDto.Token);
+            }
+            catch (Exception e)
+            {
+                throw new TokenBadFormatException(e.Message);
+            }
+
+            var normalToken = Encoding.UTF8.GetString(decodedToken);
+
+            var result = await _userManager.ResetPasswordAsync(user, normalToken, passwordResetDto.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                throw new BaseDomainException("Ha ocurrido un error al cambiar la contraseña", 400);
+            }
+
         }
     }
 }

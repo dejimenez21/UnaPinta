@@ -13,6 +13,8 @@ using UnaPinta.Core.Exceptions.Role;
 using UnaPinta.Core.Exceptions;
 using UnaPinta.Api.Filters;
 using Microsoft.AspNetCore.Authorization;
+using UnaPinta.Api.Helpers;
+using UnaPinta.Dto.Models.Auth;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,10 +30,11 @@ namespace UnaPinta.Api.Controllers
         private readonly IMapper mapper;
         private readonly IAuthenticationService _authService;
         private readonly IProvinceService _provinceService;
+        private readonly ITokenParams _tokenParams;
 
         public AuthController(IAuthenticationService authManager, UserManager<User> userManager, 
             SignInManager<User> loginManager, RoleManager<Role> roleManager, IProvinceService provinceService, 
-            IMapper mapper)
+            IMapper mapper, ITokenParams tokenParams)
         {
             this.userManager = userManager;
             this.loginManager = loginManager;
@@ -39,6 +42,7 @@ namespace UnaPinta.Api.Controllers
             this.mapper = mapper;
             _authService = authManager;
             _provinceService = provinceService;
+            _tokenParams = tokenParams;
         }
 
 
@@ -152,6 +156,23 @@ namespace UnaPinta.Api.Controllers
 
             await _authService.SendEmailConfirmationAsync(user, link);
 
+            return Ok();
+        }
+
+        [HttpGet("sendPasswordReset/{email}")]
+        public async Task<ActionResult> SendPasswordReset(string email)
+        {
+            var link = string.Format("{0}://{1}{2}", Request.Scheme, "localhost:44308", "/resetPassword");
+
+            await _authService.SendPasswordResetLinkAsync(email, link);
+
+            return Ok();
+        }
+
+        [HttpPost("resetPassword")]
+        public async Task<ActionResult> ResetPassword(PasswordResetDto passwordResetDto)
+        {
+            await _authService.ResetPasswordAsync(passwordResetDto);
             return Ok();
         }
     }

@@ -11,6 +11,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Una_Pinta.Helpers.Requests;
 using Una_Pinta.Models;
+using UnaPinta.Dto.Models.Auth;
 
 namespace Una_Pinta.Services
 {
@@ -94,6 +95,43 @@ namespace Una_Pinta.Services
             var request = new RestRequest(ApiRequests.ResendEmail(), Method.GET);
             request.RequestFormat = DataFormat.Json;
             request.AddHeader("Cache-Control", "no-cache");
+            try
+            {
+                var queryResult = client.ExecuteAsync(request).Result;
+                return Task.FromResult(queryResult);
+            }
+            catch (WebException ex)
+            {
+                Debug.WriteLine(ex.Response);
+                return null;
+            }
+        }
+
+        public Task<IRestResponse> SendEmail(string email)
+        {
+            var client = new RestClient(ApiRequests.HostUrl);
+            var request = new RestRequest(ApiRequests.SendEmailForResetPassword(email), Method.GET);
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("Cache-Control", "no-cache");
+            try
+            {
+                var queryResult = client.ExecuteAsync(request).Result;
+                return Task.FromResult(queryResult);
+            }
+            catch (WebException ex)
+            {
+                Debug.WriteLine(ex.Response);
+                return null;
+            }
+        }
+
+        public Task<IRestResponse> ResetPassword(PasswordResetDto passwordResetDto)
+        {
+            var client = new RestClient(ApiRequests.HostUrl);
+            var request = new RestRequest(ApiRequests.ResetPassword, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddJsonBody(passwordResetDto);
             try
             {
                 var queryResult = client.ExecuteAsync(request).Result;

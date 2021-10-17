@@ -18,7 +18,11 @@ namespace Una_Pinta.Helpers.Requests
         public static string GetStringDates = "api/Requests/stringDates";
         public static string CreateCase = "api/cases";
 
+        public static string ResetPassword = "api/Auth/resetPassword";
+
         public static string GetCasesWithDonors(int id) => $"api/Requests/withCases/{id}";
+
+        public static string SendEmailForResetPassword(string email) => $"api/Auth/sendPasswordReset/{email}";
 
         public static string ConfirmEmail(string id, string token) => $"api/auth/confirmemail?userid={id}&token={token}";
 
