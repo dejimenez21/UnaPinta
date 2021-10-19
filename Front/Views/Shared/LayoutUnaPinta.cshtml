@@ -60,6 +60,7 @@
                             Bienvenido @HttpContextAccessor.HttpContext.Session.GetString("userName")
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" asp-controller="User" asp-action="UserProfile">Mi perfil</a>
                             <a class="dropdown-item" asp-controller="User" asp-action="UserLoginPage">Cerrar sesión</a>
                         </div>
                     </div>
