@@ -22,7 +22,7 @@
                                 <label class="mb-0" style="font-weight:bold">Nombre:</label>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input value="" class="form-control" />
+                                <input value="" readonly="readonly" class="form-control" />
                             </div>
                         </div>
                         <br/>
@@ -31,7 +31,7 @@
                                 <label class="mb-0" style="font-weight:bold">Apellidos:</label>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input value="" class="form-control" />
+                                <input value="" readonly="readonly" class="form-control" />
                             </div>
                         </div>
                         <br/>
@@ -40,7 +40,7 @@
                                 <label class="mb-0" style="font-weight:bold">Sexo:</label>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input value="" class="form-control" />
+                                <input value="" readonly="readonly" class="form-control" />
                             </div>
                         </div>
                         <br/>
@@ -49,7 +49,7 @@
                                 <label class="mb-0" style="font-weight:bold">Fecha de nacimiento:</label>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="date" value="" class="form-control" />
+                                <input type="date" readonly="readonly" value="" class="form-control" />
                             </div>
                         </div>
                         <br/>
@@ -58,7 +58,7 @@
                                 <label class="mb-0" style="font-weight:bold">Teléfono:</label>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input value="" class="form-control" />
+                                <input value="" id="inputPhone" readonly="readonly" class="form-control" />
                             </div>
                         </div>
                         <br/>
@@ -67,7 +67,7 @@
                                 <label class="mb-0" style="font-weight:bold">Provincia:</label>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input value="" class="form-control" />
+                                <input value="" id="inputProvince" readonly="readonly" class="form-control" />
                             </div>
                         </div>
                         <br/>
@@ -76,22 +76,15 @@
                                 <label class="mb-0" style="font-weight:bold">Usuario:</label>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input value="" class="form-control" />
-                            </div>
-                        </div>
-                        <br/>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <label class="mb-0" style="font-weight:bold">Contraseña:</label>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                <input value="" class="form-control" />
+                                <input value="" readonly="readonly" class="form-control" />
                             </div>
                         </div>
                         <br/>
                         <div class="row">
                             <div class="col-sm-12 text-right">
-                                <button id="cancelButton" onclick="cancelCase(listData.Id)" class="btn btn-success" type="submit">Guardar</button>
+                                <button id="editButton" onclick="editUser()" class="btn btn-primary">Editar</button>
+                                <button id="saveButton" hidden="hidden" onclick="saveChanges()" class="btn btn-success">Guardar</button>
+                                <button id="cancelButton" hidden="hidden" onclick="cancelhanges()" class="btn btn-info">Cancelar</button>
                             </div>
                         </div>
                     </div>
@@ -100,3 +93,62 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+
+    function editUser() {
+        $('#inputProvince').attr("readonly", false);
+        $('#inputPhone').attr("readonly", false);
+        $('#saveButton').attr("hidden", false);
+        $('#cancelButton').attr("hidden", false);
+    }
+
+    function saveChanges() {
+        var province = $('#inputProvince').val();
+        var phone = $('#inputPhone').val();
+
+        $.ajax({
+            url: "/User/ModifyFields/",
+            dataType: "json",
+            cache: false,
+            type: 'POST',
+            data: { province, phone },
+            success: function (result) {
+                if (result.statusCode == 200) {
+                    Swal.fire({
+                        title: "Bien",
+                        text: "Datos actualizados correctamente",
+                        type: "success",
+                        icon: "success",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        closeOnConfirm: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        }
+                    });
+                }
+                else {
+                    Swal.fire({
+                        title: "Error",
+                        text: "Ha ocurrido un error en el proceso",
+                        type: "error",
+                        icon: "error",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        closeOnConfirm: true
+                    })
+                }
+
+            }
+        });
+    }
+
+    function cancelhanges() {
+        $('#inputProvince').attr("readonly", true);
+        $('#inputPhone').attr("readonly", true);
+        $('#saveButton').attr("hidden", true);
+        $('#cancelButton').attr("hidden", true);
+    }
+
+</script>

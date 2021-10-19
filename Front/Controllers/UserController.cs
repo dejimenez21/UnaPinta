@@ -150,5 +150,11 @@ namespace Una_Pinta.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public async Task<ActionResult> ModifyFields(int province, string phone)
+        {
+            return Json(new { });
+        }
     }
 }
