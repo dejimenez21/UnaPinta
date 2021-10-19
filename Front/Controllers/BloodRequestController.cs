@@ -104,10 +104,6 @@ namespace Una_Pinta.Controllers
                 TempData["resultRequest"] = requestDetails;
                 return View();
             }
-            //var request = _httpContextAccessor.HttpContext.Session.GetString("requestDetails");
-            //var result = JsonConvert.DeserializeObject<RequestDetails>(request);
-            
-            //return View();
         }
 
         [HttpPost]

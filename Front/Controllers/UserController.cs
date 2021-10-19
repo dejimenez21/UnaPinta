@@ -38,6 +38,7 @@ namespace Una_Pinta.Controllers
 
         public IActionResult UserLoginPage()
         {
+            _httpContextAccessor.HttpContext.Session.Clear();
             return View();
         }
 
@@ -143,6 +144,11 @@ namespace Una_Pinta.Controllers
             passwordResetDto.Token = _httpContextAccessor.HttpContext.Session.GetString("userToken");
             var resultContent = await _userRepository.ResetPassword(passwordResetDto);
             return Json(new {content = resultContent.Content, StatusCode = resultContent.StatusCode});
+        }
+
+        public async Task<IActionResult> UserProfile()
+        {
+            return View();
         }
     }
 }
