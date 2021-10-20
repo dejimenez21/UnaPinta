@@ -1,5 +1,7 @@
-﻿@{ 
+﻿@using UnaPinta.Dto.Models.User;
+@{ 
     Layout = "LayoutUnaPinta";
+    var userProfileData = TempData["userProfile"] as UserProfileDto;
 }
 <div class="container">
     <div class="text-center">
@@ -22,7 +24,7 @@
                                 <label class="mb-0" style="font-weight:bold">Nombre:</label>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input value="" readonly="readonly" class="form-control" />
+                                <input value="@userProfileData.FirstName" readonly="readonly" class="form-control" />
                             </div>
                         </div>
                         <br/>
@@ -31,7 +33,7 @@
                                 <label class="mb-0" style="font-weight:bold">Apellidos:</label>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input value="" readonly="readonly" class="form-control" />
+                                <input value="@userProfileData.LastName" readonly="readonly" class="form-control" />
                             </div>
                         </div>
                         <br/>
@@ -40,7 +42,14 @@
                                 <label class="mb-0" style="font-weight:bold">Sexo:</label>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input value="" readonly="readonly" class="form-control" />
+                                @if (userProfileData.Sex == true)
+                                {
+                                    <input value="M" readonly="readonly" class="form-control" />
+                                }
+                                else
+                                {
+                                    <input value="F" readonly="readonly" class="form-control" />
+                                }
                             </div>
                         </div>
                         <br/>
@@ -49,7 +58,7 @@
                                 <label class="mb-0" style="font-weight:bold">Fecha de nacimiento:</label>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="date" readonly="readonly" value="" class="form-control" />
+                                <input type="text" readonly="readonly" value="@userProfileData.BirthDate.ToString("yyyy/MM/dd")" class="form-control" />
                             </div>
                         </div>
                         <br/>
@@ -58,7 +67,7 @@
                                 <label class="mb-0" style="font-weight:bold">Teléfono:</label>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input value="" id="inputPhone" readonly="readonly" class="form-control" />
+                                <input value="@userProfileData.PhoneNumber" id="inputPhone" readonly="readonly" class="form-control" />
                             </div>
                         </div>
                         <br/>
@@ -67,7 +76,7 @@
                                 <label class="mb-0" style="font-weight:bold">Provincia:</label>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input value="" id="inputProvince" readonly="readonly" class="form-control" />
+                                <input value="@userProfileData.ProvinceCode" id="inputProvince" readonly="readonly" class="form-control" />
                             </div>
                         </div>
                         <br/>
@@ -76,7 +85,7 @@
                                 <label class="mb-0" style="font-weight:bold">Usuario:</label>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input value="" readonly="readonly" class="form-control" />
+                                <input value="@userProfileData.UserName" readonly="readonly" class="form-control" />
                             </div>
                         </div>
                         <br/>

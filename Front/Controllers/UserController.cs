@@ -148,6 +148,9 @@ namespace Una_Pinta.Controllers
 
         public async Task<IActionResult> UserProfile()
         {
+            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var resultContent = await _userRepository.GetUserProfile(getToken);
+            TempData["userProfile"] = resultContent;
             return View();
         }
 

@@ -21,6 +21,10 @@ namespace Una_Pinta.Helpers.Requests
 
         public static string ResetPassword = "api/Auth/resetPassword";
 
+        public static string GetUserProfile = "api/Users/myprofile";
+
+        public static string UpdateUserProfile() => "api/User/myprofile/update";
+
         public static string GetCasesWithDonors(int id) => $"api/Requests/withCases/{id}";
 
         public static string SendEmailForResetPassword(string email) => $"api/Auth/sendPasswordReset/{email}";
