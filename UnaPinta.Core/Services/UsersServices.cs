@@ -5,18 +5,34 @@ using UnaPinta.Data.Entities;
 using UnaPinta.Dto.Models;
 using UnaPinta.Data.Contracts;
 using UnaPinta.Core.Contracts;
+using UnaPinta.Core.Contracts.Users;
+using UnaPinta.Dto.Models.User;
+using Microsoft.AspNetCore.Identity;
+using UnaPinta.Core.Exceptions;
+using AutoMapper;
 
 namespace UnaPinta.Core.Services
 {
-    public class UsersServices
+    public class UsersServices : IUserService
     {
-        private readonly EmailService _sender;
-        private readonly IUnaPintaRepository _repo;
+        private readonly IUserRepository _userRepository;
+        private readonly UserManager<User> _userManager;
+        private readonly IMapper _mapper;
 
-        public UsersServices(IUnaPintaRepository repo, EmailService sender)
+        public UsersServices(IUserRepository userRepository, UserManager<User> userManager, IMapper mapper)
         {
-            _sender = sender;
-            _repo = repo;
+            _userRepository = userRepository;
+            _userManager = userManager;
+            _mapper = mapper;
+        }
+
+        public async Task<UserProfileDto> RetrieveUserProfile(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null) throw new BaseDomainException("El usuario {username} no existe", 404);
+
+            var profile = _mapper.Map<UserProfileDto>(user);
+            return profile;
         }
 
         private async Task<ConfirmationCode> GenerateConfirmationCode(long userId)

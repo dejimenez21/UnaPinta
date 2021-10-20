@@ -22,6 +22,7 @@ using UnaPinta.Data.Repositories;
 using UnaPinta.Data.Brokers;
 using UnaPinta.Core.Contracts.Case;
 using UnaPinta.Api.Helpers;
+using UnaPinta.Core.Contracts.Users;
 
 namespace UnaPinta.Api
 {
@@ -83,6 +84,7 @@ namespace UnaPinta.Api
             services.AddScoped<IFileRepository, FileRepository>();
             services.AddScoped<ICaseService, CaseService>();
             services.AddScoped<ICaseRepository, CaseRepository>();
+            services.AddScoped<IUserService, UsersServices>();
             services.AddScoped<ITokenParams, TokenParams>();
 
             services.AddHttpContextAccessor();
