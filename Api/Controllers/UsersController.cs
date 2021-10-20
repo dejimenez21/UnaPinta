@@ -33,5 +33,14 @@ namespace UnaPinta.Api.Controllers
             var profile = await _userService.RetrieveUserProfile(username);
             return Ok(profile);
         }
+
+        [HttpPut("myprofile/update")]
+        [Authorize]
+        public async Task<ActionResult<UserProfileDto>> UpdateMyProfileInfo(UpdateUserProfileDto dto)
+        {
+            var username = _tokenParams.UserName;
+            var profile = await _userService.UpdateUserProfileInfo(dto, username);
+            return Ok(profile);
+        }
     }
 }

@@ -10,5 +10,7 @@ namespace UnaPinta.Data.Contracts
     public interface IUserRepository
     {
         Task<IEnumerable<User>> SelectDonorsForNotification(Request request);
+        Task<int> SaveChangesAsync();
+        void Update(User user);
     }
 }

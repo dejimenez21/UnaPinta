@@ -10,5 +10,6 @@ namespace UnaPinta.Core.Contracts.Users
     public interface IUserService
     {
         Task<UserProfileDto> RetrieveUserProfile(string username);
+        Task<UserProfileDto> UpdateUserProfileInfo(UpdateUserProfileDto dto, string username);
     }
 }
