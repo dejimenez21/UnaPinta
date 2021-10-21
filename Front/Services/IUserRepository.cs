@@ -19,5 +19,6 @@ namespace Una_Pinta.Services
         Task<IRestResponse> SendEmail(string email);
         Task<IRestResponse> ResetPassword(PasswordResetDto passwordResetDto);
         Task<UserProfileDto> GetUserProfile(string token);
+        Task<IRestResponse> UpdateUserProfile(string token, UpdateUserProfileDto updateUserProfileDto);
     }
 }

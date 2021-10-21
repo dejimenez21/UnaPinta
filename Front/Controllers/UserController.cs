@@ -16,6 +16,7 @@ using Una_Pinta.Helpers.Utilities;
 using Una_Pinta.Models;
 using Una_Pinta.Services;
 using UnaPinta.Dto.Models.Auth;
+using UnaPinta.Dto.Models.User;
 
 namespace Una_Pinta.Controllers
 {
@@ -155,9 +156,14 @@ namespace Una_Pinta.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> ModifyFields(int province, string phone)
+        public async Task<ActionResult> ModifyFields(string province, string phone)
         {
-            return Json(new { });
+            var updateUserProfileDto = new UpdateUserProfileDto();
+            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            updateUserProfileDto.ProvinceCode = province;
+            updateUserProfileDto.PhoneNumber = phone;
+            var resultContent = await _userRepository.UpdateUserProfile(getToken, updateUserProfileDto);
+            return Json(new { code = ((int)resultContent.StatusCode), content = resultContent.Content});
         }
     }
 }

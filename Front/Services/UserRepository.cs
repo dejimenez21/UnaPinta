@@ -165,5 +165,26 @@ namespace Una_Pinta.Services
                 return null;
             }
         }
+
+        public Task<IRestResponse> UpdateUserProfile(string token, UpdateUserProfileDto updateUserProfileDto)
+        {
+            var client = new RestClient(ApiRequests.HostUrl);
+            client.Authenticator = new JwtAuthenticator(token);
+            var request = new RestRequest(ApiRequests.UpdateUserProfile(), Method.PUT);
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddJsonBody(updateUserProfileDto);
+            try
+            {
+                var response = client.ExecuteAsync(request).Result;
+                return Task.FromResult(response);
+            }
+            catch (WebException ex)
+            {
+                Debug.WriteLine(ex.Response);
+                return null;
+            }
+        }
     }
 }
