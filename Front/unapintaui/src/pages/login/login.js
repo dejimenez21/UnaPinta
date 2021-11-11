@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 class Login extends React.Component {
     constructor(props){
@@ -10,18 +12,27 @@ class Login extends React.Component {
             password: ''
         }
     }
-
+    
+    
     changeHandler = (e) => {
         this.setState({[e.target.name]: e.target.value})
     }
-
+    
     submitHandler = (e) => {
+        const swal = withReactContent(Swal)
         e.preventDefault();
         console.log(this.state);
         axios.post("https://localhost:44393/api/Auth/login", this.state).then(response => {
-            console.log(response)
+            swal.fire(
+                'Bienvenido',
+                'success'
+            );
         }).catch(error => {
-            console.log(error)
+            swal.fire(
+                'Algo ha fallado',
+                {error},
+                'error'
+            );
         })
         
     }
