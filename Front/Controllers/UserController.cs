@@ -16,6 +16,7 @@ using Una_Pinta.Helpers.Utilities;
 using Una_Pinta.Models;
 using Una_Pinta.Services;
 using UnaPinta.Dto.Models.Auth;
+using UnaPinta.Dto.Models.User;
 
 namespace Una_Pinta.Controllers
 {
@@ -38,6 +39,7 @@ namespace Una_Pinta.Controllers
 
         public IActionResult UserLoginPage()
         {
+            _httpContextAccessor.HttpContext.Session.Clear();
             return View();
         }
 
@@ -143,6 +145,25 @@ namespace Una_Pinta.Controllers
             passwordResetDto.Token = _httpContextAccessor.HttpContext.Session.GetString("userToken");
             var resultContent = await _userRepository.ResetPassword(passwordResetDto);
             return Json(new {content = resultContent.Content, StatusCode = resultContent.StatusCode});
+        }
+
+        public async Task<IActionResult> UserProfile()
+        {
+            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            var resultContent = await _userRepository.GetUserProfile(getToken);
+            TempData["userProfile"] = resultContent;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> ModifyFields(string province, string phone)
+        {
+            var updateUserProfileDto = new UpdateUserProfileDto();
+            var getToken = _httpContextAccessor.HttpContext.Session.GetString("userToken");
+            updateUserProfileDto.ProvinceCode = province;
+            updateUserProfileDto.PhoneNumber = phone;
+            var resultContent = await _userRepository.UpdateUserProfile(getToken, updateUserProfileDto);
+            return Json(new { code = ((int)resultContent.StatusCode), content = resultContent.Content});
         }
     }
 }

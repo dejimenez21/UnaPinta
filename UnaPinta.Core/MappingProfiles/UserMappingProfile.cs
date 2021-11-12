@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using UnaPinta.Data.Entities;
 using UnaPinta.Dto.Models;
 using UnaPinta.Dto.Models.Donor;
+using UnaPinta.Dto.Models.User;
 
 namespace UnaPinta.Core.MappingProfiles
 {
@@ -29,6 +30,9 @@ namespace UnaPinta.Core.MappingProfiles
 
                 return dto;
             });
+            CreateMap<User, UserProfileDto>()
+                .ForMember(up => up.BloodType, opt => opt.MapFrom(u => u.BloodTypeNav.Description))
+                .ForMember(up => up.ProvinceCode, opt => opt.MapFrom(u => u.ProvinceNav.Code));
             #endregion
         }
     }

@@ -33,7 +33,7 @@
                             </div>
                             <br />
                             <div class="text-center">
-                                <p>¿Has olvidado mi contraseña?<span> <a asp-action="MailCredentials" asp-controller="User">Clic aquí</a></span></p>
+                                <p>¿Has olvidado tu contraseña?<span> <a asp-action="MailCredentials" asp-controller="User">Clic aquí</a></span></p>
                             </div>
                             <div class="justify-end justify-content-between">
                                 <div>
@@ -47,9 +47,7 @@
                                                      null, // <-- Route value
                                                      new { @class = "btn-block btn btn-success" } // <-- htmlArguments
                                                      )
-                                </div>
-                                <br />
-                                <div>
+
                                     @Html.ActionLink("Registrarse como Donante", // <-- Link text
                                                     "DonorRegisterPage", // <-- Action Method Name
                                                     "Donor", // <-- Controller Name
@@ -57,6 +55,7 @@
                                                      new { @class = "btn-block btn btn-info" } // <-- htmlArguments
                                                      )
                                 </div>
+                                <br />
                             </div>
                         </form>
                     </div>
@@ -65,7 +64,41 @@
         </div>
     </div>
 </div>
+
+<div id="overlay" class="text-center">
+    <div id="overlay-content">
+        <br />
+        <br />
+        <img src="~/Pics/logo_splash.svg" id="splashIcon" />
+        <br />
+        <div class="spinner-border text-danger" style="width:200px; height:200px;" role="status"></div>
+    </div>
+</div>
 <script type="text/javascript">
+
+    $.fn.center = function () {
+        this.css("position", "absolute");
+        this.css("top", Math.max(0, (
+            ($(window).height() - $(this).outerHeight()) / 2) +
+            $(window).scrollTop()) + "px"
+        );
+        this.css("left", Math.max(0, (
+            ($(window).width() - $(this).outerWidth()) / 2) +
+            $(window).scrollLeft()) + "px"
+        );
+        return this;
+    }
+
+    $("#overlay").show();
+    $("#splashIcon").hide();
+    $("#overlay-content").show().center();
+    $("#splashIcon").fadeIn("slow");
+
+
+    setTimeout(function () {
+        $("#overlay").fadeOut("slow");
+    }, 3000);
+
     function OnSuccess(response) {
         var userName = document.getElementById("userNametxt").value;
         if (response.code != 200) {
@@ -81,7 +114,7 @@
         }
         else {
             if (response.roleUser == 1) {
-                window.location.href = "/BloodRequest/BloodRequestDetailsCollection"
+                window.location.href = "/BloodRequest/BloodRequestDetail"
             }
             else if (response.roleUser == 2) {
                 window.location.href = "/BloodRequest/BloodRequestList"

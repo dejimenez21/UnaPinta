@@ -134,5 +134,21 @@ namespace UnaPinta.Core.Services
             caseEntity.StatusId = CaseStatusEnum.Cancelado;
             await _caseRepository.SaveChangesAsync();
         }
+
+        public async Task<CaseDetailsDto> RetrieveCaseDetailsByDonor(string userName)
+        {
+            var donor = await _userManager.FindByNameAsync(userName);
+            if (donor == null || !await _userManager.IsInRoleAsync(donor, RoleEnum.Donante.ToString()))
+            {
+                //TODO: Add new custom exception for this case
+                throw new BaseDomainException($"El donante {userName} no existe.", 400);
+            }
+
+            var caseEntity = await _caseRepository
+                .SelectOneAsync(c => c.DonorId == donor.Id && !c.DeletedAt.HasValue && c.StatusId == CaseStatusEnum.En_Proceso);
+
+            var caseDetails = _mapper.Map<CaseDetailsDto>(caseEntity);
+            return caseDetails;
+        }
     }
 }

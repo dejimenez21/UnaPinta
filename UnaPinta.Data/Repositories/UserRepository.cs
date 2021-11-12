@@ -20,6 +20,11 @@ namespace UnaPinta.Data.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _dbContext.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<User>> SelectDonorsForNotification(Request request)
         {
             var sql = @"SELECT u.* FROM Users u
@@ -33,6 +38,11 @@ namespace UnaPinta.Data.Repositories
             var donors = await _dbContext.Users.FromSqlRaw(sql, sqlParameters.ToArray()).ToListAsync();
 
             return donors;
+        }
+
+        public void Update(User user)
+        {
+            _dbContext.Update(user);
         }
     }
 }
