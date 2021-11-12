@@ -25,7 +25,7 @@ class Login extends React.Component {
         console.log(this.state);
         axios.post("https://localhost:44393/api/Auth/login", this.state).then(response => {
             swal.fire(
-                'Bienvenido',
+                `Bienvenido ${response}`,
                 'success'
             );
         }).catch(error => {
