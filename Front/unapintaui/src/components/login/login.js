@@ -14,6 +14,17 @@ class Login extends React.Component {
         }
     }
     
+    handleValidation = (e) => {
+        let username = this.state.userName;
+        let password = this.state.password;
+        let formValid = true;
+
+        if (!username["userName"] || !password["password"]) {
+            formValid = false;
+        }
+        
+        return formValid;
+    }
     
     changeHandler = (e) => {
         this.setState({[e.target.name]: e.target.value})
@@ -22,19 +33,27 @@ class Login extends React.Component {
     submitHandler = (e) => {
         const swal = withReactContent(Swal)
         e.preventDefault();
-        console.log(this.state);
-        axios.post("https://localhost:44393/api/Auth/login", this.state).then(response => {
+        if (this.handleValidation() == false) {
             swal.fire(
-                'Bienvenido',
+                'Existen campos vacios',
+                '',
+                'warning'
+            );
+        }
+        else{
+            axios.post("https://localhost:44393/api/Auth/login", this.state).then(response => {
+            swal.fire(
+                `Bienvenido ${response}`,
                 'success'
             );
-        }).catch(error => {
-            swal.fire(
-                'Algo ha fallado',
-                {error},
-                'error'
-            );
-        })        
+            }).catch(error => {
+                swal.fire(
+                    'Algo ha fallado',
+                    {error},
+                    'error'
+                );
+            })   
+        }     
     }
 
     render(){
@@ -62,8 +81,8 @@ class Login extends React.Component {
                     </div>
                 </div>
             </div>
+
         )
     }
 }
-
 export default Login;
