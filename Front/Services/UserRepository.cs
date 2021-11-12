@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
+using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,6 +11,8 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Una_Pinta.Helpers.Requests;
 using Una_Pinta.Models;
+using UnaPinta.Dto.Models.Auth;
+using UnaPinta.Dto.Models.User;
 
 namespace Una_Pinta.Services
 {
@@ -21,7 +24,7 @@ namespace Una_Pinta.Services
         /// </summary>
         /// <returns>HttpResponseMessage</returns>
         /// <exception cref="System.WebException">Thrown when status code of response are different to 200 (OK)</exception>
-        public Task<int> GetUser(UserSignUp userSignUp)
+        public Task<IRestResponse> GetUser(UserSignUp userSignUp)
         {
             var client = new RestClient(ApiRequests.HostUrl);
             var request = new RestRequest(ApiRequests.GetUserLogin, Method.POST);
@@ -31,8 +34,8 @@ namespace Una_Pinta.Services
             request.AddJsonBody(userSignUp);
             try
             {
-                var queryResult = client.ExecuteAsync(request).Result.StatusCode;
-                return Task.FromResult(((int)queryResult));
+                var queryResult = client.ExecuteAsync(request).Result;
+                return Task.FromResult(queryResult);
             }
             catch (WebException ex)
             {
@@ -68,5 +71,120 @@ namespace Una_Pinta.Services
         }
 
 
+        public Task<IRestResponse> ConfirmEmail(string id, string token)
+        {
+            var client = new RestClient(ApiRequests.HostUrl);
+            var request = new RestRequest(ApiRequests.ConfirmEmail(id, token), Method.GET);
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("Cache-Control", "no-cache");
+            try
+            {
+                var queryResult = client.ExecuteAsync(request).Result;
+                return Task.FromResult(queryResult);
+            }
+            catch (WebException ex)
+            {
+                Debug.WriteLine(ex.Response);
+                return null;
+            }
+        }
+
+        public Task<IRestResponse> ResendEmail(string token)
+        {
+            var client = new RestClient(ApiRequests.HostUrl);
+            client.Authenticator = new JwtAuthenticator(token);
+            var request = new RestRequest(ApiRequests.ResendEmail(), Method.GET);
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("Cache-Control", "no-cache");
+            try
+            {
+                var queryResult = client.ExecuteAsync(request).Result;
+                return Task.FromResult(queryResult);
+            }
+            catch (WebException ex)
+            {
+                Debug.WriteLine(ex.Response);
+                return null;
+            }
+        }
+
+        public Task<IRestResponse> SendEmail(string email)
+        {
+            var client = new RestClient(ApiRequests.HostUrl);
+            var request = new RestRequest(ApiRequests.SendEmailForResetPassword(email), Method.GET);
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("Cache-Control", "no-cache");
+            try
+            {
+                var queryResult = client.ExecuteAsync(request).Result;
+                return Task.FromResult(queryResult);
+            }
+            catch (WebException ex)
+            {
+                Debug.WriteLine(ex.Response);
+                return null;
+            }
+        }
+
+        public Task<IRestResponse> ResetPassword(PasswordResetDto passwordResetDto)
+        {
+            var client = new RestClient(ApiRequests.HostUrl);
+            var request = new RestRequest(ApiRequests.ResetPassword, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddJsonBody(passwordResetDto);
+            try
+            {
+                var queryResult = client.ExecuteAsync(request).Result;
+                return Task.FromResult(queryResult);
+            }
+            catch (WebException ex)
+            {
+                Debug.WriteLine(ex.Response);
+                return null;
+            }
+        }
+
+        public Task<UserProfileDto> GetUserProfile(string token)
+        {
+            var client = new RestClient(ApiRequests.HostUrl);
+            client.Authenticator = new JwtAuthenticator(token);
+            var request = new RestRequest(ApiRequests.GetUserProfile, Method.GET);
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Cache-Control", "no-cache");
+            try
+            {
+                var response = client.ExecuteAsync(request).Result.Content;
+                var content = JsonConvert.DeserializeObject<UserProfileDto>(response);
+                return Task.FromResult(content);
+            }
+            catch (WebException ex)
+            {
+                Debug.WriteLine(ex.Response);
+                return null;
+            }
+        }
+
+        public Task<IRestResponse> UpdateUserProfile(string token, UpdateUserProfileDto updateUserProfileDto)
+        {
+            var client = new RestClient(ApiRequests.HostUrl);
+            client.Authenticator = new JwtAuthenticator(token);
+            var request = new RestRequest(ApiRequests.UpdateUserProfile(), Method.PUT);
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddJsonBody(updateUserProfileDto);
+            try
+            {
+                var response = client.ExecuteAsync(request).Result;
+                return Task.FromResult(response);
+            }
+            catch (WebException ex)
+            {
+                Debug.WriteLine(ex.Response);
+                return null;
+            }
+        }
     }
 }

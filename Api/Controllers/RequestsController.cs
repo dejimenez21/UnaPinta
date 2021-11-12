@@ -1,79 +1,95 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using UnaPinta.Core.Models;
+using UnaPinta.Dto.Models;
 using UnaPinta.Data.Entities;
 using AutoMapper;
 using UnaPinta.Core.Contracts;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
+using UnaPinta.Dto.Models.Request;
+using UnaPinta.Api.Helpers;
 
 namespace UnaPinta.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Solicitante")]
+    
     public class RequestsController : ControllerBase
     {
-        private readonly IMapper _mapper;
         private readonly IRequestsService _service;
+        private readonly ITokenParams _tokenParams;
 
-        public RequestsController(IMapper mapper, IRequestsService service)
+        public RequestsController(IRequestsService service, ITokenParams tokenParams)
         {
-            _mapper = mapper;
             _service = service;
+            _tokenParams = tokenParams;
         }
-
-        // [HttpGet("")]
-        // public async Task<ActionResult<IEnumerable<TModel>>> GetTModels()
-        // {
-        //     await Task.Yield();
-
-        //     return new List<TModel> { };
-        // }
-
-        // [HttpGet("{id}")]
-        // public async Task<ActionResult<TModel>> GetTModelById(int id)
-        // {
-        //     await Task.Yield();
-
-        //     return null;
-        // }
 
         [HttpPost("")]
-        public async Task<ActionResult<Request>> CreateRequest(RequestCreate requestCreate)
+        [Authorize(Roles = "solicitante")]
+        public async Task<ActionResult<RequestCreateDto>> CreateRequest([FromForm]RequestCreateDto requestCreate)
         {
-            var request = _mapper.Map<Request>(requestCreate);
+            var callback = await _service.CreateRequest(requestCreate, HttpContext.User.FindFirst("UserName").Value);
+            Response.OnCompleted(callback);
 
-            try
-            {
-                await _service.CreateRequest(request, HttpContext.User.FindFirst("UserName").Value);
-            }
-            catch
-            {
-                return BadRequest();
-            }
-
-
-            Response.OnCompleted(async () => 
-                await _service.SendRequestNotification(request)
-            );
-
-            return Created("api/requests", request);
+            return Created("api/requests", requestCreate);
         }
 
-        // [HttpPut("{id}")]
-        // public async Task<IActionResult> PutTModel(int id, TModel model)
-        // {
-        //     await Task.Yield();
 
-        //     return NoContent();
-        // }
+        [HttpGet("{id}/details")]
+        [Authorize(Roles = "donante, solicitante")]
+        public async Task<ActionResult<RequestDetailsDto>> GetRequestDetails(int id)
+        {
+            var details = await _service.RetrieveRequestDetailsById(id);
+            return Ok(details);
+        }
 
-        // [HttpDelete("{id}")]
-        // public async Task<ActionResult<TModel>> DeleteTModelById(int id)
-        // {
-        //     await Task.Yield();
+        [HttpGet("summary")]
+        [Authorize(Roles = "donante")]
+        public async Task<ActionResult<IEnumerable<RequestSummaryDto>>> GetRequestsSummary()
+        {
+            var username = _tokenParams.UserName;
+            var requestsSummary = await _service.RetrieveRequestsSummaryByDonor(username);
+            return Ok(requestsSummary);
+        }
 
-        //     return null;
-        // }
+        [HttpGet("stringDates")]
+        public async Task<ActionResult<IEnumerable<StringDate>>> GetStringDates() =>
+            Ok(await _service.RetrieveAllStringDates());
+
+        [HttpGet("datatable")]
+        [Authorize(Roles ="solicitante")]
+        public async Task<ActionResult<IEnumerable<RequestSummaryDto>>> GetRequestsForDatatable([FromQuery]string search = null)
+        {
+            var username = _tokenParams.UserName;
+            var requests = await _service.RetrieveRequestsSummaryByRequester(username, search);
+            return Ok(requests);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "solicitante")]
+        public async Task<ActionResult> DeleteRequest(long id)
+        {
+            await _service.DeleteRequestById(id, _tokenParams.UserName);
+            return Ok();
+        }
+
+        [HttpGet("withCases/{id}")]
+        [Authorize(Roles = "solicitante")]
+        public async Task<ActionResult<RequestCasesDto>> GetRequestDetailsForRequester(long id)
+        {
+            var username = _tokenParams.UserName;
+            var requestCases = await _service.RetrieveRequestWithCases(id, username);
+            return Ok(requestCases);
+        }
+
+        [HttpPut("markAsCompleted/{id}")]
+        [Authorize(Roles = "solicitante")]
+        public async Task<ActionResult> MarkAsCompleted(long id)
+        {
+            var username = _tokenParams.UserName;
+            await _service.MarkRequestAsCompleted(id, username);
+            return Ok();
+        }
     }
 }

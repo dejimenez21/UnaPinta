@@ -1,129 +1,173 @@
-﻿<div class="container" style="margin-top:20px;">
+﻿@{
+    Layout = "LayoutUnaPinta";
+}
+<div class="container" style="margin-top:20px;">
     <div class="text-center">
         <br />
-        <p style="font-family: 'Roboto', sans-serif; font-size:20px;">Información general del donante</p>
+        <p style="font-family: 'Segoe UI'; font-size: 20px;">Formulario de validación del donante</p>
     </div>
-    <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);transition: 0.5s;">
+    <div class="card justify-content-center" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);transition: 0.5s; width:80%; margin:0 auto;">
         <div class="card-body">
             <form class="container">
-                <div class="row g-3">
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Se realizó algún tatuaje en los últimos 6 meses?</label>
-                        <select class="form-control" id="tattooQuestion">
-                            <option>Seleccionar</option>
-                            <option value="1">Si</option>
-                            <option value="9">No</option>
+                <div>
+                    <div class="col d-flex justify-content-center">
+                        <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_accg3lm5.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
+                    </div>
+                    <div>
+                        <label style="font-family: 'Segoe UI';">¿Se realizó algún tatuaje en los últimos 6 meses?</label>
+                    </div>
+                    <div class="row" style="padding:15px;">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="tattooQuestionYes" value="1">
+                            <label class="form-check-label" for="inlineRadio1">Si</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="tattooQuestionNo" value="9">
+                            <label class="form-check-label" for="inlineRadio2">No</label>
+                        </div>
+                        <select id="tattooCondition" class="form-control">
+                            <option value="-1">¿Hace cuantos meses?</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
                         </select>
                     </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Ha donado sangre en los últimos 3 meses?</label>
-                        <select id="bloodQuestion" class="form-control">
-                            <option>Seleccionar</option>
-                            <option value="5">Si</option>
-                            <option value="9">No</option>
+                    <div>
+                        <label style="font-family: 'Segoe UI';">¿Ha donado sangre en los últimos 3 meses?</label>
+                    </div>
+                    <div class="row" style="padding:15px;">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="bloodQuestionYes" value="5">
+                            <label class="form-check-label" for="inlineRadio1">Si</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="bloodQuestionNo" value="9">
+                            <label class="form-check-label" for="inlineRadio2">No</label>
+                        </div>
+                        <select id="bloodCondition" class="form-control">
+                            <option value="-1">¿Hace cuantos meses?</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
                         </select>
                     </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Hace cuantos meses?</label>
-                        <input type="text" id="tattooCondition" data-val="true" class="form-control">
+                    <div>
+                        <label style="font-family: 'Segoe UI';">¿Se realizó alguna perforación o piercing en los últimos 6 meses?</label>
                     </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Hace cuantos meses?</label>
-                        <input type="text" id="bloodCondition" data-val="true" class="form-control">
-                    </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Se realizó alguna perforación o piercing en los últimos 6 meses?</label>
-                        <select id="piercingQuestion" class="form-control">
-                            <option>Seleccionar</option>
-                            <option value="2">Si</option>
-                            <option value="9">No</option>
+                    <div class="row" style="padding:15px;">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="piercingQuestionYes" value="2">
+                            <label class="form-check-label" for="inlineRadio1">Si</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="piercingQuestionNo" value="9">
+                            <label class="form-check-label" for="inlineRadio2">No</label>
+                        </div>
+                        <select id="piercingCondition" class="form-control">
+                            <option value="-1">¿Hace cuantos meses?</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
                         </select>
                     </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Ha recibido algún trasplante de órgano?</label>
-                        <select id="transplanteQuestion" class="form-control">
-                            <option>Seleccionar</option>
-                            <option value="8">Si</option>
-                            <option value="9">No</option>
+                    <div>
+                        <label style="font-family: 'Segoe UI', sans-serif;">¿Ha recibido algún trasplante de órgano?</label>
+                    </div>
+                    <div class="row" style="padding:15px;">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="transplanteQuestionYes" value="8">
+                            <label class="form-check-label" for="inlineRadio1">Si</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="transplanteQuestionNo" value="9">
+                            <label class="form-check-label" for="inlineRadio2">No</label>
+                        </div>
+                    </div>
+                    <div>
+                        <label style="font-family: 'Segoe UI';">¿Se ha realizado algún procedimiento odontológico hace menos de un mes?</label>
+                    </div>
+                    <div class="row" style="padding:15px;">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="odonQuestionYes" value="3">
+                            <label class="form-check-label" for="inlineRadio1">Si</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="odonQuestionNo" value="9">
+                            <label class="form-check-label" for="inlineRadio2">No</label>
+                        </div>
+                    </div>
+                    <div>
+                        <label style="font-family: 'Segoe UI';">¿Ha estado embarazada en los últimos 9 meses?</label>
+                    </div>
+                    <div class="row" style="padding:15px;">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="pregnanQuestionYes" value="6">
+                            <label class="form-check-label" for="inlineRadio1">Si</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="pregnanQuestionNo" value="9">
+                            <label class="form-check-label" for="inlineRadio2">No</label>
+                        </div>
+                    </div>
+                    <div>
+                        <label style="font-family: 'Segoe UI';">¿Ha recibido alguna transfusión sanguínea en el último año?</label>
+                    </div>
+                    <div class="row" style="padding:15px;">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="transfusionQuestionYes" value="4">
+                            <label class="form-check-label" for="inlineRadio1">Si</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="transfusionQuestionNo" value="9">
+                            <label class="form-check-label" for="inlineRadio2">No</label>
+                        </div>
+                        <select id="transfusionCondition" class="form-control">
+                            <option value="-1">¿Hace cuantos meses?</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
                         </select>
                     </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Hace cuantos meses?</label>
-                        <input type="text" id="piercingCondition" data-val="true" class="form-control">
+                    <div>
+                        <label style="font-family: 'Segoe UI';">¿Padece o ha padecido algunas de estas enfermedades?</label>
                     </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Hace cuantos meses?</label>
-                        <input type="text" id="transplanteCondition" data-val="true" class="form-control">
-                    </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Se ha realizado algún procedimiento odontológico hace menos de un mes?</label>
-                        <select id="odonQuestion" class="form-control">
-                            <option>Seleccionar</option>
-                            <option value="3">Si</option>
-                            <option value="9">No</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Ha estado embarazada en los últimos 9 meses?</label>
-                        <select id="pregnanQuestion" class="form-control">
-                            <option>Seleccionar</option>
-                            <option value="6">Si</option>
-                            <option value="9">No</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Ha recibido alguna transfusión sanguínea en el último año?</label>
-                        <select id="transfusion" class="form-control">
-                            <option>Seleccionar</option>
-                            <option value="4">Si</option>
-                            <option value="9">No</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Padece o ha padecido algunas de estas enfermedades?</label>
+                    <div class="row" style="padding:15px;">
                         <select id="enfermedadesList" data-val-required="El tipo de sangre es un campo obligatorio" data-val="true" class="form-control">
+                            <option value="9">Ninguno</option>
                             <option value="8">VIH</option>
                             <option value="8">Hepatitis B</option>
                             <option value="8">Hepatitis C</option>
                             <option value="8">Cancer</option>
                             <option value="8">Lupus</option>
                             <option value="8">Falcemia</option>
-                            <option value="9">Ninguno</option>
                         </select>
-                        @*<div class="container">
-                                <div>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" id="VIH">VIH Sida
-                                    </label>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" id="HB">Hepatitis B
-                                    </label>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" id="HC">Hepatitis C
-                                    </label>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" id="Lupus">Lupus
-                                    </label>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" id="Cancer">Cancer
-                                    </label>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" id="Falcemia">Falcemia
-                                    </label>
-                                </div>
-                            </div>*@
                     </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Hace cuantos meses?</label>
-                        <input type="text" id="transfusionCondition" data-val="true" class="form-control">
+                    <div>
+                        <label style="font-family: 'Segoe UI';">¿Ha consumido drogas?</label>
                     </div>
-                    <div class="col-sm-6">
-                        <label style="font-family: 'Roboto', sans-serif;">¿Ha consumido drogas?</label>
-                        <select id="drugQuestion" class="form-control">
-                            <option>Seleccionar</option>
-                            <option value="8">Si</option>
-                            <option value="9">No</option>
-                        </select>
+                    <div class="row" style="padding:15px;">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="drugQuestionYes" value="6">
+                            <label class="form-check-label" for="inlineRadio1">Si</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="drugQuestionNo" value="9">
+                            <label class="form-check-label" for="inlineRadio2">No</label>
+                        </div>
                     </div>
                 </div>
                 <br />
@@ -134,3 +178,239 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $('#tattooQuestionYes').change(function () {
+        if ($(this).is(":checked")) {
+            $('#tattooCondition').fadeIn();
+            $('#tattooQuestionNo').prop('checked', false);
+        }
+        else {
+            $('#tattooCondition').fadeOut();
+        }
+    });
+
+    $('#tattooQuestionNo').change(function () {
+        if ($(this).is(":checked")) {
+            $('#tattooQuestionYes').prop('checked', false);
+            $('#tattooCondition').fadeOut();
+        }
+    });
+
+    $('#bloodQuestionYes').change(function () {
+        if ($(this).is(":checked")) {
+            $('#bloodCondition').fadeIn();
+            $('#bloodQuestionNo').prop('checked', false);
+        }
+        else {
+            $('#bloodCondition').fadeOut();
+        }
+    });
+
+    $('#bloodQuestionNo').change(function () {
+        if ($(this).is(":checked")) {
+            $('#bloodQuestionYes').prop('checked', false);
+            $('#bloodCondition').fadeOut();
+        }
+    });
+
+    $('#piercingQuestionYes').change(function () {
+        if ($(this).is(":checked")) {
+            $('#piercingCondition').fadeIn();
+            $('#piercingQuestionNo').prop('checked', false);
+        }
+        else {
+            $('#piercingCondition').fadeOut();
+        }
+    });
+
+    $('#piercingQuestionNo').change(function () {
+        if ($(this).is(":checked")) {
+            $('#piercingQuestionYes').prop('checked', false);
+            $('#piercingCondition').fadeOut();
+        }
+    });
+
+    $('#transplanteQuestionYes').change(function () {
+        if ($(this).is(":checked")) {
+            $('#transplanteCondition').fadeIn();
+            $('#transplanteQuestionNo').prop('checked', false);
+        }
+        else {
+            $('#transplanteCondition').fadeOut();
+        }
+    });
+
+    $('#transplanteQuestionNo').change(function () {
+        if ($(this).is(":checked")) {
+            $('#transplanteQuestionYes').prop('checked', false);
+            $('#transplanteCondition').fadeOut();
+        }
+    });
+
+    $('#drugQuestionYes').change(function () {
+        if ($(this).is(":checked")) {
+            $('#drugCondition').fadeIn();
+            $('#drugQuestionNo').prop('checked', false);
+        }
+        else {
+            $('#drugCondition').fadeOut();
+        }
+    });
+
+    $('#drugQuestionNo').change(function () {
+        if ($(this).is(":checked")) {
+            $('#drugQuestionYes').prop('checked', false);
+            $('#drugCondition').fadeOut();
+        }
+    });
+
+    $('#pregnanQuestionYes').change(function () {
+        if ($(this).is(":checked")) {
+            $('#pregnanCondition').fadeIn();
+            $('#pregnanQuestionNo').prop('checked', false);
+        }
+        else {
+            $('#pregnanCondition').fadeOut();
+        }
+    });
+
+    $('#pregnanQuestionNo').change(function () {
+        if ($(this).is(":checked")) {
+            $('#pregnanQuestionYes').prop('checked', false);
+            $('#pregnanCondition').fadeOut();
+        }
+    });
+
+    $('#transfusionQuestionYes').change(function () {
+        if ($(this).is(":checked")) {
+            $('#transfusionCondition').fadeIn();
+            $('#transfusionQuestionNo').prop('checked', false);
+        }
+        else {
+            $('#transfusionCondition').fadeOut();
+        }
+    });
+
+    $('#transfusionQuestionNo').change(function () {
+        if ($(this).is(":checked")) {
+            $('#transfusionQuestionYes').prop('checked', false);
+            $('#transfusionCondition').fadeOut();
+        }
+    });
+
+    $('#odonQuestionYes').change(function () {
+        if ($(this).is(":checked")) {
+            $('#odonQuestionNo').prop('checked', false);
+        }
+    });
+
+    $('#odonQuestionNo').change(function () {
+        if ($(this).is(":checked")) {
+            $('#odonQuestionYes').prop('checked', false);
+        }
+    });
+
+    function redirectToDashboard() {
+        location.href = "/BloodRequest/BloodRequestDetailsCollection";
+    }
+
+    function btnRegister_Click() {
+        var obj = {};
+        obj.conditions = [];
+        if ($('#tattooQuestionYes').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#tattooQuestionYes").val(), months: $("#tattooCondition").val() });
+        }
+        if ($('#tattooQuestionNo').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#tattooQuestionNo").val(), months: $("#tattooCondition").val() });
+        }
+        if ($('#bloodQuestionYes').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#bloodQuestionYes").val(), months: $("#bloodCondition").val() });
+        }
+        if ($('#bloodQuestionNo').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#bloodQuestionNo").val(), months: $("#bloodCondition").val() });
+        }
+        if ($('#piercingQuestionYes').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#piercingQuestionYes").val(), months: $("#piercingCondition").val() });
+        }
+        if ($('#piercingQuestionNo').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#piercingQuestionNo").val(), months: $("#piercingCondition").val() });
+        }
+        if ($('#transplanteQuestionYes').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#transplanteQuestionYes").val(), months: -1 });
+        }
+        if ($('#transplanteQuestionNo').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#transplanteQuestionNo").val(), months: -1 });
+        }
+        if ($('#drugQuestionYes').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#drugQuestionYes").val(), months: -1 });
+        }
+        if ($('#drugQuestionNo').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#drugQuestionNo").val(), months: -1 });
+        }
+        if ($('#pregnanQuestionYes').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#pregnanQuestionYes").val(), months: -1 });
+        }
+        if ($('#pregnanQuestionNo').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#pregnanQuestionNo").val(), months: -1 });
+        }
+        if ($('#transfusionQuestionYes').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#transfusionQuestionYes").val(), months: $("#transfusionCondition").val() });
+        }
+        if ($('#transfusionQuestionNo').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#transfusionQuestionNo").val(), months: $("#transfusionCondition").val() });
+        }
+        if ($('#odonQuestionYes').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#odonQuestionYes").val(), months: 1 });
+        }
+        if ($('#odonQuestionNo').is(':checked')) {
+            obj.conditions.push({ conditionId: $("#odonQuestionNo").val(), months: 1 });
+        }
+        obj.conditions.push({ conditionId: $("#enfermedadesList").val(), months: -1 });
+
+        var token = localStorage.getItem('tokenUser');
+
+        $.ajax({
+            url: 'https://localhost:44393/api/waitlist',
+            method: "POST",
+            data: JSON.stringify(obj),
+            dataType: "json",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            error: function (err) {
+                switch (err.status) {
+                    case "400":
+                        // bad request
+                        break;
+                    case "401":
+                        Swal.fire({
+                            title: "Error",
+                            text: "Hubo un error inesperado" + err.status,
+                            icon: "Error",
+                            closeOnConfirm: true
+                        });
+                        break;
+                    case "403":
+                        // forbidden
+                        break;
+                    default:
+                        //Something bad happened
+                        break;
+                }
+            },
+            success: function (data) {
+                Swal.fire({
+                    title: "Correcto",
+                    text: "Respuestas enviadas correctamente",
+                    icon: "success",
+                    closeOnConfirm: true
+                }).then(function () {
+                    redirectToDashboard();
+                });
+
+            }
+        });
+    }
+</script>

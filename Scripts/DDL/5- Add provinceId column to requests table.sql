@@ -1,0 +1,1 @@
+alter table requests add ProvinceId int not null default 1 

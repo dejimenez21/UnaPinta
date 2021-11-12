@@ -1,0 +1,92 @@
+﻿@using Una_Pinta.Models
+@{
+    var listData = @TempData["requestSummary"];
+    Layout = "LayoutUnaPinta";
+    
+}
+<div class="container">
+    <div class="row">
+        @{
+            var summaryList = listData as List<RequestSummary>;
+        }
+        @if (summaryList.Count == 0)
+        {
+            <div class="col d-flex justify-content-center">
+                <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_a7vr2ghs.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
+            </div>
+            <div class="text-center">
+                <h1 class="display-6">No existen solicitudes al momento</h1>
+            </div>
+        }
+        else
+        {
+            @foreach (var item in listData as List<RequestSummary>)
+            {
+                <div class="col-lg-4">
+                    <div class="card card-margin">
+                        <div class="card-header no-border">
+                            <input id="requestId" type="hidden" value="@item.Id"/>
+                            <h5 class="card-title">@item.Name</h5>
+                        </div>
+                        <div class="card-body pt-0">
+                            <div class="widget-49">
+                                <div class="widget-49-title-wrapper">
+                                    <div class="widget-49-date-primary">
+                                        <span class="widget-49-date-day">@item.CreatedAt.Date.Day</span>
+                                        <span class="widget-49-date-month">@item.CreatedAt.Date.ToString("MMM")</span>
+                                    </div>
+                                    <div class="widget-49-meeting-info">
+                                        <span class="widget-49-pro-title">@item.PatientStory</span>
+                                    </div>
+                                </div>
+                                <ol class="widget-49-meeting-points">
+                                    <li class="widget-49-meeting-item"><span>Centro de Donación: @item.CenterName</span></li>
+                                    <li class="widget-49-meeting-item"><span>Dirección: @item.CenterAddress</span></li>
+                                    <li class="widget-49-meeting-item"><span>Fecha aproximada: @item.ResponseDueDate</span></li>
+                                </ol>
+                                <div class="widget-49-meeting-action">
+                                    <button onclick="tapDetailsCard(@item.Id)" class="btn btn-sm btn-flash-border-primary">Aceptar solicitud</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+<script type="text/javascript">
+    var requestNumber = document.getElementById('requestId').value;
+    function tapDetailsCard(id) {
+        Swal.fire({
+            title: 'Información',
+            text: "¿Desea aceptar esta solicitud?",
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#38b000',
+            cancelButtonColor: '#c1121f',
+            confirmButtonText: 'Aceptar solicitud'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var url = "/BloodRequest/PostCases/" + id;
+
+                $.post(url, function (data) {
+                    var result = JSON.stringify(data.content)
+                    if (data.code == 201) {
+                        window.location.href = '/BloodRequest/BloodRequestDetail/';
+                    }
+                    else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: "Ha ocurrido un error",
+                            icon: 'error',
+                            showCancelButton: true,
+                            cancelButtonColor: '#c1121f',
+                            cancelButtonText: 'Ok'
+                        })
+                    }
+                });
+            }
+        });
+    }
+</script>

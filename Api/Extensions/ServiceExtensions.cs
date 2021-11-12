@@ -1,4 +1,4 @@
-﻿using UnaPinta.Data.Entities;
+﻿using UnaPinta.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +10,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using UnaPinta.Core.Contracts;
+using UnaPinta.Core;
 
 namespace UnaPinta.Api.Extensions
 {
@@ -48,10 +50,11 @@ namespace UnaPinta.Api.Extensions
 
             if (isAzure)
             {
-                services.AddDbContext<UnaPintaDBContext>(
-                    options => options.UseSqlServer(
-                        configuration.GetConnectionString("AzureConnection"), b => b.MigrationsAssembly("UnaPinta.Api")
-                    )
+                services.AddDbContext<UnaPintaDBContext>(options => 
+                    options.UseLazyLoadingProxies()
+                        .UseSqlServer(
+                            configuration.GetConnectionString("AzureConnection"), b => b.MigrationsAssembly("UnaPinta.Api")
+                        )
                 );
 
                 return;
@@ -60,7 +63,7 @@ namespace UnaPinta.Api.Extensions
             if (isLocal)
             {
                 services.AddDbContext<UnaPintaDBContext>(
-                    options => options.UseSqlServer(
+                    options => options.UseLazyLoadingProxies().UseSqlServer(
                         configuration.GetConnectionString("LocalConnection"), b => b.MigrationsAssembly("UnaPinta.Api")
                     )
                 );
@@ -70,10 +73,13 @@ namespace UnaPinta.Api.Extensions
 
             services.AddDbContext<UnaPintaDBContext>(
 
-                options => options.UseSqlite(
+                options => options.UseLazyLoadingProxies().UseSqlite(
                     configuration.GetConnectionString("SQLiteConnection"), b => b.MigrationsAssembly("UnaPinta.Api")
                 )
             );
         }
+
+        public static void ConfigureLoggerService(this IServiceCollection services) => 
+            services.AddScoped<ILoggerManager, LoggerManager>();
     }
 }

@@ -2,49 +2,66 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using UnaPinta.Data.Entities;
-using UnaPinta.Core.Models;
+using UnaPinta.Dto.Models;
 using UnaPinta.Data.Contracts;
 using UnaPinta.Core.Contracts;
+using UnaPinta.Core.Contracts.Users;
+using UnaPinta.Dto.Models.User;
+using Microsoft.AspNetCore.Identity;
+using UnaPinta.Core.Exceptions;
+using AutoMapper;
 
 namespace UnaPinta.Core.Services
 {
-    public class UsersServices : IUsersServices
+    public class UsersServices : IUserService
     {
-        private readonly IUnaPintaRepository _repo;
+        private readonly IUserRepository _userRepository;
+        private readonly UserManager<User> _userManager;
+        private readonly IMapper _mapper;
+        private readonly IProvinceService _provinceService;
 
-        public UsersServices(IUnaPintaRepository repo)
+        public UsersServices(IUserRepository userRepository, UserManager<User> userManager, IMapper mapper, IProvinceService provinceService)
         {
-            _repo = repo;
+            _userRepository = userRepository;
+            _userManager = userManager;
+            _mapper = mapper;
+            _provinceService = provinceService;
         }
 
-        public async Task<ConfirmationResponse> ConfirmEmail(User userToConfirm, string code)
+        public async Task<UserProfileDto> RetrieveUserProfile(string username)
         {
-            var matchingCode = await _repo.GetCodeByUser(code, userToConfirm.Id);
-            var response = new ConfirmationResponse();
-            if(matchingCode == null)
-            {
-                response.Confirmed = false; 
-                response.Message = "Code is incorrect";
-                return response;
-            }
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null) throw new BaseDomainException("El usuario {username} no existe", 404);
 
-            if(matchingCode.ExpiresAt < DateTime.Now)
-            {
-                response.Confirmed = false; 
-                response.Message = "Code has expired";
-                return response;
-            }
-            
-            //userToConfirm.Confirmed = true;
-            await _repo.SaveChangesAsync();
-
-            response.Confirmed = true;
-            response.Message = "User's email confirmed successfully";
-            return response;
-                
+            var profile = _mapper.Map<UserProfileDto>(user);
+            return profile;
         }
 
-        private async Task<ConfirmationCode> GenerateConfirmationCode(int userId)
+        public async Task<UserProfileDto> UpdateUserProfileInfo(UpdateUserProfileDto dto, string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null) throw new BaseDomainException($"El usuario {username} no existe.", 404);
+
+            if(!string.IsNullOrEmpty(dto.ProvinceCode))
+            {
+                var province = await _provinceService.RetrieveProvinceByCode(dto.ProvinceCode);
+                if (province == null) throw new BaseDomainException("La provincia especificada no existe.", 400);
+                user.ProvinceId = province.Id;
+            }
+
+            if (!string.IsNullOrEmpty(dto.PhoneNumber))
+            {
+                user.PhoneNumber = dto.PhoneNumber;
+            }
+
+            _userRepository.Update(user);
+            await _userRepository.SaveChangesAsync();
+
+            var profile = _mapper.Map<UserProfileDto>(user);
+            return profile;
+        }
+
+        private async Task<ConfirmationCode> GenerateConfirmationCode(long userId)
         {
             Random rnd = new Random();
             StringBuilder builder = new StringBuilder();
@@ -59,22 +76,9 @@ namespace UnaPinta.Core.Services
             ConfirmationCode confirmation = new ConfirmationCode();
             confirmation.Code = code;
             confirmation.UserId = userId;
-            
-            _repo.AddConfirmationCode(confirmation);
-            await _repo.SaveChangesAsync();
 
             return confirmation;
         }
-
-        public async Task SendConfirmationCode(int userId)
-        {
-            var confirmation = await GenerateConfirmationCode(userId);
-
-            EmailSender sender = new EmailSender(_repo);
-
-            await sender.SendConfirmation(confirmation);
-        }
-
         
     }
 }

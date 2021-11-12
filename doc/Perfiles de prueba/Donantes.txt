@@ -1,0 +1,148 @@
+Name: Leonardo
+LastName: Paniagua
+Sex: Male
+Blood Type: A+
+Weight: 150 kg
+Tatuajes: Si, hace 3 meses
+Drogas: Si
+Piercing: Si, hace 2 meses
+Disponibilidad: 2 meses
+
+Name: Raul
+LastName: Paniagua
+Sex: Male
+Blood Type: A-
+Weight: 180 kg
+Tatuajes: Si, hace 3 meses
+Drogas: Si
+Transplante: Si
+Procedimiento odontológico: Si
+Transfusión: Si
+Enfermedades: Si
+Piercing: Si, hace 2 meses
+Disponibilidad: 5 meses
+
+Name: Lexy
+LastName: Paniagua
+Sex: Female
+Blood Type: O-
+Weight: 180 kg
+Tatuajes: Si, hace 6 meses
+Drogas: Si
+Transplante: Si
+Procedimiento odontológico: Si
+Disponibilidad: 3 meses
+
+Name: Maria
+LastName: Fernanda
+Sex: Female
+Blood Type: AB+
+Weight: 180 kg
+Disponibilidad: Disponible
+
+Name: Pedro
+LastName: Lantigua
+Sex: Male
+Blood Type: B+
+Weight: 180 kg
+Tatuajes: Si, hace 1 meses
+Disponibilidad: 4 meses
+
+Name: Luis
+LastName: Augusto
+Sex: Male
+Blood Type: B-
+Weight: 180 kg
+Drogas: Si
+Transplante: Si
+Procedimiento odontológico: Si
+Transfusión: Si
+Enfermedades: Si
+Piercing: Si, hace 2 meses
+Disponibilidad: 4 meses
+
+Name: Raulin
+LastName: Perez
+Sex: Male
+Blood Type: AB-
+Weight: 180 kg
+Piercing: Si, hace 2 meses
+Disponibilidad: 5 meses
+
+Name: Aileen
+LastName: Perez
+Sex: Female
+Blood Type: AB-
+Weight: 180 kg
+Procedimiento odontológico: Si
+Transfusión: Si
+Enfermedades: Si
+Disponibilidad: 3 meses
+
+Name: Juan
+LastName: José
+Sex: Male
+Blood Type: B-
+Weight: 180 kg
+Enfermedades: Si
+Disponibilidad: 7 meses
+
+Name: Loara
+LastName: Peña
+Sex: Female
+Blood Type: B+
+Weight: 180 kg
+Disponibilidad: Disponible
+
+Name: Mariela
+LastName: Olivero
+Sex: Female
+Blood Type: A+
+Weight: 180 kg
+Disponibilidad: Disponible
+
+Name: Octavia
+LastName: Olivero
+Sex: Female
+Blood Type: A+
+Weight: 180 kg
+Procedimiento odontológico: Si
+Transfusión: Si
+Enfermedades: Si
+Piercing: Si, hace 2 meses
+Disponibilidad: 4 meses
+
+Name: Diana
+LastName: De Los Santos
+Sex: Female
+Blood Type: A-
+Weight: 180 kg
+Procedimiento odontológico: Si
+Enfermedades: Si
+Piercing: Si, hace 2 meses
+Disponibilidad: 3 meses
+
+Name: Steven
+LastName: De Los Santos
+Sex: Male
+Blood Type: A+
+Weight: 180 kg
+Tatuajes: Si, hace 5 meses
+Piercing: Si, hace 2 meses
+Disponibilidad: 7 meses
+
+Name: Enmanuel
+LastName: De Los Santos
+Sex: Male
+Blood Type: AB-
+Weight: 180 kg
+Tatuajes: Si, hace 5 meses
+Disponibilidad: 2 meses
+
+Name: Karen
+LastName: De Los Santos
+Sex: Female
+Blood Type: O+
+Weight: 180 kg
+Piercing: Si, hace 2 meses
+Disponibilidad: 5 meses

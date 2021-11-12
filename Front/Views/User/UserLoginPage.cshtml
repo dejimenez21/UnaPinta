@@ -1,4 +1,7 @@
 ﻿@model Una_Pinta.Models.UserSignUp
+@{ 
+    Layout = "LayoutSignUp";
+}
 <div class="container">
     <div class="text-center">
         <p style="font-family: 'Roboto', sans-serif; font-size:30px; font-weight:bold">Inicio de Sesión</p>
@@ -29,19 +32,30 @@
                                 <span data-valmsg-for="Password" class="text-danger" data-valmsg-replace="true" />
                             </div>
                             <br />
+                            <div class="text-center">
+                                <p>¿Has olvidado tu contraseña?<span> <a asp-action="MailCredentials" asp-controller="User">Clic aquí</a></span></p>
+                            </div>
                             <div class="justify-end justify-content-between">
                                 <div>
                                     <button type="submit" class="btn-block btn btn-danger">Ingresar</button>
                                 </div>
                                 <br />
                                 <div>
-                                    @Html.ActionLink("Registrarse", // <-- Link text
+                                    @Html.ActionLink("Registrarse como Solicitante", // <-- Link text
                                                     "UserRegisterPage", // <-- Action Method Name
                                                     "User", // <-- Controller Name
                                                      null, // <-- Route value
-                                                     new { @class = "btn-block btn btn-secondary" } // <-- htmlArguments
+                                                     new { @class = "btn-block btn btn-success" } // <-- htmlArguments
+                                                     )
+
+                                    @Html.ActionLink("Registrarse como Donante", // <-- Link text
+                                                    "DonorRegisterPage", // <-- Action Method Name
+                                                    "Donor", // <-- Controller Name
+                                                     null, // <-- Route value
+                                                     new { @class = "btn-block btn btn-info" } // <-- htmlArguments
                                                      )
                                 </div>
+                                <br />
                             </div>
                         </form>
                     </div>
@@ -50,23 +64,65 @@
         </div>
     </div>
 </div>
+
+<div id="overlay" class="text-center">
+    <div id="overlay-content">
+        <br />
+        <br />
+        <img src="~/Pics/logo_splash.svg" id="splashIcon" />
+        <br />
+        <div class="spinner-border text-danger" style="width:200px; height:200px;" role="status"></div>
+    </div>
+</div>
 <script type="text/javascript">
+
+    $.fn.center = function () {
+        this.css("position", "absolute");
+        this.css("top", Math.max(0, (
+            ($(window).height() - $(this).outerHeight()) / 2) +
+            $(window).scrollTop()) + "px"
+        );
+        this.css("left", Math.max(0, (
+            ($(window).width() - $(this).outerWidth()) / 2) +
+            $(window).scrollLeft()) + "px"
+        );
+        return this;
+    }
+
+    $("#overlay").show();
+    $("#splashIcon").hide();
+    $("#overlay-content").show().center();
+    $("#splashIcon").fadeIn("slow");
+
+
+    setTimeout(function () {
+        $("#overlay").fadeOut("slow");
+    }, 3000);
+
     function OnSuccess(response) {
         var userName = document.getElementById("userNametxt").value;
-        if (response != 200) {
-            swal({
+        if (response.code != 200) {
+            Swal.fire({
                 title: "Advertencia",
-                text: "Este usuario no existe",
+                text: "Credenciales erroneos",
                 type: "warning",
                 icon: "warning",
-                showCancelButton: true,
-                closeOnConfirm: true,
-                closeOnCancel: true
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                closeOnConfirm: true
             });
         }
         else {
-            window.localStorage.setItem("userKey", userName);
-            window.location.href = "/BloodRequest/BloodRequestPage"
+            if (response.roleUser == 1) {
+                window.location.href = "/BloodRequest/BloodRequestDetail"
+            }
+            else if (response.roleUser == 2) {
+                window.location.href = "/BloodRequest/BloodRequestList"
+                window.localStorage.setItem("bloodTypeUser", response.blood);
+                window.localStorage.setItem("tokenSession", response.token);
+                window.localStorage.setItem("nameofuser", response.nameOfUser);
+                window.localStorage.setItem("birthdate", response.birthDate);
+            }             
         }
     }
 </script>

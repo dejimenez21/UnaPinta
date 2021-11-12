@@ -1,14 +1,14 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using UnaPinta.Core.Models;
+using UnaPinta.Api.Helpers;
+using UnaPinta.Core.Contracts.Users;
 using UnaPinta.Core.Services;
-using Microsoft.AspNetCore.Mvc;
-using AutoMapper;
-using UnaPinta.Data.Contracts;
-using UnaPinta.Core.Contracts;
-using UnaPinta.Data.Entities;
+using UnaPinta.Dto.Models.User;
 
 namespace UnaPinta.Api.Controllers
 {
@@ -16,48 +16,31 @@ namespace UnaPinta.Api.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IUnaPintaRepository _repo;
-        private readonly IMapper _mapper;
-        private readonly IUsersServices _services;
+        private readonly IUserService _userService;
+        private readonly ITokenParams _tokenParams;
 
-        public UsersController(IUnaPintaRepository repo, IMapper mapper, IUsersServices services)
+        public UsersController(IUserService userService, ITokenParams tokenParams)
         {
-            _repo = repo;
-            _mapper = mapper;
-            _services = services;
+            _userService = userService;
+            _tokenParams = tokenParams;
         }
 
-
-        [HttpPost("")]
-        public async Task<ActionResult<User>> RegisterUser(Register register)
+        [HttpGet("myprofile")]
+        [Authorize]
+        public async Task<ActionResult<UserProfileDto>> GetMyProfile()
         {
-            if(await _repo.GetUserByEmail(register.Email))
-            {
-                return Ok("Este correo ya esta en uso");
-            }
-
-            User user = _mapper.Map<User>(register);
-            //user.CanDonate = user.RoleId == (int)RoleEnum.Donante;
-            _repo.AddUser(user);
-            await _repo.SaveChangesAsync();
-
-            Response.OnCompleted(async () => await _services.SendConfirmationCode(user.Id));
-            
-
-            return Created("api/users", user);
+            var username = _tokenParams.UserName;
+            var profile = await _userService.RetrieveUserProfile(username);
+            return Ok(profile);
         }
 
-        [HttpPost("confirm/{id}")]
-        public async Task<ActionResult<ConfirmationResponse>> ConfirmUser(int id, CodeSubmit code)
+        [HttpPut("myprofile/update")]
+        [Authorize]
+        public async Task<ActionResult<UserProfileDto>> UpdateMyProfileInfo(UpdateUserProfileDto dto)
         {
-            var userToConfirm = await _repo.GetUserById(id);
-            if(userToConfirm == null)
-                return NotFound("The user you are trying to confirm don't even exist");
-
-            var response = await _services.ConfirmEmail(userToConfirm, code.Code);
-            return Ok(response);
+            var username = _tokenParams.UserName;
+            var profile = await _userService.UpdateUserProfileInfo(dto, username);
+            return Ok(profile);
         }
-
-
     }
 }

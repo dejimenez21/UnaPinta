@@ -5,21 +5,24 @@ using UnaPinta.Data.Entities;
 using System.Linq;
 using UnaPinta.Data.Contracts;
 using UnaPinta.Core.Contracts;
+using UnaPinta.Dto.Enums;
 
 namespace UnaPinta.Core.Services
 {
     public class WaitListServices : IWaitListServices
     {
         private readonly IUnaPintaRepository _repo;
+        private readonly IWaitListRepository _waitListRepository;
 
-        public WaitListServices(IUnaPintaRepository repo)
+        public WaitListServices(IUnaPintaRepository repo, IWaitListRepository waitListRepository)
         {
             _repo = repo;
+            _waitListRepository = waitListRepository;
         }
 
-        public async Task<DateTime> CalculateAvailableAtDate(WaitList item, int months)
+        public async Task<DateTime> CalculateAvailableAtDate(ConditionEnum conditionId, int months)
         {
-            var condition = await _repo.GetConditionById(item.ConditionId);
+            var condition = await _repo.GetConditionById(conditionId);
             var diff = condition.MonthsToWait - months;
             return DateTime.Now.AddMonths(diff);
         }
@@ -35,17 +38,33 @@ namespace UnaPinta.Core.Services
             }
 
             var userAge = (DateTime.Now - User.BirthDate).TotalDays/365;
-            
-            if(waitList.Any(x=>x.ConditionId==ConditionEnum.Inaceptable) || User.Weight<50 || userAge<18 || userAge>65)
+
+            User.CanDonate = true;
+            if (waitList.Any(x=>x.ConditionId==ConditionEnum.Inaceptable) || User.Weight<50 || userAge<18 || userAge>65)
             {
                 User.CanDonate = false;
-                await _repo.SaveChangesAsync();
                 await SendUnableToDonateNotification(User);
                 return;
             }
+            await _repo.SaveChangesAsync();
 
             var availableAt = waitList.Max(x=>x.AvailableAt);
             await SendAvailabilityDateNotification(User, availableAt);
+
+        }
+
+        public async Task<bool> IsDonorAvailable(User donor)
+        {
+            if (!donor.CanDonate)
+                return false;
+
+            var items = await _waitListRepository.SelectWaitListItemsByDonorId(donor.Id);
+
+            if (!items.Any(x => x.ConditionId != ConditionEnum.SinCondicion)) return true;
+
+            var availableAt = items.Max(x => x.AvailableAt);
+
+            return !(availableAt > DateTime.Now);
 
         }
 
