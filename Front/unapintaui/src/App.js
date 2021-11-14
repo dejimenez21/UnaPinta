@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Login from './components/login/login';
-import UserRegister from './components/userregister/userRegister';
+import Login from './components/userequester/login/login';
+import UserRegister from './components/userequester/register/register';
 
 class App extends Component {
   render() {

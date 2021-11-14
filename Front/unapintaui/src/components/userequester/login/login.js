@@ -1,7 +1,9 @@
 import React from "react";
-import axios from "axios";
+import Axios from "axios";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import RequestsHistory from "../requestsHistory/requestHistory";
+import { useNavigate } from "react-router-dom";
 
 class Login extends React.Component {
   constructor(props) {
@@ -12,6 +14,7 @@ class Login extends React.Component {
       password: "",
     };
   }
+
 
   handleValidation = (e) => {
     let username = this.state.userName;
@@ -33,10 +36,11 @@ class Login extends React.Component {
     if (this.handleValidation() == false) {
       swal.fire("Existen campos vacios", "", "warning");
     } else {
-      axios
+      Axios
     .post("https://localhost:5001/api/Auth/login", this.state)
     .then((response) => {
-      swal.fire(`Bienvenido ${response.status}`, "", "success");
+      console.log(response.data);
+      localStorage.setItem('userToken', JSON.stringify(response.data));
     })
     .catch((error) => {
       swal.fire("Credenciales incorrectos", {error}, "error");
