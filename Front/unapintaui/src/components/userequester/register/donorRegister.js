@@ -29,21 +29,21 @@ class DonorRegister extends React.Component {
     console.log(this.state.name);
   }
 
-  optionsBloodTypes = [{
-    value: "1", label: 'A+',
-    value: "2", label: 'A-',
-    value: "3", label: 'B+',
-    value: "4", label: 'B-',
-    value: "5", label: 'AB+',
-    value: "6", label: 'AB-',
-    value: "7", label: 'O+',
-    value: "8", label: 'O-'
-  }]
+  optionsBloodTypes = [
+    { value: "1", label: 'A+'},
+    { value: "2", label: 'A-'},
+    { value: "3", label: 'B+'},
+    { value: "4", label: 'B-'},
+    { value: "5", label: 'AB+'},
+    { value: "6", label: 'AB-'},
+    { value: "7", label: 'O+'},
+    { value: "8", label: 'O-'}
+  ]
 
-  optionsGenderTypes = [{
-    value: "true", label: 'M',
-    value: "false", label: 'F',
-  }]
+  optionsGenderTypes = [
+    { value: "true", label: 'M'},
+    { value: "false", label: 'F'}
+  ]
 
 
   render() {
