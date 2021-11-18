@@ -4,9 +4,6 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
-import Login from './components/userequester/login/login';
-import RequestHistory from './components/userequester/requestsHistory/requestHistory';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 
 ReactDOM.render(

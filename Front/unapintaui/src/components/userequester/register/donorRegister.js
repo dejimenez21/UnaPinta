@@ -1,4 +1,5 @@
 import React from "react";
+import Select from 'react-select'
 
 class DonorRegister extends React.Component {
   constructor(props) {
@@ -7,17 +8,43 @@ class DonorRegister extends React.Component {
     this.state = {
         name: '',
         lastName: '',
-        sex: '',
+        sex: false,
         age: '',
-        bloodType: '',
-        bithDate: '',
+        bloodType: 0,
+        bithDate: Date.now(),
         email: '',
         password: '',
-        weight: '',
+        weight: 0.0,
         phone: '',
-        province: ''
+        province: '',
+        username: ''
     };
-  }  
+  }
+
+  changeHandler = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
+  submitHandler = (e) => {
+    console.log(this.state.name);
+  }
+
+  optionsBloodTypes = [{
+    value: "1", label: 'A+',
+    value: "2", label: 'A-',
+    value: "3", label: 'B+',
+    value: "4", label: 'B-',
+    value: "5", label: 'AB+',
+    value: "6", label: 'AB-',
+    value: "7", label: 'O+',
+    value: "8", label: 'O-'
+  }]
+
+  optionsGenderTypes = [{
+    value: "true", label: 'M',
+    value: "false", label: 'F',
+  }]
+
 
   render() {
     return (
@@ -44,89 +71,73 @@ class DonorRegister extends React.Component {
             </div>
             <form onSubmit={this.submitHandler}>
                 <div className="card-body">
-                <div class="row g-3">
-                <div class="col-sm-6">
+                <div className="row g-3">
+                <div className="col-sm-6">
                   <label style={{ fontfamily: "Robot" }}>Nombre</label>
-                  <input type="text" value={this.name} class="form-control" />
+                  <input type="text" name="name" value={this.name} onChange={this.changeHandler} className="form-control" />
                 </div>
-                <div class="col-sm-6">
+                <div className="col-sm-6">
                   <label style={{ fontfamily: "Robot" }}>Apellidos</label>
-                  <input type="text" value={this.lastName} class="form-control" />
+                  <input type="text" name="lastname" value={this.lastName} className="form-control" />
                 </div>
-                <div class="col-sm-6">
+                <div className="col-sm-6">
                   <label style={{ fontfamily: "Robot" }}>Sexo</label>
-                  <select class="form-control">
-                    <option value="" disabled selected hidden>
-                      Seleccionar
-                    </option>
-                    <option value="true">M</option>
-                    <option value="false">F</option>
-                  </select>
+                  <Select options={this.optionsGenderTypes}/>
                 </div>
-                <div class="col-sm-6">
+                <div className="col-sm-6">
                   <label style={{ fontfamily: "Robot" }}>Tipo de sangre</label>
-                  <select class="form-control">
-                    <option value="" disabled selected hidden>
-                      Seleccionar
-                    </option>
-                    <option value="1">A+</option>
-                    <option value="2">A-</option>
-                    <option value="3">B+</option>
-                    <option value="4">B-</option>
-                    <option value="5">AB+</option>
-                    <option value="6">AB-</option>
-                    <option value="7">O+</option>
-                    <option value="8">O-</option>
-                  </select>
+                  <Select options={this.optionsBloodTypes} placeholder="Seleccionar"/>                
                 </div>
-                <div class="col-sm-6">
+                <div className="col-sm-6">
                   <label style={{ fontfamily: "Robot" }}>
                     Fecha de nacimiento
                   </label>
-                  <input type="date" class="form-control" />
+                  <input type="date" name="bithDate" value={this.bithDate} className="form-control" />
                 </div>
-                <div class="col-sm-6">
+                <div className="col-sm-6">
                   <label style={{ fontfamily: "Robot" }}>Email</label>
-                  <input type="email" class="form-control" />
+                  <input type="email" name="email" value={this.email} className="form-control" />
                 </div>
-                <div class="col-sm-6">
+                <div className="col-sm-6">
                   <label style={{ fontfamily: "Robot" }}>Telefono</label>
-                  <input type="text" id="phonetxt" class="form-control" />
+                  <input type="text" name="phone" value={this.phone} className="form-control" />
                 </div>
-                <div class="col-sm-6">
+                <div className="col-sm-6">
                   <label style={{ fontfamily: "Robot" }}>Usuario</label>
-                  <input type="text" class="form-control" />
+                  <input type="text" name="username" value={this.username} className="form-control" />
                 </div>
-                <div class="col-sm-6">
+                <div className="col-sm-6">
                   <label style={{ fontfamily: "Robot" }}>Contraseña</label>
                   <input
                     type="password"
                     id="passwordtxt"
-                    class="form-control"
+                    className="form-control"
                   />
                 </div>
-                <div class="col-sm-6">
+                <div className="col-sm-6">
                   <label style={{ fontfamily: "Robot" }}>Peso (Kg)</label>
-                  <input type="number" class="form-control" />
+                  <input type="number" name="weight" value={this.weight} className="form-control" />
                 </div>
-                <div class="col-sm-6">
+                <div className="col-sm-6">
                   <label style={{ fontfamily: "Robot" }}>
                     Confirmación de contraseña
                   </label>
                   <input
+                  name="password"
+                  value={this.password}
                     type="password"
                     id="confirmpasswordtxt"
-                    class="form-control"
+                    className="form-control"
                   />
                 </div>
-                <div class="col-sm-6">
+                <div className="col-sm-6">
                   <label style={{ fontfamily: "Robot" }}>Provincia</label>
-                  <select id="provincesDropdown" class="form-control"></select>
+                  <select id="provincesDropdown" value={this.province} name="province" className="form-control"></select>
                 </div>
               </div>
               <br />
-              <div class="text-center">
-                <button class="btn btn-danger float-right">
+              <div className="text-center">
+                <button className="btn btn-danger float-right">
                   Guardar
                 </button>
               </div>
