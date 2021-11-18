@@ -1,6 +1,6 @@
 import React from 'react';
 
-class UserRegister extends React.Component {
+class DonorRegister extends React.Component {
     constructor(props){
         super(props)
     }
@@ -12,4 +12,4 @@ class UserRegister extends React.Component {
     }
 }
 
-export default UserRegister;
+export default DonorRegister;
