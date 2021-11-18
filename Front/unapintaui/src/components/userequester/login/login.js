@@ -113,11 +113,11 @@ class Login extends React.Component {
                 />
               </div>
               <br />
-            </div>
-            <div className="text-center">
-              <button className="btn btn-success" type="submit">
+            <div className="text-end">
+              <button className="btn btn-outline-success" type="submit">
                 Ingresar
               </button>
+            </div>
             </div>
             <br />
           </form>
