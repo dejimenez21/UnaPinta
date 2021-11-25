@@ -21,7 +21,6 @@ namespace UnaPinta.Core.Services
 {
     public class RequestsService : IRequestsService
     {
-        private readonly IUnaPintaRepository _repo;
         private readonly UserManager<User> _userManager;
         private readonly IRequestRepository _requestRepository;
         private readonly IMapper _mapper;
@@ -34,7 +33,6 @@ namespace UnaPinta.Core.Services
             IRequestRepository requestRepository, IMapper mapper, IRequestNotificationService requestNotificationService,
             IProvinceService provinceService, ICaseRepository caseRepository, IFileRepository fileRepository)
         {
-            _repo = repo;
             _userManager = userManager;
             _requestRepository = requestRepository;
             _mapper = mapper;
