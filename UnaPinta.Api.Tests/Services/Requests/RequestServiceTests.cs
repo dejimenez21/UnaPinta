@@ -24,6 +24,8 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
 {
     public partial class RequestServiceTests
     {
+        private readonly IMapper _autoMapper;
+
         private readonly Mock<UserManager<User>> _userManagerMock;
         private readonly Mock<IRequestRepository> _requestRepositoryMock;
         private readonly Mock<IMapper> _mapperMock;
@@ -47,16 +49,17 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
 
             _requestService = new RequestsService(_userManagerMock.Object, _requestRepositoryMock.Object, GenerateRequestMapper(), _requestNotificationServiceMock.Object,
                 _provinceServiceMock.Object, _caseRepositoryMock.Object, _fileRepositoryMock.Object, _dateTimeBrokerMock.Object);
+
+            _autoMapper = GenerateMapperForTests();
         }
 
         [Fact]
         public async Task ShouldRegisterRequestAsync()
         {
-            IMapper mapper = GenerateMapperForTests();
             //given
             DateTime actualDate = Convert.ToDateTime("2030-8-14");
             RequestCreateDto inputRequest = GetValidRequest();
-            Request beforeInsertMappedRequest = mapper.Map<Request>(inputRequest);
+            Request beforeInsertMappedRequest = _autoMapper.Map<Request>(inputRequest);
             beforeInsertMappedRequest.ResponseDueDate = Convert.ToDateTime("2030-8-14 12:00:00.000");
             beforeInsertMappedRequest.ProvinceId = 30;
             beforeInsertMappedRequest.RequesterId = 1;
