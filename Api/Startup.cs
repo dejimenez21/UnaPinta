@@ -23,6 +23,7 @@ using UnaPinta.Data.Brokers;
 using UnaPinta.Core.Contracts.Case;
 using UnaPinta.Api.Helpers;
 using UnaPinta.Core.Contracts.Users;
+using UnaPinta.Data.Brokers.DateTimes;
 
 namespace UnaPinta.Api
 {
@@ -86,6 +87,7 @@ namespace UnaPinta.Api
             services.AddScoped<ICaseRepository, CaseRepository>();
             services.AddScoped<IUserService, UsersServices>();
             services.AddScoped<ITokenParams, TokenParams>();
+            services.AddSingleton<IDateTimeBroker, DateTimeBroker>();
 
             services.AddHttpContextAccessor();
 
