@@ -6,6 +6,7 @@ using System.Linq;
 using UnaPinta.Data.Contracts;
 using UnaPinta.Core.Contracts;
 using UnaPinta.Dto.Enums;
+using UnaPinta.Data.Brokers.DateTimes;
 
 namespace UnaPinta.Core.Services
 {
@@ -13,18 +14,20 @@ namespace UnaPinta.Core.Services
     {
         private readonly IUnaPintaRepository _repo;
         private readonly IWaitListRepository _waitListRepository;
+        private readonly IDateTimeBroker _dateTimeBroker;
 
-        public WaitListServices(IUnaPintaRepository repo, IWaitListRepository waitListRepository)
+        public WaitListServices(IUnaPintaRepository repo, IWaitListRepository waitListRepository, IDateTimeBroker dateTimeBroker)
         {
             _repo = repo;
             _waitListRepository = waitListRepository;
+            _dateTimeBroker = dateTimeBroker;
         }
 
         public async Task<DateTime> CalculateAvailableAtDate(ConditionEnum conditionId, int months)
         {
             var condition = await _repo.GetConditionById(conditionId);
             var diff = condition.MonthsToWait - months;
-            return DateTime.Now.AddMonths(diff);
+            return _dateTimeBroker.GetCurrentDateTime().AddMonths(diff);
         }
 
         public async Task ReviewDonorAvailability(int userId, List<WaitList> waitList)
@@ -37,7 +40,7 @@ namespace UnaPinta.Core.Services
                 return;
             }
 
-            var userAge = (DateTime.Now - User.BirthDate).TotalDays/365;
+            var userAge = (_dateTimeBroker.GetCurrentDateTime() - User.BirthDate).TotalDays/365;
 
             User.CanDonate = true;
             if (waitList.Any(x=>x.ConditionId==ConditionEnum.Inaceptable) || User.Weight<50 || userAge<18 || userAge>65)
@@ -64,7 +67,7 @@ namespace UnaPinta.Core.Services
 
             var availableAt = items.Max(x => x.AvailableAt);
 
-            return !(availableAt > DateTime.Now);
+            return !(availableAt > _dateTimeBroker.GetCurrentDateTime());
 
         }
 
