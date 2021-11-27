@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace UnaPinta.Core.Contracts
+namespace UnaPinta.Data.Brokers.Loggings
 {
-    public interface ILoggerManager
+    public interface ILoggingBroker
     {
         void LogInfo(string message); 
         void LogWarn(string message); 

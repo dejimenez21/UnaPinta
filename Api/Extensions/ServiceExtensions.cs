@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnaPinta.Core.Contracts;
 using UnaPinta.Core;
+using UnaPinta.Data.Brokers.Loggings;
 
 namespace UnaPinta.Api.Extensions
 {
@@ -80,6 +81,6 @@ namespace UnaPinta.Api.Extensions
         }
 
         public static void ConfigureLoggerService(this IServiceCollection services) => 
-            services.AddScoped<ILoggerManager, LoggerManager>();
+            services.AddScoped<ILoggingBroker, LoggingBroker>();
     }
 }

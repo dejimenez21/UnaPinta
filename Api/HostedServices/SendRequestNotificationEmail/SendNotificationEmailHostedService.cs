@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnaPinta.Core.Contracts;
+using UnaPinta.Data.Brokers.Loggings;
 
 namespace UnaPinta.Api.HostedServices.SendRequestNotificationEmail
 {
@@ -11,7 +12,7 @@ namespace UnaPinta.Api.HostedServices.SendRequestNotificationEmail
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public SendNotificationEmailHostedService(IServiceProvider serviceProvider, IConfiguration configuration, ILoggerManager logger) : base(configuration, logger)
+        public SendNotificationEmailHostedService(IServiceProvider serviceProvider, IConfiguration configuration, ILoggingBroker logger) : base(configuration, logger)
         {
             _serviceProvider = serviceProvider;
         }

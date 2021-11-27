@@ -1,12 +1,11 @@
-﻿using UnaPinta.Core.Contracts;
-using NLog;
+﻿using NLog;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace UnaPinta.Core
+namespace UnaPinta.Data.Brokers.Loggings
 {
-    public class LoggerManager : ILoggerManager
+    public class LoggingBroker : ILoggingBroker
     {
         private static ILogger _logger = LogManager.GetCurrentClassLogger();
         public void LogDebug(string message)

@@ -9,13 +9,14 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using UnaPinta.Core.Contracts;
+using UnaPinta.Data.Brokers.Loggings;
 using UnaPinta.Dto.Models.Errors;
 
 namespace UnaPinta.Api.Extensions
 {
     public static class ExceptionMiddlewareExtensions
     {
-        public static void ConfigureExceptionHandler(this IApplicationBuilder app, ILoggerManager logger, IWebHostEnvironment env) 
+        public static void ConfigureExceptionHandler(this IApplicationBuilder app, ILoggingBroker logger, IWebHostEnvironment env) 
         { 
             app.UseExceptionHandler(appError => 
             { 

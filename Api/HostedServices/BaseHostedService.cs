@@ -6,13 +6,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using UnaPinta.Core.Contracts;
+using UnaPinta.Data.Brokers.Loggings;
 
 namespace UnaPinta.Api.HostedServices
 {
     public abstract class BaseHostedService<T> : IHostedService, IDisposable
     {
         private readonly IConfiguration _configuration;
-        private readonly ILoggerManager _logger;
+        private readonly ILoggingBroker _logger;
         private Timer _timer;
 
         protected string Name { get; private set; }
@@ -22,7 +23,7 @@ namespace UnaPinta.Api.HostedServices
         protected readonly bool _isEnabled;
   
 
-        protected BaseHostedService(IConfiguration configuration, ILoggerManager logger)
+        protected BaseHostedService(IConfiguration configuration, ILoggingBroker logger)
         {
             _configuration = configuration;
             _logger = logger;

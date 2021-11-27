@@ -24,6 +24,7 @@ using UnaPinta.Core.Contracts.Case;
 using UnaPinta.Api.Helpers;
 using UnaPinta.Core.Contracts.Users;
 using UnaPinta.Data.Brokers.DateTimes;
+using UnaPinta.Data.Brokers.Loggings;
 
 namespace UnaPinta.Api
 {
@@ -104,7 +105,7 @@ namespace UnaPinta.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggingBroker logger)
         {
             if (env.IsDevelopment())
             {
