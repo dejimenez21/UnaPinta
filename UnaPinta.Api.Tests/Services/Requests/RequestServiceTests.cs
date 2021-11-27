@@ -9,7 +9,7 @@ using UnaPinta.Core.Contracts;
 using UnaPinta.Data.Contracts;
 using Xunit;
 
-namespace UnaPinta.Api.Tests.Services.Requests
+namespace UnaPinta.Api.Tests.Unit.Services.Requests
 {
     public partial class RequestServiceTests
     {
