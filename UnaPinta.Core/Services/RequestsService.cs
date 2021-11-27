@@ -16,6 +16,7 @@ using UnaPinta.Core.Exceptions;
 using Microsoft.AspNetCore.Http;
 using UnaPinta.Core.Extensions;
 using UnaPinta.Dto.Enumerations;
+using UnaPinta.Data.Brokers.DateTimes;
 
 namespace UnaPinta.Core.Services
 {
@@ -28,10 +29,11 @@ namespace UnaPinta.Core.Services
         private readonly IProvinceService _provinceService;
         private readonly ICaseRepository _caseRepository;
         private readonly IFileRepository _fileRepository;
+        private readonly IDateTimeBroker _dateTimeBroker;
 
-        public RequestsService(IUnaPintaRepository repo, UserManager<User> userManager, 
+        public RequestsService(UserManager<User> userManager, 
             IRequestRepository requestRepository, IMapper mapper, IRequestNotificationService requestNotificationService,
-            IProvinceService provinceService, ICaseRepository caseRepository, IFileRepository fileRepository)
+            IProvinceService provinceService, ICaseRepository caseRepository, IFileRepository fileRepository, IDateTimeBroker dateTimeBroker)
         {
             _userManager = userManager;
             _requestRepository = requestRepository;
@@ -40,6 +42,7 @@ namespace UnaPinta.Core.Services
             _provinceService = provinceService;
             _caseRepository = caseRepository;
             _fileRepository = fileRepository;
+            _dateTimeBroker = dateTimeBroker;
         }
 
         public async Task<Func<Task>> CreateRequest(RequestCreateDto inputRequest, string userName)
