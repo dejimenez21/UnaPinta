@@ -45,7 +45,7 @@ namespace UnaPinta.Core.Services
             _dateTimeBroker = dateTimeBroker;
         }
 
-        public async Task<Func<Task>> CreateRequest(RequestCreateDto inputRequest, string userName)
+        public async Task<Request> CreateRequest(RequestCreateDto inputRequest, string userName)
         {
             var stringDate = await _requestRepository.SelectStringDateById((int)inputRequest.ResponseDueDateId);
             if (stringDate == null) throw new BaseDomainException("El intervalo de fecha especificado no existe.", 400);
@@ -61,15 +61,17 @@ namespace UnaPinta.Core.Services
                 throw new BaseDomainException("El modelo es invalido", 400);
 
             var request = _mapper.Map<Request>(inputRequest);
-            request.ResponseDueDate = stringDate.ToDateTime();
+            request.ResponseDueDate = stringDate.ToDateTime(_dateTimeBroker.GetCurrentDateTime());
             request.ProvinceId = province.Id;
             request.Prescription = await inputRequest.PrescriptionImage.ToFileModel();
             request.RequesterId = user.Id;
+            request.CreatedAt = _dateTimeBroker.GetCurrentDateTime();
+            request.LastUpdatedAt = _dateTimeBroker.GetCurrentDateTime();
 
             _requestRepository.Insert(request);
             await _requestRepository.SaveChangesAsync();
 
-            return async () => await _requestNotificationService.SendRequestNotification(request);
+            return request;
         }
 
         private RequestCreateDto CompleteRequestForCurrentUser(RequestCreateDto inputRequest, User user)

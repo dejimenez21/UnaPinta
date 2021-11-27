@@ -14,9 +14,9 @@ namespace UnaPinta.Data.Entities
         public string String { get; set; }
         public int Hours { get; set; }
 
-        public DateTime ToDateTime()
+        public DateTime ToDateTime(DateTime initialDate)
         {
-            return DateTime.Now.AddHours(Hours);
+            return initialDate.AddHours(Hours);
         }
     }
 }
