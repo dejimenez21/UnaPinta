@@ -6,9 +6,11 @@ namespace UnaPinta.Data.Brokers.Loggings
 {
     public interface ILoggingBroker
     {
-        void LogInfo(string message); 
+        void LogInfo(string message);
+        void LogTrace(string message);
         void LogWarn(string message); 
         void LogDebug(string message); 
-        void LogError(string message);
+        void LogError(Exception message);
+        void LogCritical(Exception exception);
     }
 }

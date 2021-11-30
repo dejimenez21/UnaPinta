@@ -15,6 +15,7 @@ using UnaPinta.Core.Contracts;
 using UnaPinta.Core.MappingProfiles;
 using UnaPinta.Core.Services;
 using UnaPinta.Data.Brokers.DateTimes;
+using UnaPinta.Data.Brokers.Loggings;
 using UnaPinta.Data.Contracts;
 using UnaPinta.Data.Entities;
 using UnaPinta.Dto.Models;
@@ -34,6 +35,7 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
         private readonly Mock<ICaseRepository> _caseRepositoryMock;
         private readonly Mock<IFileRepository> _fileRepositoryMock;
         private readonly Mock<IDateTimeBroker> _dateTimeBrokerMock;
+        private readonly Mock<ILoggingBroker> _logginBrokerMock;
 
         private readonly IRequestsService _requestService;
         public RequestServiceTests()
@@ -46,9 +48,10 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
             _fileRepositoryMock = new Mock<IFileRepository>();
             _provinceServiceMock = new Mock<IProvinceService>();
             _caseRepositoryMock =  new Mock<ICaseRepository>();
+            _logginBrokerMock = new Mock<ILoggingBroker>();
 
             _requestService = new RequestsService(_userManagerMock.Object, _requestRepositoryMock.Object, GenerateRequestMapper(), _requestNotificationServiceMock.Object,
-                _provinceServiceMock.Object, _caseRepositoryMock.Object, _fileRepositoryMock.Object, _dateTimeBrokerMock.Object);
+                _provinceServiceMock.Object, _caseRepositoryMock.Object, _fileRepositoryMock.Object, _dateTimeBrokerMock.Object, _logginBrokerMock.Object);
 
             _autoMapper = GenerateMapperForTests();
         }

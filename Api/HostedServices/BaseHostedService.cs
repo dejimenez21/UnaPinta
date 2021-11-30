@@ -63,7 +63,7 @@ namespace UnaPinta.Api.HostedServices
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error en el servicio hospedado {Name}: {ex.Message}");
+                _logger.LogError(ex);
             }
         }
 

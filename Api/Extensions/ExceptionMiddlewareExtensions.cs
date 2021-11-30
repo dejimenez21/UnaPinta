@@ -27,7 +27,7 @@ namespace UnaPinta.Api.Extensions
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>(); 
                     if (contextFeature != null) 
                     { 
-                        logger.LogError($"Something went wrong: {contextFeature.Error}");
+                        logger.LogError(contextFeature.Error);
                         if(env.IsDevelopment())
                             await context.Response.WriteAsync(new ErrorDetails()
                             {
