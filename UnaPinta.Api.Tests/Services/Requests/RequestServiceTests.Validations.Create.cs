@@ -1,23 +1,6 @@
-﻿using AutoMapper;
-using FluentAssertions;
-using Force.DeepCloner;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using Moq;
 using System.Threading.Tasks;
-using Tynamix.ObjectFiller;
-using UnaPinta.Core.Contracts;
 using UnaPinta.Core.Exceptions.User;
-using UnaPinta.Core.MappingProfiles;
-using UnaPinta.Core.Services;
-using UnaPinta.Data.Brokers.DateTimes;
-using UnaPinta.Data.Brokers.Loggings;
-using UnaPinta.Data.Contracts;
 using UnaPinta.Data.Entities;
 using UnaPinta.Dto.Models;
 using Xunit;
@@ -49,7 +32,7 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
             //then
             await Assert.ThrowsAsync<UserNotFoundException>(() => createRequestTask);
 
-            _logginBrokerMock.Verify(broker => broker.LogError(expectedException));
+            _logginBrokerMock.Verify(broker => broker.LogError(It.Is(SameDomainExceptionAs(expectedException))), Times.Once);
         }
     }
 }

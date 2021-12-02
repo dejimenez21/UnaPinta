@@ -8,10 +8,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Tynamix.ObjectFiller;
 using UnaPinta.Core.Contracts;
+using UnaPinta.Core.Exceptions;
 using UnaPinta.Core.MappingProfiles;
 using UnaPinta.Core.Services;
 using UnaPinta.Data.Brokers.DateTimes;
@@ -100,6 +102,14 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
             validRequest.ResponseDueDateId = 2;
 
             return validRequest;
+        }
+
+        private Expression<Func<BaseDomainException, bool>> SameDomainExceptionAs(BaseDomainException expectedException)
+        {
+            return actualException =>
+                actualException.Message == expectedException.Message &&
+                actualException.StatusCode == expectedException.StatusCode &&
+                actualException.Title == expectedException.Title;
         }
 
         private IFormFile GenerateIFormFile()

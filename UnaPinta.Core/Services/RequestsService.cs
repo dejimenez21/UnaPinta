@@ -18,6 +18,7 @@ using UnaPinta.Core.Extensions;
 using UnaPinta.Dto.Enumerations;
 using UnaPinta.Data.Brokers.DateTimes;
 using UnaPinta.Data.Brokers.Loggings;
+using UnaPinta.Core.Exceptions.User;
 
 namespace UnaPinta.Core.Services
 {
@@ -57,7 +58,13 @@ namespace UnaPinta.Core.Services
             var province = await _provinceService.RetrieveProvinceByCode(inputRequest.ProvinceCode);
             if (province == null) throw new BaseDomainException("La provincia especificada no existe.", 400);
 
-            var user = await _userManager.FindByNameAsync(userName); //TODO: Add validation if the user returns null
+            var user = await _userManager.FindByNameAsync(userName);
+            if (user == null)
+            {
+                var ex = new UserNotFoundException(userName, true);
+                _loggingBroker.LogError(ex);
+                throw ex;
+            }
 
             if (inputRequest.ForMe)
                 inputRequest = CompleteRequestForCurrentUser(inputRequest, user);
