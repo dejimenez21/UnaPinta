@@ -13,12 +13,5 @@ namespace UnaPinta.Data.Entities
         public DateTime CreatedAt { get; set; }
         public DateTime LastUpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
-
-
-        public override bool Equals(object obj)
-        {
-            var settings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
-            return JsonConvert.SerializeObject(obj, settings) == JsonConvert.SerializeObject(obj, settings);
-        }
     }
 }

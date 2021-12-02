@@ -12,6 +12,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Tynamix.ObjectFiller;
+using UnaPinta.Api.Tests.Unit.Helpers;
 using UnaPinta.Core.Contracts;
 using UnaPinta.Core.Exceptions;
 using UnaPinta.Core.MappingProfiles;
@@ -28,7 +29,7 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
     public partial class RequestServiceTests
     {
         private readonly IMapper _autoMapper;
-
+        private readonly Comparer<Request, long> _comparer;
         private readonly Mock<UserManager<User>> _userManagerMock;
         private readonly Mock<IRequestRepository> _requestRepositoryMock;
         private readonly Mock<IMapper> _mapperMock;
@@ -56,6 +57,7 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
                 _provinceServiceMock.Object, _caseRepositoryMock.Object, _fileRepositoryMock.Object, _dateTimeBrokerMock.Object, _logginBrokerMock.Object);
 
             _autoMapper = GenerateMapperForTests();
+            _comparer = new Comparer<Request, long>();
         }
 
         private User GenerateRequestOwner()
