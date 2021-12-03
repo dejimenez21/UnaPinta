@@ -52,8 +52,14 @@ namespace UnaPinta.Core.Services
 
         public async Task<Request> CreateRequest(RequestCreateDto inputRequest, string userName)
         {
-            var stringDate = await _requestRepository.SelectStringDateById((int)inputRequest.ResponseDueDateId);
-            if (stringDate == null) throw new BaseDomainException("El intervalo de fecha especificado no existe.", 400);
+            int stringDateId = (int)inputRequest.ResponseDueDateId;
+            var stringDate = await _requestRepository.SelectStringDateById(stringDateId);
+            if (stringDate == null)
+            {
+                var ex = new StringDateNotFoundException(stringDateId);
+                _loggingBroker.LogError(ex);
+                throw ex;
+            }
             
             var province = await _provinceService.RetrieveProvinceByCode(inputRequest.ProvinceCode);
             if (province == null) throw new BaseDomainException("La provincia especificada no existe.", 400);
