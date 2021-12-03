@@ -1,5 +1,6 @@
 ﻿using Moq;
 using System.Threading.Tasks;
+using UnaPinta.Core.Exceptions.Province;
 using UnaPinta.Core.Exceptions.Request;
 using UnaPinta.Core.Exceptions.User;
 using UnaPinta.Data.Entities;
@@ -46,7 +47,7 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
             RequestCreateDto inputRequest = GetValidRequestCreateDto();
             string inputUserName = "f.diaz";
 
-            var expectedException = new StringDateNotFoundException(2);
+            var expectedException = new StringDateNotFoundException((int)inputRequest.ResponseDueDateId);
 
             _provinceServiceMock
                 .Setup(broker => broker.RetrieveProvinceByCode("SD"))
@@ -61,6 +62,33 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
             _logginBrokerMock.Verify(broker => broker.LogError(It.Is(SameDomainExceptionAs(expectedException))), Times.Once);
             _requestRepositoryMock.Verify(broker => broker.SelectStringDateById(2), Times.Once);
             _requestRepositoryMock.VerifyNoOtherCalls();
+        }
+
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnCreateWhenProvinceNotFoundAndLogItAsync()
+        {
+            //given
+            RequestCreateDto inputRequest = GetValidRequestCreateDto();
+            string inputUserName = "f.diaz";
+
+            var expectedException = new ProvinceNotFoundException(inputRequest.ProvinceCode);
+
+            _requestRepositoryMock
+                .Setup(broker => broker.SelectStringDateById(2))
+                .ReturnsAsync(new StringDate());
+
+            //when
+            Task<Request> createRequestTask = _requestService.CreateRequest(inputRequest, inputUserName);
+
+            //then
+            await Assert.ThrowsAsync<ProvinceNotFoundException>(() => createRequestTask);
+
+            _logginBrokerMock.Verify(broker => broker.LogError(It.Is(SameDomainExceptionAs(expectedException))), Times.Once);
+            _requestRepositoryMock.Verify(broker => broker.SelectStringDateById(2), Times.Once);
+            _requestRepositoryMock.VerifyNoOtherCalls();
+            _provinceServiceMock.Verify(broker => broker.RetrieveProvinceByCode(inputRequest.ProvinceCode), Times.Once);
+            _provinceServiceMock.VerifyNoOtherCalls();
         }
     }
 }
