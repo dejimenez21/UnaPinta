@@ -11,7 +11,7 @@ namespace UnaPinta.Api.Tests.Unit.Helpers
 {
     public class Comparer<T, TKey> : IEqualityComparer<T> where T : BaseEntity<TKey>
     {
-        public bool Equals(T? x, T? y)
+        public bool Equals(T x, T y)
         {
             var settings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
             return JsonConvert.SerializeObject(x, settings) == JsonConvert.SerializeObject(y, settings);

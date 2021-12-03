@@ -106,6 +106,25 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
             return validRequest;
         }
 
+        private RequestCreateDto GetValidForMeRequestCreateDto(bool random = false)
+        {
+            var validRequest = new RequestCreateDto();
+
+            validRequest.Amount = 2;
+            validRequest.BloodComponentId = 2;
+            validRequest.CenterAddress = "Av Romulo Betancourt, No. 452, El Millon";
+            validRequest.CenterName = "Centro Medico Real";
+            validRequest.Document = "";
+            validRequest.ForMe = true;
+            validRequest.PatientStory = "Tuve un accidente de transito y necesito cirugia.";
+            validRequest.PossibleBloodTypes = new List<int> { 2, 3, 4 };
+            validRequest.PrescriptionImage = GenerateIFormFile();
+            validRequest.ProvinceCode = "SD";
+            validRequest.ResponseDueDateId = 2;
+
+            return validRequest;
+        }
+
         private Expression<Func<BaseDomainException, bool>> SameDomainExceptionAs(BaseDomainException expectedException)
         {
             return actualException =>
