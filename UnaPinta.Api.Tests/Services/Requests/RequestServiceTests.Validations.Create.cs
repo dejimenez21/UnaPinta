@@ -10,7 +10,7 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
     public partial class RequestServiceTests
     {
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnCreateWhenUserNameNotFound()
+        public async Task ShouldThrowValidationExceptionOnCreateWhenUserNotFoundAndLogItAsync()
         {
             //given
             RequestCreateDto inputRequest = GetValidRequestCreateDto();
@@ -33,6 +33,8 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
             await Assert.ThrowsAsync<UserNotFoundException>(() => createRequestTask);
 
             _logginBrokerMock.Verify(broker => broker.LogError(It.Is(SameDomainExceptionAs(expectedException))), Times.Once);
+            _requestRepositoryMock.Verify(broker => broker.SelectStringDateById(2), Times.Once);
+            _requestRepositoryMock.VerifyNoOtherCalls();
         }
     }
 }

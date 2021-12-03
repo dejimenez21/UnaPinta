@@ -62,13 +62,19 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
             var actualRequest = await _requestService.CreateRequest(inputRequest, inputUserName);
 
             //then
-            actualRequest.Should().BeEquivalentTo(beforeInsertMappedRequest);
+            actualRequest.Should().BeEquivalentTo(expectedRequest);
 
             _requestRepositoryMock
-                .Verify(broker => broker.Insert(beforeInsertMappedRequest), Times.Once);
+                .Verify(broker => broker.Insert(It.Is(beforeInsertMappedRequest, _comparer)), Times.Once);
 
             _requestRepositoryMock
                 .Verify(broker => broker.SaveChangesAsync(), Times.Once);
+
+            _requestRepositoryMock
+                .Verify(broker => broker.SelectStringDateById(2), Times.Once);
+
+            _requestRepositoryMock.VerifyNoOtherCalls();
+        }
 
         [Theory]
         [InlineData("Pedro", "Sanchez", "2006-05-21", BloodTypeEnum.Bplus, "2025-06-14")]
