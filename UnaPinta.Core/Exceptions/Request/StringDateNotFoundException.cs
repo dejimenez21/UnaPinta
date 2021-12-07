@@ -12,7 +12,7 @@ namespace UnaPinta.Core.Exceptions.Request
         public StringDateNotFoundException(string message, int stringDateId) : base(message)
         {
             this.StatusCode = 404;
-            this.ErrorCode = "E3005";
+            this.ErrorCode = "E2001";
             this.Title = "Intervalo de fecha no existe";
             this.spMessage = $"La fecha estimada de respuesta con el id \"{stringDateId}\" no existe.";
         }
