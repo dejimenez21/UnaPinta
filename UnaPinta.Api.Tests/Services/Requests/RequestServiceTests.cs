@@ -106,7 +106,7 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
             return validRequest;
         }
 
-        private RequestCreateDto GetValidForMeRequestCreateDto(bool random = false)
+        private RequestCreateDto GetMissingPatientInfoRequestCreateDto(bool setForMePropTrue, bool random = false)
         {
             var validRequest = new RequestCreateDto();
 
@@ -115,7 +115,7 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
             validRequest.CenterAddress = "Av Romulo Betancourt, No. 452, El Millon";
             validRequest.CenterName = "Centro Medico Real";
             validRequest.Document = "";
-            validRequest.ForMe = true;
+            validRequest.ForMe = setForMePropTrue;
             validRequest.PatientStory = "Tuve un accidente de transito y necesito cirugia.";
             validRequest.PossibleBloodTypes = new List<int> { 2, 3, 4 };
             validRequest.PrescriptionImage = GenerateIFormFile();

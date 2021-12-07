@@ -83,7 +83,7 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
             DateTime requesterBirthDate, BloodTypeEnum requesterBloodTypeId, DateTime actualDate)
         {
             //given
-            RequestCreateDto inputRequest = GetValidForMeRequestCreateDto();
+            RequestCreateDto inputRequest = GetMissingPatientInfoRequestCreateDto(true);
             Request beforeInsertMappedRequest = _autoMapper.Map<Request>(inputRequest);
             beforeInsertMappedRequest.Name = $"{requesterFirstName} {requesterLastName}";
             beforeInsertMappedRequest.BirthDate = requesterBirthDate;
