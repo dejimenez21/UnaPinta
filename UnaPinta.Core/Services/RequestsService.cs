@@ -81,7 +81,11 @@ namespace UnaPinta.Core.Services
             if (inputRequest.ForMe)
                 inputRequest = CompleteRequestForCurrentUser(inputRequest, user);
             else if (string.IsNullOrEmpty(inputRequest.Name) || !inputRequest.BirthDate.HasValue || !inputRequest.BloodTypeId.HasValue)
-                throw new BaseDomainException("El modelo es invalido", 400);
+            {
+                var ex = new PatientDataMissingException(string.IsNullOrEmpty(inputRequest.Name), !inputRequest.BirthDate.HasValue);
+                _loggingBroker.LogError(ex);
+                throw ex;
+            }
 
             var request = _mapper.Map<Request>(inputRequest);
             request.ResponseDueDate = stringDate.ToDateTime(_dateTimeBroker.GetCurrentDateTime());
