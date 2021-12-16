@@ -13,7 +13,7 @@ namespace UnaPinta.Core.Exceptions.BloodType
         public IncompatibleBloodTypesException(IEnumerable<string> requestedBloodType, string patientBloodType, string message) : base(message)
         {
             this.StatusCode = 400;
-            this.ErrorCode = "EXXX";
+            this.ErrorCode = "E5000";
             this.Title = "Tipos de sangre incompatibles";
             this.spMessage = $"No se puede registrar la solicitud porque los tipos de sangre solicitados {String.Join(", ", requestedBloodType.ToArray())} no son compatibles con el tipo de sangre {patientBloodType} del paciente.";
         }
