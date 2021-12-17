@@ -1,6 +1,7 @@
 ﻿using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnaPinta.Core.Exceptions.BloodType;
 using UnaPinta.Core.Exceptions.Province;
@@ -139,19 +140,23 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
         }
 
         [Theory]
-        [InlineData(BloodTypeEnum.ABminus, "AB-", new BloodTypeEnum[] { BloodTypeEnum.ABplus, BloodTypeEnum.Aminus, BloodTypeEnum.Aplus, BloodTypeEnum.Ominus}, new string[] { "AB+", "A+" })]
-        [InlineData(BloodTypeEnum.Oplus, "O+", new BloodTypeEnum[] { BloodTypeEnum.Bplus, BloodTypeEnum.Ominus }, new string[] { "B+" })]
-        [InlineData(BloodTypeEnum.Aplus, "A+", new BloodTypeEnum[] { BloodTypeEnum.Aplus, BloodTypeEnum.Aminus, BloodTypeEnum.Bplus, BloodTypeEnum.Bminus}, new string[] { "B+", "B-" })]
-        [InlineData(BloodTypeEnum.Bminus, "B-", new BloodTypeEnum[] { BloodTypeEnum.ABplus, BloodTypeEnum.Aminus, BloodTypeEnum.Aplus, BloodTypeEnum.Ominus}, new string[] { "AB+", "A-", "A+" })]
+        [InlineData(BloodTypeEnum.ABminus, new BloodTypeEnum[] { BloodTypeEnum.ABplus, BloodTypeEnum.Aminus, BloodTypeEnum.Aplus, BloodTypeEnum.Ominus}, new string[] { "AB+", "A+" })]
+        [InlineData(BloodTypeEnum.Oplus, new BloodTypeEnum[] { BloodTypeEnum.Bplus, BloodTypeEnum.Ominus }, new string[] { "B+" })]
+        [InlineData(BloodTypeEnum.Aplus, new BloodTypeEnum[] { BloodTypeEnum.Aplus, BloodTypeEnum.Aminus, BloodTypeEnum.Bplus, BloodTypeEnum.Bminus}, new string[] { "B+", "B-" })]
+        [InlineData(BloodTypeEnum.Bminus, new BloodTypeEnum[] { BloodTypeEnum.ABplus, BloodTypeEnum.Aminus, BloodTypeEnum.Aplus, BloodTypeEnum.Ominus}, new string[] { "AB+", "A-", "A+" })]
         public async Task ShouldThrowValidationExceptionOnCreateWhenPossibleBloodTypesAreNotCompatibleWithPatientsBloodTypeAndLogItAsync(
-            BloodTypeEnum patienBloodType, string patientBloodTypeString, IEnumerable<BloodTypeEnum> requestedBloodTypes, IEnumerable<string> incompatiblesBloodTypes)
+            BloodTypeEnum patienBloodTypeId, IEnumerable<BloodTypeEnum> requestedBloodTypesIds, IEnumerable<string> incompatiblesBloodTypesIds)
         {
             //given
             RequestCreateDto inputRequest = GetValidRequestCreateDto();
+            inputRequest.BloodTypeId = (int)patienBloodTypeId;
+            inputRequest.PossibleBloodTypes = requestedBloodTypesIds.Select(x => (int)x);
 
             string inputUserName = "f.diaz";
 
-            var expectedException = new IncompatibleBloodTypesException(incompatiblesBloodTypes, patientBloodTypeString);
+            var incompatiblesBloodTypes = incompatiblesBloodTypesIds.Select(x => (BloodTypeEnumeration)x);
+            var patientBloodType = (BloodTypeEnumeration)(int)patienBloodTypeId;
+            var expectedException = new IncompatibleBloodTypesException(incompatiblesBloodTypes, patientBloodType);
 
             _userManagerMock
                 .Setup(broker => broker.FindByNameAsync(inputUserName))
