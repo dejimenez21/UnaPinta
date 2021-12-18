@@ -98,7 +98,7 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
             validRequest.ForMe = false;
             validRequest.Name = "Juan Hernandez";
             validRequest.PatientStory = "Tuve un accidente de transito y necesito cirugia.";
-            validRequest.PossibleBloodTypes = new List<int> { 2, 3, 4 };
+            validRequest.PossibleBloodTypes = new List<int> { 3, 4, 8 };
             validRequest.PrescriptionImage = GenerateIFormFile();
             validRequest.ProvinceCode = "SD";
             validRequest.ResponseDueDateId = 2;
@@ -117,7 +117,7 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
             validRequest.Document = "";
             validRequest.ForMe = setForMePropTrue;
             validRequest.PatientStory = "Tuve un accidente de transito y necesito cirugia.";
-            validRequest.PossibleBloodTypes = new List<int> { 2, 3, 4 };
+            validRequest.PossibleBloodTypes = new List<int> { 3, 4, 8 };
             validRequest.PrescriptionImage = GenerateIFormFile();
             validRequest.ProvinceCode = "SD";
             validRequest.ResponseDueDateId = 2;

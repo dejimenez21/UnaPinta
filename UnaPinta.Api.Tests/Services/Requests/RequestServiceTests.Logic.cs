@@ -30,9 +30,9 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
             beforeInsertMappedRequest.PossibleBloodTypes =
                 new List<RequestPossibleBloodTypes>
                 {
-                    new RequestPossibleBloodTypes{BloodTypeId=Dto.Enums.BloodTypeEnum.Aminus},
-                    new RequestPossibleBloodTypes{BloodTypeId=Dto.Enums.BloodTypeEnum.Bplus},
-                    new RequestPossibleBloodTypes{BloodTypeId=Dto.Enums.BloodTypeEnum.Bminus}
+                    new RequestPossibleBloodTypes{BloodTypeId=BloodTypeEnum.Bplus},
+                    new RequestPossibleBloodTypes{BloodTypeId=BloodTypeEnum.Bminus},
+                    new RequestPossibleBloodTypes{BloodTypeId=BloodTypeEnum.Ominus}
                 };
             Request expectedRequest = beforeInsertMappedRequest.DeepClone();
 
@@ -78,7 +78,7 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
 
         [Theory]
         [InlineData("Pedro", "Sanchez", "2006-05-21", BloodTypeEnum.Bplus, "2025-06-14")]
-        [InlineData("Joaquin", "Hernandez", "2030-04-13", BloodTypeEnum.ABminus, "2100-07-25")]
+        [InlineData("Joaquin", "Hernandez", "2030-04-13", BloodTypeEnum.Bplus, "2100-07-25")]
         public async Task ShouldRegisterRequestWhenForMeIsTrueAsync(string requesterFirstName, string requesterLastName, 
             DateTime requesterBirthDate, BloodTypeEnum requesterBloodTypeId, DateTime actualDate)
         {
@@ -98,9 +98,9 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
             beforeInsertMappedRequest.PossibleBloodTypes =
                 new List<RequestPossibleBloodTypes>
                 {
-                    new RequestPossibleBloodTypes{BloodTypeId=Dto.Enums.BloodTypeEnum.Aminus},
-                    new RequestPossibleBloodTypes{BloodTypeId=Dto.Enums.BloodTypeEnum.Bplus},
-                    new RequestPossibleBloodTypes{BloodTypeId=Dto.Enums.BloodTypeEnum.Bminus}
+                    new RequestPossibleBloodTypes{BloodTypeId=BloodTypeEnum.Bplus},
+                    new RequestPossibleBloodTypes{BloodTypeId=BloodTypeEnum.Bminus},
+                    new RequestPossibleBloodTypes{BloodTypeId=BloodTypeEnum.Ominus}
                 };
             Request expectedRequest = beforeInsertMappedRequest.DeepClone();
 
