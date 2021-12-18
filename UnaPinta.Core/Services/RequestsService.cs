@@ -20,6 +20,7 @@ using UnaPinta.Data.Brokers.DateTimes;
 using UnaPinta.Data.Brokers.Loggings;
 using UnaPinta.Core.Exceptions.User;
 using UnaPinta.Core.Exceptions.Province;
+using UnaPinta.Core.Exceptions.BloodType;
 
 namespace UnaPinta.Core.Services
 {
@@ -87,6 +88,17 @@ namespace UnaPinta.Core.Services
                 throw ex;
             }
 
+            var patientBloodTypeEnum = (BloodTypeEnumeration)inputRequest.BloodTypeId;
+            var incompatibleBloodTypes = patientBloodTypeEnum
+                .GetIncompatibleBloodTypesAsReceiverFromList(inputRequest.PossibleBloodTypes.Select(x => (BloodTypeEnumeration)x));
+
+            if(incompatibleBloodTypes != null && incompatibleBloodTypes.Any())
+            {
+                var ex = new IncompatibleBloodTypesException(incompatibleBloodTypes, patientBloodTypeEnum);
+                _loggingBroker.LogError(ex);
+                throw ex;
+            }
+
             var request = _mapper.Map<Request>(inputRequest);
             request.ResponseDueDate = stringDate.ToDateTime(_dateTimeBroker.GetCurrentDateTime());
             request.ProvinceId = province.Id;
@@ -100,7 +112,6 @@ namespace UnaPinta.Core.Services
 
             return request;
         }
-
         private RequestCreateDto CompleteRequestForCurrentUser(RequestCreateDto inputRequest, User user)
         {
             inputRequest.Name = $"{user.FirstName} {user.LastName}";
@@ -234,5 +245,6 @@ namespace UnaPinta.Core.Services
 
             await _requestRepository.SaveChangesAsync();
         }
+
     }
 }
