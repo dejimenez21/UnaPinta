@@ -180,5 +180,45 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
             _requestRepositoryMock.Verify(broker => broker.SelectStringDateById(2), Times.Once);
             _requestRepositoryMock.VerifyNoOtherCalls();
         }
+
+        [Theory]
+        [InlineData("1998-02-12", "1998-02-11")]
+        [InlineData("2025-02-12", "2023-02-13")]
+        public async Task ShouldThrowValidationExceptionOnCreateWhenPatientBirthDateIsLaterThanActualDateAndLogItAsync(DateTime patientBirthDate, DateTime actualDate)
+        {
+            //given
+            RequestCreateDto inputRequest = GetValidRequestCreateDto();
+            inputRequest.BirthDate = patientBirthDate;
+
+            string inputUserName = "f.diaz";
+
+            var expectedException = new InvalidBirthDateException();
+
+            _userManagerMock
+                .Setup(broker => broker.FindByNameAsync(inputUserName))
+                .ReturnsAsync(new User { Id = 1, UserName = "dejimenez21" });
+
+            _requestRepositoryMock
+                .Setup(broker => broker.SelectStringDateById(2))
+                .ReturnsAsync(new StringDate());
+
+            _provinceServiceMock
+                .Setup(broker => broker.RetrieveProvinceByCode("SD"))
+                .ReturnsAsync(new Province());
+
+            _dateTimeBrokerMock
+                .Setup(broker => broker.GetCurrentDateTime())
+                .Returns(actualDate);
+
+            //when
+            Task<Request> createRequestTask = _requestService.CreateRequest(inputRequest, inputUserName);
+
+            //then
+            await Assert.ThrowsAsync<InvalidBirthDateException>(() => createRequestTask);
+
+            _logginBrokerMock.Verify(broker => broker.LogError(It.Is(SameDomainExceptionAs(expectedException))), Times.Once);
+            _requestRepositoryMock.Verify(broker => broker.SelectStringDateById(2), Times.Once);
+            _requestRepositoryMock.VerifyNoOtherCalls();
+        }
     }
 }
