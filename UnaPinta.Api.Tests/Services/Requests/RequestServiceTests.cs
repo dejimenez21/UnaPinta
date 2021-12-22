@@ -32,8 +32,6 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
         private readonly Comparer<Request, long> _comparer;
         private readonly Mock<UserManager<User>> _userManagerMock;
         private readonly Mock<IRequestRepository> _requestRepositoryMock;
-        private readonly Mock<IMapper> _mapperMock;
-        private readonly Mock<IRequestNotificationService> _requestNotificationServiceMock;
         private readonly Mock<IProvinceService> _provinceServiceMock;
         private readonly Mock<ICaseRepository> _caseRepositoryMock;
         private readonly Mock<IFileRepository> _fileRepositoryMock;
@@ -47,13 +45,12 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
             var store = new Mock<IUserStore<User>>();
             _userManagerMock = new Mock<UserManager<User>>(store.Object, null, null, null, null, null, null, null, null);
             _requestRepositoryMock = new Mock<IRequestRepository>();
-            _requestNotificationServiceMock = new Mock<IRequestNotificationService>();
             _fileRepositoryMock = new Mock<IFileRepository>();
             _provinceServiceMock = new Mock<IProvinceService>();
             _caseRepositoryMock =  new Mock<ICaseRepository>();
             _logginBrokerMock = new Mock<ILoggingBroker>();
 
-            _requestService = new RequestsService(_userManagerMock.Object, _requestRepositoryMock.Object, GenerateRequestMapper(), _requestNotificationServiceMock.Object,
+            _requestService = new RequestsService(_userManagerMock.Object, _requestRepositoryMock.Object, GenerateRequestMapper(),
                 _provinceServiceMock.Object, _caseRepositoryMock.Object, _fileRepositoryMock.Object, _dateTimeBrokerMock.Object, _logginBrokerMock.Object);
 
             _autoMapper = GenerateMapperForTests();

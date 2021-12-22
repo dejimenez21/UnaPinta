@@ -29,22 +29,18 @@ namespace UnaPinta.Core.Services
         private readonly UserManager<User> _userManager;
         private readonly IRequestRepository _requestRepository;
         private readonly IMapper _mapper;
-        private readonly IRequestNotificationService _requestNotificationService;
         private readonly IProvinceService _provinceService;
         private readonly ICaseRepository _caseRepository;
         private readonly IFileRepository _fileRepository;
         private readonly IDateTimeBroker _dateTimeBroker;
         private readonly ILoggingBroker _loggingBroker;
 
-        public RequestsService(UserManager<User> userManager, 
-            IRequestRepository requestRepository, IMapper mapper, IRequestNotificationService requestNotificationService,
-            IProvinceService provinceService, ICaseRepository caseRepository, IFileRepository fileRepository, IDateTimeBroker dateTimeBroker,
-            ILoggingBroker loggingBroker)
+        public RequestsService(UserManager<User> userManager, IRequestRepository requestRepository, IMapper mapper, IProvinceService provinceService, 
+            ICaseRepository caseRepository, IFileRepository fileRepository, IDateTimeBroker dateTimeBroker, ILoggingBroker loggingBroker)
         {
             _userManager = userManager;
             _requestRepository = requestRepository;
             _mapper = mapper;
-            _requestNotificationService = requestNotificationService;
             _provinceService = provinceService;
             _caseRepository = caseRepository;
             _fileRepository = fileRepository;
