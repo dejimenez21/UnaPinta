@@ -50,6 +50,13 @@ namespace UnaPinta.Core.Services
 
         public async Task<Request> CreateRequest(RequestCreateDto inputRequest, string userName)
         {
+            if (!inputRequest.ForMe && inputRequest.BirthDate > _dateTimeBroker.GetCurrentDateTime())
+            {
+                var ex = new InvalidBirthDateException();
+                _loggingBroker.LogError(ex);
+                throw ex;
+            }
+
             int stringDateId = (int)inputRequest.ResponseDueDateId;
             var stringDate = await _requestRepository.SelectStringDateById(stringDateId);
             if (stringDate == null)
