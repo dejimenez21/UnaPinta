@@ -33,6 +33,10 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
                 .Setup(broker => broker.RetrieveProvinceByCode("SD"))
                 .ReturnsAsync(new Province());
 
+            _dateTimeBrokerMock
+                .Setup(broker => broker.GetCurrentDateTime())
+                .Returns(DateTime.MaxValue);
+
             //when
             Task<Request> createRequestTask = _requestService.CreateRequest(inputRequest, inputUserName);
 
@@ -40,8 +44,7 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
             await Assert.ThrowsAsync<UserNotFoundException>(() => createRequestTask);
 
             _logginBrokerMock.Verify(broker => broker.LogError(It.Is(SameDomainExceptionAs(expectedException))), Times.Once);
-            _requestRepositoryMock.Verify(broker => broker.SelectStringDateById(2), Times.Once);
-            _requestRepositoryMock.VerifyNoOtherCalls();
+            _requestRepositoryMock.Verify(broker => broker.Insert(It.IsAny<Request>()), Times.Never);
         }
 
 
@@ -57,6 +60,10 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
             _provinceServiceMock
                 .Setup(broker => broker.RetrieveProvinceByCode("SD"))
                 .ReturnsAsync(new Province());
+
+            _dateTimeBrokerMock
+                .Setup(broker => broker.GetCurrentDateTime())
+                .Returns(DateTime.MaxValue);
 
             //when
             Task<Request> createRequestTask = _requestService.CreateRequest(inputRequest, inputUserName);
@@ -82,6 +89,10 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
             _requestRepositoryMock
                 .Setup(broker => broker.SelectStringDateById(2))
                 .ReturnsAsync(new StringDate());
+
+            _dateTimeBrokerMock
+                .Setup(broker => broker.GetCurrentDateTime())
+                .Returns(DateTime.MaxValue);
 
             //when
             Task<Request> createRequestTask = _requestService.CreateRequest(inputRequest, inputUserName);
@@ -128,6 +139,10 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
                 .Setup(broker => broker.RetrieveProvinceByCode("SD"))
                 .ReturnsAsync(new Province());
 
+            _dateTimeBrokerMock
+                .Setup(broker => broker.GetCurrentDateTime())
+                .Returns(DateTime.MaxValue);
+
             //when
             Task<Request> createRequestTask = _requestService.CreateRequest(inputRequest, inputUserName);
 
@@ -135,8 +150,7 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
             await Assert.ThrowsAsync<PatientDataMissingException>(() => createRequestTask);
 
             _logginBrokerMock.Verify(broker => broker.LogError(It.Is(SameDomainExceptionAs(expectedException))), Times.Once);
-            _requestRepositoryMock.Verify(broker => broker.SelectStringDateById(2), Times.Once);
-            _requestRepositoryMock.VerifyNoOtherCalls();
+            _requestRepositoryMock.Verify(broker => broker.Insert(It.IsAny<Request>()), Times.Never);
         }
 
         [Theory]
@@ -170,6 +184,10 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
                 .Setup(broker => broker.RetrieveProvinceByCode("SD"))
                 .ReturnsAsync(new Province());
 
+            _dateTimeBrokerMock
+                .Setup(broker => broker.GetCurrentDateTime())
+                .Returns(DateTime.MaxValue);
+
             //when
             Task<Request> createRequestTask = _requestService.CreateRequest(inputRequest, inputUserName);
 
@@ -177,8 +195,7 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
             await Assert.ThrowsAsync<IncompatibleBloodTypesException>(() => createRequestTask);
 
             _logginBrokerMock.Verify(broker => broker.LogError(It.Is(SameDomainExceptionAs(expectedException))), Times.Once);
-            _requestRepositoryMock.Verify(broker => broker.SelectStringDateById(2), Times.Once);
-            _requestRepositoryMock.VerifyNoOtherCalls();
+            _requestRepositoryMock.Verify(broker => broker.Insert(It.IsAny<Request>()), Times.Never);
         }
 
         [Theory]
@@ -217,8 +234,7 @@ namespace UnaPinta.Api.Tests.Unit.Services.Requests
             await Assert.ThrowsAsync<InvalidBirthDateException>(() => createRequestTask);
 
             _logginBrokerMock.Verify(broker => broker.LogError(It.Is(SameDomainExceptionAs(expectedException))), Times.Once);
-            _requestRepositoryMock.Verify(broker => broker.SelectStringDateById(2), Times.Once);
-            _requestRepositoryMock.VerifyNoOtherCalls();
+            _requestRepositoryMock.Verify(broker => broker.Insert(It.IsAny<Request>()), Times.Never);
         }
     }
 }
