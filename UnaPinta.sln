@@ -32,7 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{E98202
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnaPinta.Dto", "UnaPinta.Dto\UnaPinta.Dto.csproj", "{13D90F27-D796-42A4-8EB4-24C0EEBB3D9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnaPinta.Api.Tests", "UnaPinta.Api.Tests\UnaPinta.Api.Tests.csproj", "{4FE5CB99-6B5D-4750-9710-85852BDC6893}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnaPinta.Api.Tests.Unit", "UnaPinta.Api.Tests\UnaPinta.Api.Tests.Unit.csproj", "{4FE5CB99-6B5D-4750-9710-85852BDC6893}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

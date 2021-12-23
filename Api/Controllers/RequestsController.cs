@@ -18,19 +18,21 @@ namespace UnaPinta.Api.Controllers
     {
         private readonly IRequestsService _service;
         private readonly ITokenParams _tokenParams;
+        private readonly IRequestNotificationService _requestNotificationService;
 
-        public RequestsController(IRequestsService service, ITokenParams tokenParams)
+        public RequestsController(IRequestsService service, IRequestNotificationService requestNotificationService, ITokenParams tokenParams)
         {
             _service = service;
             _tokenParams = tokenParams;
+            _requestNotificationService = requestNotificationService;
         }
 
         [HttpPost("")]
         [Authorize(Roles = "solicitante")]
         public async Task<ActionResult<RequestCreateDto>> CreateRequest([FromForm]RequestCreateDto requestCreate)
         {
-            var callback = await _service.CreateRequest(requestCreate, HttpContext.User.FindFirst("UserName").Value);
-            Response.OnCompleted(callback);
+            var createdRequest = await _service.CreateRequest(requestCreate, HttpContext.User.FindFirst("UserName").Value);
+            Response.OnCompleted(async () => await _requestNotificationService.SendRequestNotification(createdRequest));
 
             return Created("api/requests", requestCreate);
         }

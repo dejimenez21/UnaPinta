@@ -16,61 +16,105 @@ using UnaPinta.Core.Exceptions;
 using Microsoft.AspNetCore.Http;
 using UnaPinta.Core.Extensions;
 using UnaPinta.Dto.Enumerations;
+using UnaPinta.Data.Brokers.DateTimes;
+using UnaPinta.Data.Brokers.Loggings;
+using UnaPinta.Core.Exceptions.User;
+using UnaPinta.Core.Exceptions.Province;
+using UnaPinta.Core.Exceptions.BloodType;
 
 namespace UnaPinta.Core.Services
 {
     public class RequestsService : IRequestsService
     {
-        private readonly IUnaPintaRepository _repo;
         private readonly UserManager<User> _userManager;
         private readonly IRequestRepository _requestRepository;
         private readonly IMapper _mapper;
-        private readonly IRequestNotificationService _requestNotificationService;
         private readonly IProvinceService _provinceService;
         private readonly ICaseRepository _caseRepository;
         private readonly IFileRepository _fileRepository;
+        private readonly IDateTimeBroker _dateTimeBroker;
+        private readonly ILoggingBroker _loggingBroker;
 
-        public RequestsService(IUnaPintaRepository repo, UserManager<User> userManager, 
-            IRequestRepository requestRepository, IMapper mapper, IRequestNotificationService requestNotificationService,
-            IProvinceService provinceService, ICaseRepository caseRepository, IFileRepository fileRepository)
+        public RequestsService(UserManager<User> userManager, IRequestRepository requestRepository, IMapper mapper, IProvinceService provinceService, 
+            ICaseRepository caseRepository, IFileRepository fileRepository, IDateTimeBroker dateTimeBroker, ILoggingBroker loggingBroker)
         {
-            _repo = repo;
             _userManager = userManager;
             _requestRepository = requestRepository;
             _mapper = mapper;
-            _requestNotificationService = requestNotificationService;
             _provinceService = provinceService;
             _caseRepository = caseRepository;
             _fileRepository = fileRepository;
+            _dateTimeBroker = dateTimeBroker;
+            _loggingBroker = loggingBroker;
         }
 
-        public async Task<Func<Task>> CreateRequest(RequestCreateDto inputRequest, string userName)
+        public async Task<Request> CreateRequest(RequestCreateDto inputRequest, string userName)
         {
-            var stringDate = await _requestRepository.SelectStringDateById((int)inputRequest.ResponseDueDateId);
-            if (stringDate == null) throw new BaseDomainException("El intervalo de fecha especificado no existe.", 400);
+            if (!inputRequest.ForMe && inputRequest.BirthDate > _dateTimeBroker.GetCurrentDateTime())
+            {
+                var ex = new InvalidBirthDateException();
+                _loggingBroker.LogError(ex);
+                throw ex;
+            }
+
+            int stringDateId = (int)inputRequest.ResponseDueDateId;
+            var stringDate = await _requestRepository.SelectStringDateById(stringDateId);
+            if (stringDate == null)
+            {
+                var ex = new StringDateNotFoundException(stringDateId);
+                _loggingBroker.LogError(ex);
+                throw ex;
+            }
             
             var province = await _provinceService.RetrieveProvinceByCode(inputRequest.ProvinceCode);
-            if (province == null) throw new BaseDomainException("La provincia especificada no existe.", 400);
+            if (province == null)
+            {
+                var ex = new ProvinceNotFoundException(inputRequest.ProvinceCode);
+                _loggingBroker.LogError(ex);
+                throw ex;
+            }
 
-            var user = await _userManager.FindByNameAsync(userName); //TODO: Add validation if the user returns null
+            var user = await _userManager.FindByNameAsync(userName);
+            if (user == null)
+            {
+                var ex = new UserNotFoundException(userName, true);
+                _loggingBroker.LogError(ex);
+                throw ex;
+            }
 
             if (inputRequest.ForMe)
                 inputRequest = CompleteRequestForCurrentUser(inputRequest, user);
             else if (string.IsNullOrEmpty(inputRequest.Name) || !inputRequest.BirthDate.HasValue || !inputRequest.BloodTypeId.HasValue)
-                throw new BaseDomainException("El modelo es invalido", 400);
+            {
+                var ex = new PatientDataMissingException(string.IsNullOrEmpty(inputRequest.Name), !inputRequest.BirthDate.HasValue);
+                _loggingBroker.LogError(ex);
+                throw ex;
+            }
+
+            var patientBloodTypeEnum = (BloodTypeEnumeration)inputRequest.BloodTypeId;
+            var incompatibleBloodTypes = patientBloodTypeEnum
+                .GetIncompatibleBloodTypesAsReceiverFromList(inputRequest.PossibleBloodTypes.Select(x => (BloodTypeEnumeration)x));
+
+            if(incompatibleBloodTypes != null && incompatibleBloodTypes.Any())
+            {
+                var ex = new IncompatibleBloodTypesException(incompatibleBloodTypes, patientBloodTypeEnum);
+                _loggingBroker.LogError(ex);
+                throw ex;
+            }
 
             var request = _mapper.Map<Request>(inputRequest);
-            request.ResponseDueDate = stringDate.ToDateTime();
+            request.ResponseDueDate = stringDate.ToDateTime(_dateTimeBroker.GetCurrentDateTime());
             request.ProvinceId = province.Id;
             request.Prescription = await inputRequest.PrescriptionImage.ToFileModel();
             request.RequesterId = user.Id;
+            request.CreatedAt = _dateTimeBroker.GetCurrentDateTime();
+            request.LastUpdatedAt = _dateTimeBroker.GetCurrentDateTime();
 
             _requestRepository.Insert(request);
             await _requestRepository.SaveChangesAsync();
 
-            return async () => await _requestNotificationService.SendRequestNotification(request);
+            return request;
         }
-
         private RequestCreateDto CompleteRequestForCurrentUser(RequestCreateDto inputRequest, User user)
         {
             inputRequest.Name = $"{user.FirstName} {user.LastName}";
@@ -204,5 +248,6 @@ namespace UnaPinta.Core.Services
 
             await _requestRepository.SaveChangesAsync();
         }
+
     }
 }

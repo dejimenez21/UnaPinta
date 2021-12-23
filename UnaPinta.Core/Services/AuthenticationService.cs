@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using UnaPinta.Core.Exceptions;
 using UnaPinta.Core.Exceptions.User;
 using UnaPinta.Dto.Models.Auth;
+using UnaPinta.Data.Brokers.DateTimes;
 
 namespace UnaPinta.Core.Services
 {
@@ -28,10 +29,11 @@ namespace UnaPinta.Core.Services
         private readonly IMapper _mapper;
         private readonly IEmailService _emailService;
         private readonly IWaitListServices _waitListServices;
+        private readonly IDateTimeBroker _dateTimeBroker;
 
         //private User _user;
         public AuthenticationService(UserManager<User> userManager, IConfiguration configuration, 
-             RoleManager<Role> roleManager, IMapper mapper, IEmailService emailService, IWaitListServices waitListServices)
+             RoleManager<Role> roleManager, IMapper mapper, IEmailService emailService, IWaitListServices waitListServices, IDateTimeBroker dateTimeBroker)
         {
             _userManager = userManager;
             _configuration = configuration;
@@ -39,6 +41,7 @@ namespace UnaPinta.Core.Services
             _mapper = mapper;
             _emailService = emailService;
             _waitListServices = waitListServices;
+            _dateTimeBroker = dateTimeBroker;
         }
 
         public async Task<RoleCreateResponseDto> CreateRole(RoleCreate roleCreate)
@@ -112,7 +115,7 @@ namespace UnaPinta.Core.Services
                 issuer: jwtSettings.GetSection("validIssuer").Value,
                 audience: jwtSettings.GetSection("validAudience").Value,
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(Convert.ToDouble(jwtSettings.GetSection("expires").Value)),
+                expires: _dateTimeBroker.GetCurrentDateTime().AddMinutes(Convert.ToDouble(jwtSettings.GetSection("expires").Value)),
                 signingCredentials: credentials
             );
 

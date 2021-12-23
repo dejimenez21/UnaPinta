@@ -5,23 +5,23 @@ namespace UnaPinta.Dto.Helpers
 {
     public class BloodTypeDictionary
     {
-        IDictionary<BloodTypeEnum, List<BloodTypeEnum>> CompatibilityDictionary;
+        IDictionary<BloodTypeEnumeration, List<BloodTypeEnumeration>> CompatibilityDictionary;
 
         public BloodTypeDictionary()
         {
-            CompatibilityDictionary = new Dictionary<BloodTypeEnum,  List<BloodTypeEnum>>{
-               { BloodTypeEnum.Ominus, new List<BloodTypeEnum>{BloodTypeEnum.Ominus} },
-               { BloodTypeEnum.Oplus, new List<BloodTypeEnum>{BloodTypeEnum.Ominus, BloodTypeEnum.Oplus} },
-               { BloodTypeEnum.Aminus, new List<BloodTypeEnum>{BloodTypeEnum.Ominus, BloodTypeEnum.Aminus} },
-               { BloodTypeEnum.Aplus, new List<BloodTypeEnum>{BloodTypeEnum.Ominus, BloodTypeEnum.Aminus, BloodTypeEnum.Oplus, BloodTypeEnum.Aplus} },
-               { BloodTypeEnum.Bminus, new List<BloodTypeEnum>{BloodTypeEnum.Ominus, BloodTypeEnum.Bminus} },
-               { BloodTypeEnum.Bplus, new List<BloodTypeEnum>{BloodTypeEnum.Ominus, BloodTypeEnum.Bminus, BloodTypeEnum.Oplus, BloodTypeEnum.Bplus } },
-               { BloodTypeEnum.ABminus, new List<BloodTypeEnum>{BloodTypeEnum.Ominus, BloodTypeEnum.Aminus, BloodTypeEnum.Bminus, BloodTypeEnum.ABminus} },
-               { BloodTypeEnum.ABplus, new List<BloodTypeEnum>{BloodTypeEnum.Ominus, BloodTypeEnum.Aminus, BloodTypeEnum.Bminus, BloodTypeEnum.ABminus, BloodTypeEnum.Oplus, BloodTypeEnum.Aplus, BloodTypeEnum.Bplus, BloodTypeEnum.ABplus} },
+            CompatibilityDictionary = new Dictionary<BloodTypeEnumeration,  List<BloodTypeEnumeration>>{
+               { BloodTypeEnumeration.Ominus, new List<BloodTypeEnumeration>{ BloodTypeEnumeration.Ominus} },
+               { BloodTypeEnumeration.Oplus, new List<BloodTypeEnumeration>{ BloodTypeEnumeration.Ominus, BloodTypeEnumeration.Oplus} },
+               { BloodTypeEnumeration.Aminus, new List<BloodTypeEnumeration>{ BloodTypeEnumeration.Ominus, BloodTypeEnumeration.Aminus} },
+               { BloodTypeEnumeration.Aplus, new List<BloodTypeEnumeration>{ BloodTypeEnumeration.Ominus, BloodTypeEnumeration.Aminus, BloodTypeEnumeration.Oplus, BloodTypeEnumeration.Aplus} },
+               { BloodTypeEnumeration.Bminus, new List<BloodTypeEnumeration>{ BloodTypeEnumeration.Ominus, BloodTypeEnumeration.Bminus} },
+               { BloodTypeEnumeration.Bplus, new List<BloodTypeEnumeration>{ BloodTypeEnumeration.Ominus, BloodTypeEnumeration.Bminus, BloodTypeEnumeration.Oplus, BloodTypeEnumeration.Bplus } },
+               { BloodTypeEnumeration.ABminus, new List<BloodTypeEnumeration>{ BloodTypeEnumeration.Ominus, BloodTypeEnumeration.Aminus, BloodTypeEnumeration.Bminus, BloodTypeEnumeration.ABminus} },
+               { BloodTypeEnumeration.ABplus, new List<BloodTypeEnumeration>{ BloodTypeEnumeration.Ominus, BloodTypeEnumeration.Aminus, BloodTypeEnumeration.Bminus, BloodTypeEnumeration.ABminus, BloodTypeEnumeration.Oplus, BloodTypeEnumeration.Aplus, BloodTypeEnumeration.Bplus, BloodTypeEnumeration.ABplus} },
             };
         }
 
-        public List<BloodTypeEnum> GetCompatibleWith(BloodTypeEnum bloodType)
+        public List<BloodTypeEnumeration> GetCompatibleWith(BloodTypeEnumeration bloodType)
         {
             return CompatibilityDictionary[bloodType];
         }
