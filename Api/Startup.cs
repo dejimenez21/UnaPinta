@@ -110,21 +110,20 @@ namespace UnaPinta.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+
+                app.UseSwaggerUI(
+                    opt =>
+                    {
+                        opt.RoutePrefix = "";
+                        opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Una Pinta Platform API");
+                    }
+                );
             }
 
             app.ConfigureExceptionHandler(logger, env);
 
             //app.UseHttpsRedirection();
-
-            app.UseSwagger();
-
-            app.UseSwaggerUI(
-                opt => 
-                {
-                    opt.RoutePrefix = "";
-                    opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Una Pinta Platform API");
-                }
-            );
 
             app.UseStaticFiles();
 
@@ -136,14 +135,24 @@ namespace UnaPinta.Api
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
+            if (env.IsDevelopment() || env.IsEnvironment("Local"))
             {
-                endpoints.MapGet("/", context => {
-                    context.Response.Redirect("/swagger/");
-                    return Task.CompletedTask;
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapGet("/", context => {
+                        context.Response.Redirect("/swagger/");
+                        return Task.CompletedTask;
+                    });
+                    endpoints.MapControllers();
                 });
-                endpoints.MapControllers();
-            });
+            }
+            else
+            {
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                });
+            }
         }
     }
 }

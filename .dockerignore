@@ -1,0 +1,16 @@
+.vs/
+doc/
+Front/
+Scripts/
+UnaPinta.Api.Tests/
+UnaPinta.Tests/
+Dockerfile
+*.md
+*/bin/
+*/obj/
+UnaPinta.db*
+UnaPinta.sln
+.dockerignore
+.gitignore
+.git/
+*.txt

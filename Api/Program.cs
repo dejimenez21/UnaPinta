@@ -20,7 +20,17 @@ namespace UnaPinta.Api
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    var enviroment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                    if (enviroment.Equals("Local"))
+                        webBuilder.UseStartup<Startup>();
+                    else
+                    {
+                        var port = Environment.GetEnvironmentVariable("PORT");
+
+                        webBuilder.UseStartup<Startup>()
+                            .UseUrls("http://*:" + port);
+                    }
+                    
                 });
     }
 }
