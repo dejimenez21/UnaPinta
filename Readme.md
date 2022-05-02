@@ -9,7 +9,7 @@ To ger a local copy up and running follow these steps.
 
 1. Clone the repo
 
-    > git clone https://github.com/dejimenez21/UnaPintaPlatform/tree/master.git
+    > git clone https://github.com/dejimenez21/UnaPinta/tree/master.git
 
 2. Set the SECRET Enviroment variable with any value
     > setx SECRET "UnaPintaSecretKey"
